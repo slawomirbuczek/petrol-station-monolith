@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pk.petrolstationmonolith.models.auth.UserCredentials;
+import com.pk.petrolstationmonolith.models.user.UserCredentials;
 import com.pk.petrolstationmonolith.properties.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpHeaders;

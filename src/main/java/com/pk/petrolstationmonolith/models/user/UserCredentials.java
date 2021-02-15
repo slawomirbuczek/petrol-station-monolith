@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.models.auth;
+package com.pk.petrolstationmonolith.models.user;
 
 public class UserCredentials {
 

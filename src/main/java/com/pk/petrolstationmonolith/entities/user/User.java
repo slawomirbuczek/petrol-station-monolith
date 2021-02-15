@@ -1,6 +1,8 @@
 package com.pk.petrolstationmonolith.entities.user;
 
-import com.pk.petrolstationmonolith.enums.Roles;
+import com.pk.petrolstationmonolith.enums.user.Roles;
+import com.pk.petrolstationmonolith.enums.user.UserType;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,28 +20,25 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-
     private String password;
+
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Roles role;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     public User() {
+        this.role = Roles.USER;
     }
 
-    public User(String username, String password, Roles role) {
-        this.username = username;
+    public User(String password, String email, UserType userType) {
         this.password = password;
-        this.role = role;
-    }
-
-    public User(Long id, String username, String password, Roles role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        this.email = email;
+        this.role = Roles.USER;
+        this.userType = userType;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return String.valueOf(id);
     }
 
     @Override
@@ -89,8 +88,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getEmail() {
+        return email;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     public void setPassword(String password) {
@@ -101,4 +104,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 }
