@@ -49,7 +49,7 @@ public class DefaultUsers {
 
 
         User tomaszNowak = userRepository.save(new User(passwordEncoder.encode("nowak"),
-                "tomasznowak@gmail.com", UserType.EMPLOYEE));
+                "ngo54373@zwoho.com", UserType.EMPLOYEE));
         tomaszNowak.setRole(Roles.CASHIER);
 
         Address addressTomaszNowak = addressRepository.save(new Address("Poland", "Kraków",

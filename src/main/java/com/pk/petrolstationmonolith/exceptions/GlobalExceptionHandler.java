@@ -22,9 +22,28 @@ public class GlobalExceptionHandler {
 
         ex.getBindingResult().getAllErrors().forEach((error) -> errorMessages.add(
                 new ResponseMessage(error.getDefaultMessage()
-        )));
+                )));
 
         return new ValidationExceptionMessages(errorMessages);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseMessage handleEmailNotFoundException(EmailNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidEmailTokenException.class)
+    public ResponseMessage handleInvalidEmailTokenException(InvalidEmailTokenException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseMessage handleInvalidPasswordException(InvalidPasswordException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
 
 }

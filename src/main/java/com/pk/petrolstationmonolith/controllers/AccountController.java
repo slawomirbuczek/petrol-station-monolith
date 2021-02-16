@@ -1,29 +1,31 @@
 package com.pk.petrolstationmonolith.controllers;
 
 import com.pk.petrolstationmonolith.models.ResponseMessage;
+import com.pk.petrolstationmonolith.models.password.RequestNewPassword;
+import com.pk.petrolstationmonolith.models.password.RequestResetPassword;
+import com.pk.petrolstationmonolith.models.password.RequestUpdatePassword;
 import com.pk.petrolstationmonolith.models.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.registration.IndividualRegistrationCredentials;
-import com.pk.petrolstationmonolith.models.user.RequestUpdatePassword;
+import com.pk.petrolstationmonolith.models.user.RequestUpdateEmail;
 import com.pk.petrolstationmonolith.models.user.UserCredentials;
+import com.pk.petrolstationmonolith.services.user.PasswordService;
 import com.pk.petrolstationmonolith.services.user.RegistrationService;
-import com.pk.petrolstationmonolith.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
     private final RegistrationService registrationService;
-    private final UserService userService;
+    private final PasswordService passwordService;
 
-    public AccountController(RegistrationService registrationService, UserService userService) {
+    public AccountController(RegistrationService registrationService, PasswordService passwordService) {
         this.registrationService = registrationService;
-        this.userService = userService;
+        this.passwordService = passwordService;
     }
 
     @PostMapping("/login")
@@ -46,12 +48,27 @@ public class AccountController {
         return ResponseEntity.ok(registrationService.registerEmployee(credentials));
     }
 
-    @PutMapping("/users/{id}/password")
-    public ResponseEntity<ResponseMessage> updatePassword(
-            @PathVariable String id,
-            @Valid @RequestBody RequestUpdatePassword request) {
-        return ResponseEntity.ok(userService.updatePassword(request, id));
+
+    @PutMapping("/password")
+    public ResponseEntity<ResponseMessage> updatePassword(@Valid @RequestBody RequestUpdatePassword request) {
+        return ResponseEntity.ok(passwordService.updatePassword(request));
     }
+
+    @DeleteMapping("/password")
+    public ResponseEntity<ResponseMessage> sendResetPasswordMail(@Valid @RequestBody RequestResetPassword request) {
+        return ResponseEntity.ok(passwordService.sendPasswordResetMail(request));
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<ResponseMessage> setNewPassword(
+            @Valid @RequestBody RequestNewPassword request,
+            @RequestParam(name = "token") String token,
+            @RequestParam(name = "email") String email
+
+    ) {
+        return ResponseEntity.ok(passwordService.setNewPassword(request, token, email));
+    }
+
 
 
 }

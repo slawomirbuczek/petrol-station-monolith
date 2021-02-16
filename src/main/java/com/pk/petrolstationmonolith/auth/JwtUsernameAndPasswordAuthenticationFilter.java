@@ -34,7 +34,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         this.jwtProperties = jwtProperties;
         this.jwtSecret = jwtSecret;
 
-        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", HttpMethod.POST.name()));
+        this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/account/login", HttpMethod.POST.name()));
     }
 
     @Override

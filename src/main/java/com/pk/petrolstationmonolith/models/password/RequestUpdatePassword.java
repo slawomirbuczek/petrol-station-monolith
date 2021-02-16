@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.models.user;
+package com.pk.petrolstationmonolith.models.password;
 
 public class RequestUpdatePassword {
 
