@@ -6,7 +6,7 @@ import com.pk.petrolstationmonolith.models.registration.CompanyRegistrationCrede
 import com.pk.petrolstationmonolith.models.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.registration.IndividualRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.user.UserCredentials;
-import com.pk.petrolstationmonolith.repositories.*;
+import com.pk.petrolstationmonolith.repositories.user.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

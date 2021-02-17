@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.repositories;
+package com.pk.petrolstationmonolith.repositories.user;
 
 import com.pk.petrolstationmonolith.entities.user.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;

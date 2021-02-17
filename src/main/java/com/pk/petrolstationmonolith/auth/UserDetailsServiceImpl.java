@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.auth;
 
-import com.pk.petrolstationmonolith.repositories.UserRepository;
+import com.pk.petrolstationmonolith.repositories.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

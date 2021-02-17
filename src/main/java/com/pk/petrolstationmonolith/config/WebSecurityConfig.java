@@ -4,6 +4,7 @@ import com.pk.petrolstationmonolith.auth.JwtAuthenticationEntryPoint;
 import com.pk.petrolstationmonolith.auth.JwtTokenAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.JwtUsernameAndPasswordAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
+import com.pk.petrolstationmonolith.enums.user.Roles;
 import com.pk.petrolstationmonolith.properties.JwtProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -64,6 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/account/employees").permitAll()
                 .antMatchers(HttpMethod.POST, "/account/individuals").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/account/password").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/pricelist").permitAll()
+                .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.ADMIN.name())
+
+
 
                 .anyRequest().authenticated()
 

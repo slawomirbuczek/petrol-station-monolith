@@ -5,7 +5,7 @@ import com.pk.petrolstationmonolith.entities.user.Employee;
 import com.pk.petrolstationmonolith.entities.user.User;
 import com.pk.petrolstationmonolith.enums.user.Roles;
 import com.pk.petrolstationmonolith.enums.user.UserType;
-import com.pk.petrolstationmonolith.repositories.*;
+import com.pk.petrolstationmonolith.repositories.user.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.controllers;
+package com.pk.petrolstationmonolith.controllers.user;
 
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.password.RequestNewPassword;
@@ -7,7 +7,6 @@ import com.pk.petrolstationmonolith.models.password.RequestUpdatePassword;
 import com.pk.petrolstationmonolith.models.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.registration.IndividualRegistrationCredentials;
-import com.pk.petrolstationmonolith.models.user.RequestUpdateEmail;
 import com.pk.petrolstationmonolith.models.user.UserCredentials;
 import com.pk.petrolstationmonolith.services.user.PasswordService;
 import com.pk.petrolstationmonolith.services.user.RegistrationService;

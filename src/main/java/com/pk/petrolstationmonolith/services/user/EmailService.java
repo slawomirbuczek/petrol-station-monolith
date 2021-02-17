@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.services;
+package com.pk.petrolstationmonolith.services.user;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
