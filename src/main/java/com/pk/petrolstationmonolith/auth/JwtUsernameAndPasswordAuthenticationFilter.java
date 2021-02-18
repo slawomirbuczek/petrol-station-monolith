@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
-import com.pk.petrolstationmonolith.properties.JwtProperties;
+import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -64,7 +64,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim("authorities", auth.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .setIssuedAt(new Date(now))
-                .setExpiration(new Date(now + (jwtProperties.getExpirationTime() * 60 * 1000)))
+                .setExpiration(new Date(now + (jwtProperties.getExpirationTime())))
                 .signWith(jwtSecret)
                 .compact();
 

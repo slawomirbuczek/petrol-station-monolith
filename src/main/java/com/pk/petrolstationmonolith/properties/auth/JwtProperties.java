@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.properties;
+package com.pk.petrolstationmonolith.properties.auth;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,12 +12,12 @@ import java.util.UUID;
 public class JwtProperties {
 
     /**
-     * JWT expiration time in milliseconds.
+     * JWT expiration time in minutes.
      */
     private long expirationTime;
 
     public long getExpirationTime() {
-        return expirationTime;
+        return expirationTime * 60 * 1000;
     }
 
     public void setExpirationTime(long expirationTime) {

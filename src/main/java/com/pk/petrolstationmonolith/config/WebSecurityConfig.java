@@ -5,7 +5,7 @@ import com.pk.petrolstationmonolith.auth.JwtTokenAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.JwtUsernameAndPasswordAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
 import com.pk.petrolstationmonolith.enums.account.Roles;
-import com.pk.petrolstationmonolith.properties.JwtProperties;
+import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -59,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
 
+                .antMatchers("/actuator/**").hasRole(Roles.ADMIN.name())
+
                 .antMatchers(HttpMethod.POST, "/account/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/account/password").permitAll()
                 .antMatchers(HttpMethod.POST, "/account/companies").permitAll()
@@ -70,6 +72,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.ADMIN.name())
 
                 .antMatchers(HttpMethod.POST, "/carwash/reservations").permitAll()
+
+                .antMatchers("/monitoring/parameters").hasRole(Roles.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/monitoring").hasRole(Roles.ADMIN.name())
 
                 .anyRequest().authenticated()
 
