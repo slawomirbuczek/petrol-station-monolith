@@ -1,5 +1,12 @@
 package com.pk.petrolstationmonolith.exceptions;
 
+import com.pk.petrolstationmonolith.exceptions.account.EmailNotFoundException;
+import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
+import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
+import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
+import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
+import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
+import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.validation.ValidationExceptionMessages;
 import org.springframework.http.HttpStatus;
@@ -45,5 +52,28 @@ public class GlobalExceptionHandler {
         return new ResponseMessage(ex.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ReservationAlreadyTakenException.class)
+    public ResponseMessage handleReservationAlreadyTakenException(ReservationAlreadyTakenException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseMessage handleReservationNotFoundException(ReservationNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ReservationNotReservedByUserException.class)
+    public ResponseMessage handleReservationNotReservedByUserException(ReservationNotReservedByUserException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongReservationDateException.class)
+    public ResponseMessage handleWrongReservationDateException(WrongReservationDateException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
 
 }

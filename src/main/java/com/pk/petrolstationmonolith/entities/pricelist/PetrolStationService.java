@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 
 @Entity
-@Table(name = "/price_list")
+@Table(name = "price_list")
 public class PetrolStationService {
 
     @Id
