@@ -10,7 +10,7 @@ import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateExcep
 import com.pk.petrolstationmonolith.models.carwash.RequestCancelReservation;
 import com.pk.petrolstationmonolith.models.carwash.RequestReservationDate;
 import com.pk.petrolstationmonolith.models.carwash.RequestReserve;
-import com.pk.petrolstationmonolith.models.carwash.ReservationsList;
+import com.pk.petrolstationmonolith.models.carwash.ResponseReservationsList;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
 import com.pk.petrolstationmonolith.repositories.carwash.ReservationRepository;
 import org.modelmapper.ModelMapper;
@@ -37,7 +37,7 @@ public class ReservationService {
         this.userRepository = userRepository;
     }
 
-    public ReservationsList getReservations(RequestReservationDate request) {
+    public ResponseReservationsList getReservations(RequestReservationDate request) {
         if (request.getDate().toLocalDate().isBefore(new Date(System.currentTimeMillis()).toLocalDate())
                 || request.getDate().toLocalDate().isAfter(LocalDate.now().plusDays(14))) {
             throw new WrongReservationDateException();
@@ -49,12 +49,12 @@ public class ReservationService {
             return createEmptyReservationsForDate(request.getDate());
         }
 
-        return new ReservationsList(
+        return new ResponseReservationsList(
                 reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
         );
     }
 
-    private ReservationsList createEmptyReservationsForDate(Date date) {
+    private ResponseReservationsList createEmptyReservationsForDate(Date date) {
         List<Reservation> reservations = new ArrayList<>();
 
         long interval = 30 * 60 * 1000L;
@@ -67,7 +67,7 @@ public class ReservationService {
             )));
 
         }
-        return new ReservationsList(
+        return new ResponseReservationsList(
                 reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
         );
     }

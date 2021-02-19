@@ -1,10 +1,10 @@
 package com.pk.petrolstationmonolith.models.monitoring;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 public class RequestChangeInterval {
 
-    @Min(0)
+    @Positive
     private int interval;
 
     public RequestChangeInterval() {

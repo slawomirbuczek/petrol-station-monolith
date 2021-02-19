@@ -3,8 +3,8 @@ package com.pk.petrolstationmonolith.services.monitoring;
 import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 import com.pk.petrolstationmonolith.entities.monitoring.*;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
-import com.pk.petrolstationmonolith.models.monitoring.CurrentParameters;
-import com.pk.petrolstationmonolith.models.monitoring.Parameters;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseCurrentParameters;
+import com.pk.petrolstationmonolith.models.monitoring.ResonseParameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
@@ -40,12 +40,12 @@ public class MonitoringService {
         this.modelMapper = new ModelMapper();
     }
 
-    public CurrentParameters getCurrentParameters() {
+    public ResponseCurrentParameters getCurrentParameters() {
         E95 e95 = e95Repository.findTopByOrderByIdDesc();
         E98 e98 = e98Repository.findTopByOrderByIdDesc();
         On on = onRepository.findTopByOrderByIdDesc();
         Lpg lpg = lpgRepository.findTopByOrderByIdDesc();
-        return new CurrentParameters(
+        return new ResponseCurrentParameters(
                 mapParameterToDto(e95),
                 mapParameterToDto(e98),
                 mapParameterToDto(on),
@@ -53,13 +53,13 @@ public class MonitoringService {
         );
     }
 
-    public Parameters getParametersBetweenDates(RequestParametersBetweenDates request) {
+    public ResonseParameters getParametersBetweenDates(RequestParametersBetweenDates request) {
         List<E95> e95List = e95Repository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<E98> e98List = e98Repository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<On> onList = onRepository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<Lpg> lpgList = lpgRepository.findAllByDateBetween(request.getFrom(), request.getTo());
 
-        return new Parameters(
+        return new ResonseParameters(
                 e95List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
                 e98List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
                 onList.stream().map(this::mapParameterToDto).collect(Collectors.toList()),

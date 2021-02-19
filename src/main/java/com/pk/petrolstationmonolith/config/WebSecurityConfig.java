@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
 
-                .antMatchers("/actuator/**").hasRole(Roles.ADMIN.name())
+                .antMatchers("/actuator/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
 
                 .antMatchers(HttpMethod.POST, "/account/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/account/password").permitAll()
@@ -69,12 +69,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/account/password").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/pricelist").permitAll()
-                .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.ADMIN.name())
+                .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.OWNER.name())
 
-                .antMatchers(HttpMethod.POST, "/carwash/reservations").permitAll()
+                .antMatchers("/monitoring/parameters").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
+                .antMatchers(HttpMethod.POST, "/monitoring").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
 
-                .antMatchers("/monitoring/parameters").hasRole(Roles.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/monitoring").hasRole(Roles.ADMIN.name())
+                .antMatchers(HttpMethod.PUT, "/loayltyprogram/services/**").hasRole(Roles.OWNER.name())
+                .antMatchers(HttpMethod.GET, "/loayltyprogram/services").permitAll()
+                .antMatchers("/loayltyprogram/points/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
+                .antMatchers("/loayltyprogram/points").authenticated()
+                .antMatchers(HttpMethod.PUT, "/loayltyprogram/users/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
 
                 .anyRequest().authenticated()
 

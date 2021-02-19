@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.controllers.pricelist;
 
 import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
-import com.pk.petrolstationmonolith.models.pricelist.PriceList;
+import com.pk.petrolstationmonolith.models.pricelist.ResponsePriceList;
 import com.pk.petrolstationmonolith.services.pricelist.PriceListService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class PriceListController {
     }
 
     @GetMapping
-    public ResponseEntity<PriceList> getPriceList() {
+    public ResponseEntity<ResponsePriceList> getPriceList() {
         return ResponseEntity.ok(priceListService.getPriceList());
     }
 

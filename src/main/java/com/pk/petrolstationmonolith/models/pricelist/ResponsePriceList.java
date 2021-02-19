@@ -4,15 +4,15 @@ import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
 
 import java.util.List;
 
-public class PriceList {
+public class ResponsePriceList {
 
     private List<PetrolStationService> priceList;
 
 
-    public PriceList() {
+    public ResponsePriceList() {
     }
 
-    public PriceList(List<PetrolStationService> priceList) {
+    public ResponsePriceList(List<PetrolStationService> priceList) {
         this.priceList = priceList;
     }
 

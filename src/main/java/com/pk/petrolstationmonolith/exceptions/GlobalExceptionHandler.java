@@ -7,6 +7,9 @@ import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenEx
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
 import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateException;
+import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.NotEnoughLoyaltyProgramPointsException;
+import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasAlreadyJoinedTheLoyaltyProgramException;
+import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasNotJoinedTheLoyaltyProgramException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.validation.ValidationExceptionMessages;
 import org.springframework.http.HttpStatus;
@@ -73,6 +76,24 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongReservationDateException.class)
     public ResponseMessage handleWrongReservationDateException(WrongReservationDateException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserHasNotJoinedTheLoyaltyProgramException.class)
+    public ResponseMessage handleUserDoesNotParticipateInTheLoyaltyProgramException(UserHasNotJoinedTheLoyaltyProgramException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserHasAlreadyJoinedTheLoyaltyProgramException.class)
+    public ResponseMessage handleUserHasAlreadyJoinedTheLoyaltyProgramException(UserHasAlreadyJoinedTheLoyaltyProgramException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotEnoughLoyaltyProgramPointsException.class)
+    public ResponseMessage handleNotEnoughLoyaltyProgramPointsException(NotEnoughLoyaltyProgramPointsException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 

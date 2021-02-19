@@ -4,7 +4,7 @@ import com.pk.petrolstationmonolith.dtos.carwash.ReservationDto;
 import com.pk.petrolstationmonolith.models.carwash.RequestCancelReservation;
 import com.pk.petrolstationmonolith.models.carwash.RequestReservationDate;
 import com.pk.petrolstationmonolith.models.carwash.RequestReserve;
-import com.pk.petrolstationmonolith.models.carwash.ReservationsList;
+import com.pk.petrolstationmonolith.models.carwash.ResponseReservationsList;
 import com.pk.petrolstationmonolith.services.carwash.ReservationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<ReservationsList> getReservation(@Valid @RequestBody RequestReservationDate request) {
+    public ResponseEntity<ResponseReservationsList> getReservation(@Valid @RequestBody RequestReservationDate request) {
         return ResponseEntity.ok(reservationService.getReservations(request));
     }
 

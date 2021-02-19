@@ -37,7 +37,7 @@ public class DefaultUsers {
     private void addDefaultUsers() {
         User janKowalski = new User(passwordEncoder.encode("kowalski"),
                 "jankowalski@gmail.com", UserType.EMPLOYEE);
-        janKowalski.setRole(Roles.ADMIN);
+        janKowalski.setRole(Roles.OWNER);
         janKowalski = userRepository.save(janKowalski);
 
         Address addressJanKowalski = addressRepository.save(new Address("Poland", "Kraków",
@@ -46,6 +46,22 @@ public class DefaultUsers {
         employeeRepository.save(new Employee("Jan", "Kowalski", "15301224419", "7629382099", "123456789",
                 Date.valueOf("1990-01-01"), 15000, "PL73109014768083997739562290", "2000-01-01",
                 janKowalski, addressJanKowalski));
+
+
+
+        User zbigniewZero = new User(passwordEncoder.encode("zero"),
+                "zbigniewZero@gmail.com", UserType.EMPLOYEE);
+        zbigniewZero.setRole(Roles.ADMIN);
+        zbigniewZero = userRepository.save(zbigniewZero);
+
+        Address addressZbigniewZero = addressRepository.save(new Address("Poland", "Warszawa",
+                "30-063", "Warszawska", "12", "14"));
+
+        employeeRepository.save(new Employee("Zbigniew", "Zero", "36080477898", "9719662751", "123765789",
+                Date.valueOf("1990-01-01"), 9000, "PL73935410202944519044050628", "2000-01-01",
+                zbigniewZero, addressZbigniewZero));
+
+
 
         User tomaszNowak = new User(passwordEncoder.encode("nowak"),
                 "ngo54373@zwoho.com", UserType.EMPLOYEE);
@@ -59,6 +75,8 @@ public class DefaultUsers {
                 Date.valueOf("1996-01-26"), 4000, "PL41876210190000761639083626", "2010-03-01",
                 tomaszNowak, addressTomaszNowak));
 
+
+
         User karolKowalczyk = new User(passwordEncoder.encode("kowalczyk"),
                 "karolKowalczyk@gmail.com", UserType.EMPLOYEE);
         karolKowalczyk.setRole(Roles.CASHIER);
@@ -70,6 +88,8 @@ public class DefaultUsers {
         employeeRepository.save(new Employee("Karol", "Kowalczyk", "07100305954", "1163426157", "321123459",
                 Date.valueOf("1993-12-21"), 5000, "PL75815100014087171075178326", "2006-02-01",
                 karolKowalczyk, addressKarolKowalczyk));
+
+
 
 
         /*userRepository.save(new User("wincenty", passwordEncoder.encode("raczek"), Roles.MONITORING, UserType.EMPLOYEE));

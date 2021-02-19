@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.pricelist;
 
 
 import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
-import com.pk.petrolstationmonolith.models.pricelist.PriceList;
+import com.pk.petrolstationmonolith.models.pricelist.ResponsePriceList;
 import com.pk.petrolstationmonolith.repositories.pricelist.ServiceRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,8 @@ public class PriceListService {
         this.serviceRepository = serviceRepository;
     }
 
-    public PriceList getPriceList() {
-        return new PriceList(serviceRepository.findAll());
+    public ResponsePriceList getPriceList() {
+        return new ResponsePriceList(serviceRepository.findAll());
     }
 
     public PetrolStationService updateService(PetrolStationService service) {

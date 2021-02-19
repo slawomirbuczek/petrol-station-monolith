@@ -2,17 +2,17 @@ package com.pk.petrolstationmonolith.models.monitoring;
 
 import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 
-public class CurrentParameters {
+public class ResponseCurrentParameters {
 
     private ParameterDto e95;
     private ParameterDto e98;
     private ParameterDto on;
     private ParameterDto lpg;
 
-    public CurrentParameters() {
+    public ResponseCurrentParameters() {
     }
 
-    public CurrentParameters(ParameterDto e95, ParameterDto e98, ParameterDto on, ParameterDto lpg) {
+    public ResponseCurrentParameters(ParameterDto e95, ParameterDto e98, ParameterDto on, ParameterDto lpg) {
         this.e95 = e95;
         this.e98 = e98;
         this.on = on;

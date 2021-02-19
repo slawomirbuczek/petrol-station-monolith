@@ -1,10 +1,14 @@
 package com.pk.petrolstationmonolith.models.monitoring;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 public class RequestParametersBetweenDates {
 
+    @NotNull
     private Date from;
+
+    @NotNull
     private Date to;
 
     public RequestParametersBetweenDates() {

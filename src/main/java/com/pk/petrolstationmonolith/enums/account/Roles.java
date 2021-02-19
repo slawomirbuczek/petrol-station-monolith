@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.enums.account;
 
 public enum Roles {
 
+    OWNER,
     ADMIN,
     CASHIER,
     MONITORING,
