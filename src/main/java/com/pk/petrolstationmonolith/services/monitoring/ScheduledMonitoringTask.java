@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.sheduleds.monitoring;
+package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.*;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
@@ -21,7 +21,7 @@ import java.util.Random;
 
 @Configuration
 @EnableScheduling
-public class MonitoringTask implements SchedulingConfigurer {
+public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
     private final E95Repository e95Repository;
     private final E98Repository e98Repository;
@@ -29,9 +29,9 @@ public class MonitoringTask implements SchedulingConfigurer {
     private final LpgRepository lpgRepository;
     private final MonitoringProperties properties;
 
-    public MonitoringTask(E95Repository e95Repository, E98Repository e98Repository,
-                          OnRepository onRepository, LpgRepository lpgRepository,
-                          MonitoringProperties properties) {
+    public ScheduledMonitoringTask(E95Repository e95Repository, E98Repository e98Repository,
+                                   OnRepository onRepository, LpgRepository lpgRepository,
+                                   MonitoringProperties properties) {
         this.e95Repository = e95Repository;
         this.e98Repository = e98Repository;
         this.onRepository = onRepository;

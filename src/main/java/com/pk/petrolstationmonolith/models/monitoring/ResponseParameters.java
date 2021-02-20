@@ -4,17 +4,17 @@ import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 
 import java.util.List;
 
-public class ResonseParameters {
+public class ResponseParameters {
 
     List<ParameterDto> e95s;
     List<ParameterDto> e98s;
     List<ParameterDto> ons;
     List<ParameterDto> lpgs;
 
-    public ResonseParameters() {
+    public ResponseParameters() {
     }
 
-    public ResonseParameters(List<ParameterDto> e95s, List<ParameterDto> e98s, List<ParameterDto> ons, List<ParameterDto> lpgs) {
+    public ResponseParameters(List<ParameterDto> e95s, List<ParameterDto> e98s, List<ParameterDto> ons, List<ParameterDto> lpgs) {
         this.e95s = e95s;
         this.e98s = e98s;
         this.ons = ons;

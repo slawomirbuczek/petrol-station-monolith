@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,19 @@ public class GlobalExceptionHandler {
 
         ex.getBindingResult().getAllErrors().forEach((error) -> errorMessages.add(
                 new ResponseMessage(error.getDefaultMessage()
+                )));
+
+        return new ValidationExceptionMessages(errorMessages);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ValidationExceptionMessages handleConstraintViolationException(ConstraintViolationException ex) {
+
+        List<ResponseMessage> errorMessages = new ArrayList<>();
+
+        ex.getConstraintViolations().forEach(violation -> errorMessages.add(
+                new ResponseMessage(violation.getMessage()
                 )));
 
         return new ValidationExceptionMessages(errorMessages);

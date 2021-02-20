@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.controllers.monitoring;
 
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.monitoring.ResponseCurrentParameters;
-import com.pk.petrolstationmonolith.models.monitoring.ResonseParameters;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
 import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
@@ -27,7 +27,7 @@ public class MonitoringController {
     }
 
     @PostMapping("/parameters")
-    public ResponseEntity<ResonseParameters> getParametersBetweenDates(@Valid @RequestBody RequestParametersBetweenDates request) {
+    public ResponseEntity<ResponseParameters> getParametersBetweenDates(@Valid @RequestBody RequestParametersBetweenDates request) {
         return ResponseEntity.ok(monitoringService.getParametersBetweenDates(request));
     }
 

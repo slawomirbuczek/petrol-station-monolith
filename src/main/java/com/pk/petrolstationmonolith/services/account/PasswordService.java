@@ -11,6 +11,7 @@ import com.pk.petrolstationmonolith.models.account.password.RequestResetPassword
 import com.pk.petrolstationmonolith.models.account.password.RequestUpdatePassword;
 import com.pk.petrolstationmonolith.repositories.account.EmailTokenRepository;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
+import com.pk.petrolstationmonolith.services.mail.MailService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,14 +24,14 @@ public class PasswordService {
 
     private final UserRepository userRepository;
     private final EmailTokenRepository emailTokenRepository;
-    private final EmailService emailService;
+    private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
 
     public PasswordService(UserRepository userRepository, EmailTokenRepository emailTokenRepository,
-                           EmailService emailService, PasswordEncoder passwordEncoder) {
+                           MailService mailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailTokenRepository = emailTokenRepository;
-        this.emailService = emailService;
+        this.mailService = mailService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -66,7 +67,7 @@ public class PasswordService {
 
         emailTokenRepository.save(emailToken);
 
-        emailService.sendResetPasswordEmail(user.getEmail(), token);
+        mailService.sendPasswordResetEmail(user.getEmail(), token);
 
         return new ResponseMessage("Reset password email has been sent.");
     }

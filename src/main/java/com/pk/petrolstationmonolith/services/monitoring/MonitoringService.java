@@ -4,7 +4,7 @@ import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 import com.pk.petrolstationmonolith.entities.monitoring.*;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.monitoring.ResponseCurrentParameters;
-import com.pk.petrolstationmonolith.models.monitoring.ResonseParameters;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
@@ -53,13 +53,13 @@ public class MonitoringService {
         );
     }
 
-    public ResonseParameters getParametersBetweenDates(RequestParametersBetweenDates request) {
+    public ResponseParameters getParametersBetweenDates(RequestParametersBetweenDates request) {
         List<E95> e95List = e95Repository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<E98> e98List = e98Repository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<On> onList = onRepository.findAllByDateBetween(request.getFrom(), request.getTo());
         List<Lpg> lpgList = lpgRepository.findAllByDateBetween(request.getFrom(), request.getTo());
 
-        return new ResonseParameters(
+        return new ResponseParameters(
                 e95List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
                 e98List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
                 onList.stream().map(this::mapParameterToDto).collect(Collectors.toList()),

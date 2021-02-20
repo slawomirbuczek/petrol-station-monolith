@@ -80,6 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loayltyprogram/points").authenticated()
                 .antMatchers(HttpMethod.PUT, "/loayltyprogram/users/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
 
+                .antMatchers("/reports/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
+
                 .anyRequest().authenticated()
 
                 .and()

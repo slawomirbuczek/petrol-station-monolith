@@ -64,7 +64,7 @@ public class DefaultUsers {
 
 
         User tomaszNowak = new User(passwordEncoder.encode("nowak"),
-                "ngo54373@zwoho.com", UserType.EMPLOYEE);
+                "aix24557@cuoly.com", UserType.EMPLOYEE);
         tomaszNowak.setRole(Roles.CASHIER);
         tomaszNowak = userRepository.save(tomaszNowak);
 
