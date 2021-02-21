@@ -24,7 +24,7 @@ public class DefaultServices {
         serviceRepository.save(new PetrolStationService(ServiceType.ON, 5.59f));
         serviceRepository.save(new PetrolStationService(ServiceType.LPG, 2.89f));
         serviceRepository.save(new PetrolStationService(ServiceType.WASHING_STANDARD, 19.99f));
-        serviceRepository.save(new PetrolStationService(ServiceType.WASHING_WITH_WAXING, 34.99f));
+        serviceRepository.save(new PetrolStationService(ServiceType.WASHING_WAXING, 34.99f));
     }
 
 }

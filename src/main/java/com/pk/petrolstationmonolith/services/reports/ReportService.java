@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.services.raports;
+package com.pk.petrolstationmonolith.services.reports;
 
 import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 import com.pk.petrolstationmonolith.entities.monitoring.*;

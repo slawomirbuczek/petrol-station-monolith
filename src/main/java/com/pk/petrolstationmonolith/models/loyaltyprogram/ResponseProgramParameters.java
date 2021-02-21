@@ -16,7 +16,7 @@ public class ResponseProgramParameters {
         serviceParameters.add(ServiceType.ON.getServiceParameters());
         serviceParameters.add(ServiceType.LPG.getServiceParameters());
         serviceParameters.add(ServiceType.WASHING_STANDARD.getServiceParameters());
-        serviceParameters.add(ServiceType.WASHING_WITH_WAXING.getServiceParameters());
+        serviceParameters.add(ServiceType.WASHING_WAXING.getServiceParameters());
     }
 
     public List<ServiceParameters> getServiceParameters() {

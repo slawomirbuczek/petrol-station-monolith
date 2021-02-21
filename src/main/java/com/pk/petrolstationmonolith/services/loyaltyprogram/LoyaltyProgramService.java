@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class LoyaltyProgramService {
 
@@ -45,7 +47,7 @@ public class LoyaltyProgramService {
         return new Points(getLoyaltyProgram(userId).getPoints());
     }
 
-    public Points addProgramPoints(Long userId, ServiceType serviceType, RequestPointsChange request) {
+    public Points addProgramPoints(long userId, ServiceType serviceType, RequestPointsChange request) {
         LoyaltyProgram loyaltyProgram = getLoyaltyProgram(userId);
 
         long points = serviceType.getPoints() * request.getNumber();
@@ -53,6 +55,19 @@ public class LoyaltyProgramService {
         loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
 
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
+    }
+
+    public void addProgramPointsAfterTransaction(long userId, ServiceType serviceType, int number) {
+        Optional<LoyaltyProgram> optionalLoyaltyProgram = loyaltyProgramRepository.findByUserId(userId);
+        if (optionalLoyaltyProgram.isPresent()) {
+            LoyaltyProgram loyaltyProgram = optionalLoyaltyProgram.get();
+
+            long points = serviceType.getPoints() * number;
+
+            loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
+
+            loyaltyProgramRepository.save(loyaltyProgram);
+        }
     }
 
     public Points exchangePoints(ServiceType serviceType, RequestPointsChange request) {

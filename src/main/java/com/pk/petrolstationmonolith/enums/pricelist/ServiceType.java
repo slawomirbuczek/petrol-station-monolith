@@ -9,7 +9,7 @@ public enum ServiceType {
     ON(2, 100),
     LPG(1, 50),
     WASHING_STANDARD(5, 300),
-    WASHING_WITH_WAXING(10, 400);
+    WASHING_WAXING(10, 400);
 
     private long points;
     private long cost;

@@ -3,6 +3,7 @@ package com.pk.petrolstationmonolith.exceptions;
 import com.pk.petrolstationmonolith.exceptions.account.EmailNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
+import com.pk.petrolstationmonolith.exceptions.account.UserNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
@@ -49,6 +50,12 @@ public class GlobalExceptionHandler {
                 )));
 
         return new ValidationExceptionMessages(errorMessages);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseMessage handleUserNotFoundException(UserNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
