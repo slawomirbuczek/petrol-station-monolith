@@ -59,15 +59,15 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
     }
 
     private int getRandomTemperature() {
-        return new Random().nextInt(20) + 10;
+        return new Random().nextInt(19) + 10;
     }
 
     private int getRandomPressure() {
-        return new Random().nextInt(100) + 100;
+        return new Random().nextInt(99) + 200;
     }
 
     private int getRandomLevel() {
-        return new Random().nextInt(100);
+        return new Random().nextInt(69) + 31;
     }
 
 

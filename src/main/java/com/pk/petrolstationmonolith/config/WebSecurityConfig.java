@@ -85,6 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/transactions/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
                 .antMatchers(HttpMethod.GET, "/transactions").authenticated()
 
+                .antMatchers("/simulations/**").permitAll()
+
                 .anyRequest().authenticated()
 
                 .and()
