@@ -35,57 +35,50 @@ public class DefaultUsers {
 
     @PostConstruct
     private void addDefaultUsers() {
-        User janKowalski = new User(passwordEncoder.encode("kowalski"),
-                "jankowalski@gmail.com", UserType.EMPLOYEE);
-        janKowalski.setRole(Roles.OWNER);
+        User janKowalski = new User(1L, passwordEncoder.encode("kowalski"),
+                "jankowalski@gmail.com", Roles.OWNER, UserType.EMPLOYEE);
         janKowalski = userRepository.save(janKowalski);
 
-        Address addressJanKowalski = addressRepository.save(new Address("Poland", "Kraków",
+        Address addressJanKowalski = addressRepository.save(new Address(1L, "Poland", "Kraków",
                 "30-063", "3 Maja Al.", "15", "207A"));
 
-        employeeRepository.save(new Employee("Jan", "Kowalski", "15301224419", "7629382099", "123456789",
+        employeeRepository.save(new Employee(1L, "Jan", "Kowalski", "15301224419", "7629382099", "123456789",
                 Date.valueOf("1990-01-01"), 15000, "PL73109014768083997739562290", "2000-01-01",
                 janKowalski, addressJanKowalski));
 
 
-
-        User zbigniewZero = new User(passwordEncoder.encode("zero"),
-                "zbigniewZero@gmail.com", UserType.EMPLOYEE);
-        zbigniewZero.setRole(Roles.ADMIN);
+        User zbigniewZero = new User(2L, passwordEncoder.encode("zero"),
+                "zbigniewZero@gmail.com", Roles.ADMIN, UserType.EMPLOYEE);
         zbigniewZero = userRepository.save(zbigniewZero);
 
-        Address addressZbigniewZero = addressRepository.save(new Address("Poland", "Warszawa",
+        Address addressZbigniewZero = addressRepository.save(new Address(2L, "Poland", "Warszawa",
                 "30-063", "Warszawska", "12", "14"));
 
-        employeeRepository.save(new Employee("Zbigniew", "Zero", "36080477898", "9719662751", "123765789",
+        employeeRepository.save(new Employee(2L, "Zbigniew", "Zero", "36080477898", "9719662751", "123765789",
                 Date.valueOf("1990-01-01"), 9000, "PL73935410202944519044050628", "2000-01-01",
                 zbigniewZero, addressZbigniewZero));
 
 
-
-        User tomaszNowak = new User(passwordEncoder.encode("nowak"),
-                "aix24557@cuoly.com", UserType.EMPLOYEE);
-        tomaszNowak.setRole(Roles.CASHIER);
+        User tomaszNowak = new User(3L, passwordEncoder.encode("nowak"),
+                "aix24557@cuoly.com", Roles.CASHIER, UserType.EMPLOYEE);
         tomaszNowak = userRepository.save(tomaszNowak);
 
-        Address addressTomaszNowak = addressRepository.save(new Address("Poland", "Kraków",
+        Address addressTomaszNowak = addressRepository.save(new Address(3L, "Poland", "Kraków",
                 "30-063", "Warszawska", "23", "2207C"));
 
-        employeeRepository.save(new Employee("Tomasz", "Nowak", "17252723968", "1081306978", "321123789",
+        employeeRepository.save(new Employee(3L, "Tomasz", "Nowak", "17252723968", "1081306978", "321123789",
                 Date.valueOf("1996-01-26"), 4000, "PL41876210190000761639083626", "2010-03-01",
                 tomaszNowak, addressTomaszNowak));
 
 
-
-        User karolKowalczyk = new User(passwordEncoder.encode("kowalczyk"),
-                "karolKowalczyk@gmail.com", UserType.EMPLOYEE);
-        karolKowalczyk.setRole(Roles.CASHIER);
+        User karolKowalczyk = new User(4L, passwordEncoder.encode("kowalczyk"),
+                "karolKowalczyk@gmail.com", Roles.CASHIER, UserType.EMPLOYEE);
         karolKowalczyk = userRepository.save(karolKowalczyk);
 
-        Address addressKarolKowalczyk = addressRepository.save(new Address("Poland", "Kraków",
+        Address addressKarolKowalczyk = addressRepository.save(new Address(4L, "Poland", "Kraków",
                 "30-063", "Warszawska", "124", "3107C"));
 
-        employeeRepository.save(new Employee("Karol", "Kowalczyk", "07100305954", "1163426157", "321123459",
+        employeeRepository.save(new Employee(4L, "Karol", "Kowalczyk", "07100305954", "1163426157", "321123459",
                 Date.valueOf("1993-12-21"), 5000, "PL75815100014087171075178326", "2006-02-01",
                 karolKowalczyk, addressKarolKowalczyk));
 

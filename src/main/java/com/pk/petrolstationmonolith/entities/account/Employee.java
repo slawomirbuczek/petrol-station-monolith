@@ -40,8 +40,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String pesel, String nip, String phoneNumber, Date dateOfBirth,
-                    int salary, String accountNumber, String startDateOfWork, User user, Address address) {
+    public Employee(Long id, String firstName, String lastName, String pesel, String nip, String phoneNumber,
+                    Date dateOfBirth, int salary, String accountNumber, String startDateOfWork, User user, Address address) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;

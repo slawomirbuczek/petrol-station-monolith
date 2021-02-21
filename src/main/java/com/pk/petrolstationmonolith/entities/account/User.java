@@ -40,6 +40,14 @@ public class User implements UserDetails {
         this.userType = userType;
     }
 
+    public User(Long id, String password, String email, Roles role, UserType userType) {
+        this.id = id;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.userType = userType;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
