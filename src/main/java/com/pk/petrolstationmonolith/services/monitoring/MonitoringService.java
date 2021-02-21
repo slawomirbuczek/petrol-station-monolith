@@ -1,20 +1,18 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
-import com.pk.petrolstationmonolith.entities.monitoring.*;
+import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
-import com.pk.petrolstationmonolith.models.monitoring.ResponseCurrentParameters;
-import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
-import com.pk.petrolstationmonolith.repositories.monitoring.E95Repository;
-import com.pk.petrolstationmonolith.repositories.monitoring.E98Repository;
-import com.pk.petrolstationmonolith.repositories.monitoring.LpgRepository;
-import com.pk.petrolstationmonolith.repositories.monitoring.OnRepository;
+import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,49 +20,34 @@ import java.util.stream.Collectors;
 @Service
 public class MonitoringService {
 
-    private final E95Repository e95Repository;
-    private final E98Repository e98Repository;
-    private final OnRepository onRepository;
-    private final LpgRepository lpgRepository;
+    private final ParameterRepository parameterRepository;
     private final MonitoringProperties monitoringProperties;
     private final ModelMapper modelMapper;
 
-    public MonitoringService(E95Repository e95Repository, E98Repository e98Repository,
-                             OnRepository onRepository, LpgRepository lpgRepository,
-                             MonitoringProperties monitoringProperties) {
-        this.e95Repository = e95Repository;
-        this.e98Repository = e98Repository;
-        this.onRepository = onRepository;
-        this.lpgRepository = lpgRepository;
+    public MonitoringService(ParameterRepository parameterRepository, MonitoringProperties monitoringProperties) {
+        this.parameterRepository = parameterRepository;
         this.monitoringProperties = monitoringProperties;
         this.modelMapper = new ModelMapper();
     }
 
-    public ResponseCurrentParameters getCurrentParameters() {
-        E95 e95 = e95Repository.findTopByOrderByIdDesc();
-        E98 e98 = e98Repository.findTopByOrderByIdDesc();
-        On on = onRepository.findTopByOrderByIdDesc();
-        Lpg lpg = lpgRepository.findTopByOrderByIdDesc();
-        return new ResponseCurrentParameters(
-                mapParameterToDto(e95),
-                mapParameterToDto(e98),
-                mapParameterToDto(on),
-                mapParameterToDto(lpg)
-        );
+    public ParameterDto getCurrentParameters() {
+        return modelMapper.map(parameterRepository.findTopByOrderByIdDesc(), ParameterDto.class);
     }
 
     public ResponseParameters getParametersBetweenDates(RequestParametersBetweenDates request) {
-        List<E95> e95List = e95Repository.findAllByDateBetween(request.getFrom(), request.getTo());
-        List<E98> e98List = e98Repository.findAllByDateBetween(request.getFrom(), request.getTo());
-        List<On> onList = onRepository.findAllByDateBetween(request.getFrom(), request.getTo());
-        List<Lpg> lpgList = lpgRepository.findAllByDateBetween(request.getFrom(), request.getTo());
+        List<Parameter> parameters = parameterRepository
+                .findAllByDateTimeBetween(request.getFrom().atStartOfDay(), request.getTo().plusDays(1).atStartOfDay());
+        return new ResponseParameters(mapParameterListToDto(parameters));
+    }
 
-        return new ResponseParameters(
-                e95List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
-                e98List.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
-                onList.stream().map(this::mapParameterToDto).collect(Collectors.toList()),
-                lpgList.stream().map(this::mapParameterToDto).collect(Collectors.toList())
-        );
+    public ResponseParameters getMonitoringMonthlyReport(int year, int month) {
+        LocalDate dateFrom = LocalDate.of(year, month, 1);
+        LocalDate dateTo = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth());
+
+        List<Parameter> parameters = parameterRepository
+                .findAllByDateTimeBetween(dateFrom.atStartOfDay(), dateTo.plusDays(1).atStartOfDay());
+
+        return new ResponseParameters(mapParameterListToDto(parameters));
     }
 
     public ResponseMessage changeMonitoringInterval(RequestChangeInterval request) {
@@ -74,6 +57,10 @@ public class MonitoringService {
 
     private ParameterDto mapParameterToDto(Parameter parameter) {
         return Objects.isNull(parameter) ? null : modelMapper.map(parameter, ParameterDto.class);
+    }
+
+    private List<ParameterDto> mapParameterListToDto(List<? extends Parameter> parameters) {
+        return parameters.stream().map(this::mapParameterToDto).collect(Collectors.toList());
     }
 
 }

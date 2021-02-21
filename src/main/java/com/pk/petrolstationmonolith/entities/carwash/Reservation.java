@@ -4,20 +4,17 @@ import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.carwash.WashingType;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "timetable")
+@Table(name = "reservation")
 public class Reservation {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private Date date;
-
-    private Time time;
+    private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
     private WashingType washingType;
@@ -28,10 +25,8 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(Long id, Date date, Time time, WashingType washingType, User user) {
-        this.id = id;
-        this.date = date;
-        this.time = time;
+    public Reservation(LocalDateTime dateTime, WashingType washingType, User user) {
+        this.dateTime = dateTime;
         this.washingType = washingType;
         this.user = user;
     }
@@ -44,20 +39,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public WashingType getWashingType() {

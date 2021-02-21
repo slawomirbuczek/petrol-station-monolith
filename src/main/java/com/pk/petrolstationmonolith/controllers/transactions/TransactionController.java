@@ -1,6 +1,7 @@
 package com.pk.petrolstationmonolith.controllers.transactions;
 
 import com.pk.petrolstationmonolith.dtos.transactions.TransactionDto;
+import com.pk.petrolstationmonolith.models.transactions.RequestAddTransaction;
 import com.pk.petrolstationmonolith.models.transactions.Transactions;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,14 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDto> addTransaction(@Valid @RequestBody TransactionDto transactionDto) {
-        return ResponseEntity.ok(transactionService.addTransaction(transactionDto, null));
+    public ResponseEntity<TransactionDto> addTransaction(@Valid @RequestBody RequestAddTransaction request) {
+        return ResponseEntity.ok(transactionService.addTransaction(request, null));
     }
 
     @PostMapping("/{userId}")
     public ResponseEntity<TransactionDto> addTransactionWithUser(@PathVariable long userId,
-                                                                 @Valid @RequestBody TransactionDto transactionDto) {
-        return ResponseEntity.ok(transactionService.addTransaction(transactionDto, userId));
+                                                                 @Valid @RequestBody RequestAddTransaction request) {
+        return ResponseEntity.ok(transactionService.addTransaction(request, userId));
     }
 
     @GetMapping("/{userId}")

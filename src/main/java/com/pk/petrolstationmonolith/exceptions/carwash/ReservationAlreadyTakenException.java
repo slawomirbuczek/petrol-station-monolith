@@ -1,12 +1,11 @@
 package com.pk.petrolstationmonolith.exceptions.carwash;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
-public class ReservationAlreadyTakenException extends RuntimeException{
+public class ReservationAlreadyTakenException extends RuntimeException {
 
-    public ReservationAlreadyTakenException(Date date, Time time) {
-        super("Reservation for date: " + date + " " + time + " already taken");
+    public ReservationAlreadyTakenException(LocalDateTime dateTime) {
+        super("Reservation for dateTime: " + dateTime + " already taken");
     }
 
 }

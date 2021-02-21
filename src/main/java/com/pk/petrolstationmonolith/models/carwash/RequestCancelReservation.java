@@ -3,36 +3,27 @@ package com.pk.petrolstationmonolith.models.carwash;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class RequestCancelReservation {
 
     @NotNull
-    private Date date;
-
-    @NotNull
-    private Time time;
+    private LocalDateTime dateTime;
 
     public RequestCancelReservation() {
     }
 
-    public RequestCancelReservation(Date date, Time time) {
-        this.date = date;
-        this.time = time;
+    public RequestCancelReservation(@NotNull LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
 }

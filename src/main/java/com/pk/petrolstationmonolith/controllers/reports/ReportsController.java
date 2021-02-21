@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.controllers.reports;
 
 import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
-import com.pk.petrolstationmonolith.services.reports.ReportService;
+import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,18 +19,18 @@ import javax.validation.constraints.Min;
 @Validated
 public class ReportsController {
 
-    private final ReportService reportService;
+    private final MonitoringService monitoringService;
     private final TransactionService transactionService;
 
-    public ReportsController(ReportService reportService, TransactionService transactionService) {
-        this.reportService = reportService;
+    public ReportsController(MonitoringService monitoringService, TransactionService transactionService) {
+        this.monitoringService = monitoringService;
         this.transactionService = transactionService;
     }
 
     @GetMapping("/monitoring/{year}/{month}")
     public ResponseEntity<ResponseParameters> getMonitoringMonthlyReport(@PathVariable @Min(2000) @Max(2050) int year,
                                                                          @PathVariable @Min(1) @Max(12) int month) {
-        return ResponseEntity.ok(reportService.getMonitoringMonthlyReport(year, month));
+        return ResponseEntity.ok(monitoringService.getMonitoringMonthlyReport(year, month));
     }
 
     @GetMapping("/transactions/{year}/{month}")

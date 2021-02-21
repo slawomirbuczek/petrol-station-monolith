@@ -6,13 +6,17 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    List<Reservation> findAllByDate(Date date);
+    List<Reservation> findAllByDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
-    Optional<Reservation> findByDateAndTime(Date date, Time time);
+    Optional<Reservation> findByDateTime(LocalDateTime dateTime);
+
 }

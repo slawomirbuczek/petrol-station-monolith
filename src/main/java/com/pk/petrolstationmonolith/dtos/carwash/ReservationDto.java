@@ -1,15 +1,17 @@
 package com.pk.petrolstationmonolith.dtos.carwash;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pk.petrolstationmonolith.enums.carwash.WashingType;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ReservationDto {
 
-    private Date date;
-
-    private Time time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dateTime;
 
     private WashingType washingType;
 
@@ -18,39 +20,30 @@ public class ReservationDto {
     public ReservationDto() {
     }
 
-    public ReservationDto(Date date, Time time, WashingType washingType, Long userId) {
-        this.date = date;
-        this.time = time;
+    public ReservationDto(LocalDateTime dateTime, WashingType washingType, Long userId) {
+        this.dateTime = dateTime;
         this.washingType = washingType;
         this.userId = userId;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public Time getTime() {
-        return time;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public WashingType getWashingType() {
         return washingType;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
     public void setWashingType(WashingType washingType) {
         this.washingType = washingType;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public void setUserId(Long userId) {

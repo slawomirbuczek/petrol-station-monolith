@@ -2,16 +2,16 @@ package com.pk.petrolstationmonolith.repositories.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@NoRepositoryBean
-public interface ParameterRepository<T extends Parameter> extends JpaRepository<T, Long> {
+@Repository
+public interface ParameterRepository extends JpaRepository<Parameter, Long> {
 
-    List<T> findAllByDateBetween(Date from, Date to);
+    List<Parameter> findAllByDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
-    T findTopByOrderByIdDesc();
+    Parameter findTopByOrderByIdDesc();
 
 }

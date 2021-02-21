@@ -4,8 +4,7 @@ import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transaction")
@@ -18,9 +17,7 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private ServiceType serviceType;
 
-    private Date date;
-
-    private Time time;
+    private LocalDateTime dateTime;
 
     private int number;
 
@@ -32,11 +29,9 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long id, ServiceType serviceType, Date date, Time time, int number, double cost, User user) {
-        this.id = id;
+    public Transaction(ServiceType serviceType, LocalDateTime dateTime, int number, double cost, User user) {
         this.serviceType = serviceType;
-        this.date = date;
-        this.time = time;
+        this.dateTime = dateTime;
         this.number = number;
         this.cost = cost;
         this.user = user;
@@ -50,28 +45,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
     public ServiceType getServiceType() {
         return serviceType;
     }
 
     public void setServiceType(ServiceType serviceType) {
         this.serviceType = serviceType;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime timestamp) {
+        this.dateTime = timestamp;
     }
 
     public int getNumber() {

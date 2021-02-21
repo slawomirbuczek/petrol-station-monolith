@@ -1,13 +1,12 @@
 package com.pk.petrolstationmonolith.exceptions.carwash;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 
 public class ReservationNotFoundException extends RuntimeException{
 
-    public ReservationNotFoundException(Date date, Time time) {
-        super("Reservation for date: " + date + " " + time + " not found");
+    public ReservationNotFoundException(LocalDateTime dateTime) {
+        super("Reservation for date: " + dateTime + " not found");
     }
 
 }

@@ -1,37 +1,37 @@
 package com.pk.petrolstationmonolith.models.monitoring;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class RequestParametersBetweenDates {
 
     @NotNull
-    private Date from;
+    private LocalDate from;
 
     @NotNull
-    private Date to;
+    private LocalDate to;
 
     public RequestParametersBetweenDates() {
     }
 
-    public RequestParametersBetweenDates(Date from, Date to) {
+    public RequestParametersBetweenDates(LocalDate from, LocalDate to) {
         this.from = from;
         this.to = to;
     }
 
-    public Date getFrom() {
+    public LocalDate getFrom() {
         return from;
     }
 
-    public void setFrom(Date from) {
+    public void setFrom(LocalDate from) {
         this.from = from;
     }
 
-    public Date getTo() {
+    public LocalDate getTo() {
         return to;
     }
 
-    public void setTo(Date to) {
+    public void setTo(LocalDate to) {
         this.to = to;
     }
 

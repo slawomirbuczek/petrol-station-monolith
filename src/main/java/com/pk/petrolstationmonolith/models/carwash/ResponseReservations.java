@@ -4,14 +4,14 @@ import com.pk.petrolstationmonolith.dtos.carwash.ReservationDto;
 
 import java.util.List;
 
-public class ResponseReservationsList {
+public class ResponseReservations {
 
     private List<ReservationDto> reservations;
 
-    public ResponseReservationsList() {
+    public ResponseReservations() {
     }
 
-    public ResponseReservationsList(List<ReservationDto> reservations) {
+    public ResponseReservations(List<ReservationDto> reservations) {
         this.reservations = reservations;
     }
 

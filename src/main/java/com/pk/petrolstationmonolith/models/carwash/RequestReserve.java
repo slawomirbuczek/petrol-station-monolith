@@ -3,16 +3,11 @@ package com.pk.petrolstationmonolith.models.carwash;
 import com.pk.petrolstationmonolith.enums.carwash.WashingType;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 public class RequestReserve {
 
-    @NotNull
-    private Date date;
-
-    @NotNull
-    private Time time;
+    private LocalDateTime dateTime;
 
     @NotNull
     private WashingType washingType;
@@ -20,26 +15,17 @@ public class RequestReserve {
     public RequestReserve() {
     }
 
-    public RequestReserve(Date date, Time time, WashingType washingType) {
-        this.date = date;
-        this.time = time;
+    public RequestReserve(@NotNull LocalDateTime dateTime, @NotNull WashingType washingType) {
+        this.dateTime = dateTime;
         this.washingType = washingType;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public WashingType getWashingType() {

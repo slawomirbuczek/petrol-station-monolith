@@ -1,7 +1,6 @@
 package com.pk.petrolstationmonolith.services.carwash;
 
 import com.pk.petrolstationmonolith.dtos.carwash.ReservationDto;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.entities.carwash.Reservation;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
@@ -10,17 +9,15 @@ import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateExcep
 import com.pk.petrolstationmonolith.models.carwash.RequestCancelReservation;
 import com.pk.petrolstationmonolith.models.carwash.RequestReservationDate;
 import com.pk.petrolstationmonolith.models.carwash.RequestReserve;
-import com.pk.petrolstationmonolith.models.carwash.ResponseReservationsList;
-import com.pk.petrolstationmonolith.repositories.account.UserRepository;
+import com.pk.petrolstationmonolith.models.carwash.ResponseReservations;
 import com.pk.petrolstationmonolith.repositories.carwash.ReservationRepository;
+import com.pk.petrolstationmonolith.services.account.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,74 +27,52 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository) {
+    public ReservationService(ReservationRepository reservationRepository, UserService userService) {
         this.reservationRepository = reservationRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
-    public ResponseReservationsList getReservations(RequestReservationDate request) {
-        if (request.getDate().toLocalDate().isBefore(new Date(System.currentTimeMillis()).toLocalDate())
-                || request.getDate().toLocalDate().isAfter(LocalDate.now().plusDays(14))) {
+    public ResponseReservations getReservations(RequestReservationDate request) {
+
+        if (request.getDate().isBefore(LocalDate.now())
+                || request.getDate().isAfter(LocalDate.now().plusDays(14))) {
             throw new WrongReservationDateException();
         }
 
-        List<Reservation> reservations = reservationRepository.findAllByDate(request.getDate());
+        List<Reservation> reservations = reservationRepository
+                .findAllByDateTimeBetween(request.getDate().atStartOfDay(), request.getDate().plusDays(1).atStartOfDay());
 
         if (reservations.isEmpty()) {
             return createEmptyReservationsForDate(request.getDate());
         }
 
-        return new ResponseReservationsList(
+        return new ResponseReservations(
                 reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
         );
-    }
 
-    private ResponseReservationsList createEmptyReservationsForDate(Date date) {
-        List<Reservation> reservations = new ArrayList<>();
-
-        long interval = 30 * 60 * 1000L;
-
-        Time time = Time.valueOf("06:00:00");
-        for (int i = 0; i < 34; i++) {
-            reservations.add(reservationRepository.save(createNewReservation(
-                    date,
-                    new Time(time.getTime() + i * interval)
-            )));
-
-        }
-        return new ResponseReservationsList(
-                reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
-        );
-    }
-
-    private Reservation createNewReservation(Date date, Time time) {
-        Reservation reservation = new Reservation();
-        reservation.setDate(date);
-        reservation.setTime(time);
-        return reservation;
     }
 
     public ReservationDto reserve(RequestReserve request) {
-        Reservation reservation = reservationRepository.findByDateAndTime(request.getDate(), request.getTime())
-                .orElseThrow(() -> new ReservationNotFoundException(request.getDate(), request.getTime()));
+        Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
+                .orElseThrow(() -> new ReservationNotFoundException((request.getDateTime())));
 
         if (Objects.nonNull(reservation.getUser())) {
-            throw new ReservationAlreadyTakenException(request.getDate(), request.getTime());
+            throw new ReservationAlreadyTakenException(request.getDateTime());
         }
 
-        reservation.setUser(getUserFromAuth());
+        reservation.setUser(userService.getUserFromAuth());
         reservation.setWashingType(request.getWashingType());
 
         return mapReservationtoDTO(reservationRepository.save(reservation));
     }
 
     public ReservationDto cancelReservation(RequestCancelReservation request) {
-        Reservation reservation = reservationRepository.findByDateAndTime(request.getDate(), request.getTime())
-                .orElseThrow(() -> new ReservationNotFoundException(request.getDate(), request.getTime()));
+        Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
+                .orElseThrow(() -> new ReservationNotFoundException(request.getDateTime()));
 
-        Long userId = getUserFromAuth().getId();
+        Long userId = userService.getUserFromAuth().getId();
         if (Objects.isNull(reservation.getUser()) || !Objects.equals(reservation.getUser().getId(), userId)) {
             throw new ReservationNotReservedByUserException(userId);
         }
@@ -107,19 +82,32 @@ public class ReservationService {
         return mapReservationtoDTO(reservationRepository.save(reservation));
     }
 
+    private ResponseReservations createEmptyReservationsForDate(LocalDate date) {
+        List<Reservation> reservations = new ArrayList<>();
+
+        for (int i = 0; i < 34; i++) {
+            reservations.add(reservationRepository.save(createNewReservation(
+                    LocalDateTime.of(date, LocalTime.of(6, 0).plusMinutes(i * 30))
+            )));
+        }
+
+        return new ResponseReservations(
+                reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
+        );
+    }
+
+    private Reservation createNewReservation(LocalDateTime dateTime) {
+        Reservation reservation = new Reservation();
+        reservation.setDateTime(dateTime);
+        return reservation;
+    }
+
     private ReservationDto mapReservationtoDTO(Reservation reservation) {
         ReservationDto reservationDto = new ModelMapper().map(reservation, ReservationDto.class);
         if (Objects.nonNull(reservation.getUser())) {
             reservationDto.setUserId(reservation.getUser().getId());
         }
         return reservationDto;
-    }
-
-    private User getUserFromAuth() {
-        long id = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        return userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("User with id: " + id + " not found.")
-        );
     }
 
 }

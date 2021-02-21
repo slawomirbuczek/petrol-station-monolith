@@ -1,7 +1,5 @@
 package com.pk.petrolstationmonolith.models.transactions;
 
-import java.util.Objects;
-
 public class TransactionsReport {
 
     private long e95Number;

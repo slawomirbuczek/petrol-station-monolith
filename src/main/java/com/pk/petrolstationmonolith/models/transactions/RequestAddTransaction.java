@@ -1,25 +1,23 @@
-package com.pk.petrolstationmonolith.dtos.transactions;
+package com.pk.petrolstationmonolith.models.transactions;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
 
 import java.time.LocalDateTime;
 
-public class TransactionDto {
+public class RequestAddTransaction {
 
     private ServiceType serviceType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateTime;
 
     private int number;
 
     private double cost;
 
-    public TransactionDto() {
+    public RequestAddTransaction() {
     }
 
-    public TransactionDto(ServiceType serviceType, LocalDateTime dateTime, int number, double cost) {
+    public RequestAddTransaction(ServiceType serviceType, LocalDateTime dateTime, int number, double cost) {
         this.serviceType = serviceType;
         this.dateTime = dateTime;
         this.number = number;

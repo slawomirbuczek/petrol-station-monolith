@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.controllers.monitoring;
 
+import com.pk.petrolstationmonolith.dtos.monitoring.ParameterDto;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
-import com.pk.petrolstationmonolith.models.monitoring.ResponseCurrentParameters;
 import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
@@ -22,7 +22,7 @@ public class MonitoringController {
     }
 
     @GetMapping("/parameters")
-    public ResponseEntity<ResponseCurrentParameters> getCurrentParameters() {
+    public ResponseEntity<ParameterDto> getCurrentParameters() {
         return ResponseEntity.ok(monitoringService.getCurrentParameters());
     }
 
