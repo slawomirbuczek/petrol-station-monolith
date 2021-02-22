@@ -1,5 +1,6 @@
 package com.pk.petrolstationmonolith.controllers.account;
 
+import com.pk.petrolstationmonolith.PetrolStationMonolithApplication;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.account.password.RequestNewPassword;
 import com.pk.petrolstationmonolith.models.account.password.RequestResetPassword;
@@ -10,6 +11,8 @@ import com.pk.petrolstationmonolith.models.account.registration.IndividualRegist
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.services.account.PasswordService;
 import com.pk.petrolstationmonolith.services.account.RegistrationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import javax.validation.Valid;
 @RequestMapping("/account")
 public class AccountController {
 
+    private final Logger logger = LoggerFactory.getLogger(AccountController.class);
     private final RegistrationService registrationService;
     private final PasswordService passwordService;
 
@@ -34,27 +38,32 @@ public class AccountController {
 
     @PostMapping("/individuals")
     public ResponseEntity<UserCredentials> registerIndividual(@Valid @RequestBody IndividualRegistrationCredentials credentials) {
+        logger.trace("registerIndividual method invoked");
         return ResponseEntity.ok(registrationService.registerIndividual(credentials));
     }
 
     @PostMapping("/companies")
     public ResponseEntity<UserCredentials> registerCompany(@Valid @RequestBody CompanyRegistrationCredentials credentials) {
+        logger.trace("registerCompany method invoked");
         return ResponseEntity.ok(registrationService.registerCompany(credentials));
     }
 
     @PostMapping("/employees")
     public ResponseEntity<UserCredentials> registerEmployee(@Valid @RequestBody EmployeeRegistrationCredentials credentials) {
+        logger.trace("registerEmployee method invoked");
         return ResponseEntity.ok(registrationService.registerEmployee(credentials));
     }
 
 
     @PutMapping("/password")
     public ResponseEntity<ResponseMessage> updatePassword(@Valid @RequestBody RequestUpdatePassword request) {
+        logger.trace("updatePassword method invoked");
         return ResponseEntity.ok(passwordService.updatePassword(request));
     }
 
     @DeleteMapping("/password")
     public ResponseEntity<ResponseMessage> sendResetPasswordMail(@Valid @RequestBody RequestResetPassword request) {
+        logger.trace("sendResetPasswordMail method invoked");
         return ResponseEntity.ok(passwordService.sendPasswordResetMail(request));
     }
 
@@ -65,6 +74,7 @@ public class AccountController {
             @RequestParam(name = "email") String email
 
     ) {
+        logger.trace("setNewPassword method invoked");
         return ResponseEntity.ok(passwordService.setNewPassword(request, token, email));
     }
 
