@@ -17,12 +17,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         return userRepository.findByEmail(username)
-                .orElseGet(() -> userRepository.findById(Long.parseLong(username))
-                        .orElseThrow(
-                                () -> new UsernameNotFoundException("User with username: " + username + " not found.")
-                        )
+                .orElseGet(
+                        () -> {
+                            long id;
+                            try {
+                                id = Long.parseLong(username);
+                            } catch (NumberFormatException e) {
+                                throw new UsernameNotFoundException("User with username: " + username + " not found.");
+                            }
+                            return userRepository.findById(id)
+                                    .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found."));
+
+                        }
                 );
+
     }
 
 }

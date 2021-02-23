@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/carwash/reservations")
@@ -32,15 +33,17 @@ public class ReservationController {
     }
 
     @PostMapping("/reservation")
-    public ResponseEntity<ReservationDto> reserve(@Valid @RequestBody RequestReserve request) {
+    public ResponseEntity<ReservationDto> reserve(@Valid @RequestBody RequestReserve request,
+                                                  Principal principal) {
         logger.trace("reserve method invoked");
-        return ResponseEntity.ok(reservationService.reserve(request));
+        return ResponseEntity.ok(reservationService.reserve(request, principal));
     }
 
     @DeleteMapping("/reservation")
-    public ResponseEntity<ReservationDto> cancelReseravation(@Valid @RequestBody RequestCancelReservation request) {
+    public ResponseEntity<ReservationDto> cancelReseravation(@Valid @RequestBody RequestCancelReservation request,
+                                                             Principal principal) {
         logger.trace("cancelReseravation method invoked");
-        return ResponseEntity.ok(reservationService.cancelReservation(request));
+        return ResponseEntity.ok(reservationService.cancelReservation(request, principal));
     }
 
 }

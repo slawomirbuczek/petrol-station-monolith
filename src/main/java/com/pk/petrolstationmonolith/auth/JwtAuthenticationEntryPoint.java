@@ -2,6 +2,8 @@ package com.pk.petrolstationmonolith.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -18,8 +20,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ObjectMapper objectMapper = new ObjectMapper();
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        objectMapper.writeValue(response.getOutputStream(), new ResponseMessage("Unauthorized"));
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        objectMapper.writeValue(response.getOutputStream(), new ResponseMessage(HttpStatus.UNAUTHORIZED.name()));
 
     }
 

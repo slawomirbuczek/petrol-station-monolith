@@ -6,6 +6,8 @@ import com.pk.petrolstationmonolith.auth.JwtUsernameAndPasswordAuthenticationFil
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
 import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,18 +20,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.Key;
+import java.util.UUID;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtProperties jwtProperties;
-    private final Key jwtSecret;
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, JwtProperties jwtProperties, Key jwtSecret) {
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, JwtProperties jwtProperties) {
         this.userDetailsService = userDetailsService;
         this.jwtProperties = jwtProperties;
-        this.jwtSecret = jwtSecret;
     }
 
     @Override
@@ -48,8 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
 
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtProperties, jwtSecret))
-                .addFilterAfter(new JwtTokenAuthenticationFilter(jwtSecret), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtProperties, jwtSecret()))
+                .addFilterAfter(new JwtTokenAuthenticationFilter(jwtSecret()), UsernamePasswordAuthenticationFilter.class)
 
                 .authorizeRequests()
 
@@ -67,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/account/employees").permitAll()
                 .antMatchers(HttpMethod.POST, "/account/individuals").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/account/password").permitAll()
+                .antMatchers("/account/users/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
 
                 .antMatchers(HttpMethod.GET, "/pricelist").permitAll()
                 .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.OWNER.name())
@@ -96,6 +98,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Key jwtSecret() {
+        String secret = UUID.randomUUID().toString() + UUID.randomUUID().toString();
+        byte[] keyBytes = Decoders.BASE64.decode(secret.replaceAll("-", "x"));
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
 }

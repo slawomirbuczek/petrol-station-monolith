@@ -15,6 +15,7 @@ import com.pk.petrolstationmonolith.services.account.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -54,7 +55,7 @@ public class ReservationService {
 
     }
 
-    public ReservationDto reserve(RequestReserve request) {
+    public ReservationDto reserve(RequestReserve request, Principal principal) {
         Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
                 .orElseThrow(() -> new ReservationNotFoundException((request.getDateTime())));
 
@@ -62,17 +63,17 @@ public class ReservationService {
             throw new ReservationAlreadyTakenException(request.getDateTime());
         }
 
-        reservation.setUser(userService.getUserFromAuth());
+        reservation.setUser(userService.getUser(Long.parseLong(principal.getName())));
         reservation.setWashingType(request.getWashingType());
 
         return mapReservationtoDTO(reservationRepository.save(reservation));
     }
 
-    public ReservationDto cancelReservation(RequestCancelReservation request) {
+    public ReservationDto cancelReservation(RequestCancelReservation request, Principal principal) {
         Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
                 .orElseThrow(() -> new ReservationNotFoundException(request.getDateTime()));
 
-        Long userId = userService.getUserFromAuth().getId();
+        Long userId = userService.getUser(Long.parseLong(principal.getName())).getId();
         if (Objects.isNull(reservation.getUser()) || !Objects.equals(reservation.getUser().getId(), userId)) {
             throw new ReservationNotReservedByUserException(userId);
         }

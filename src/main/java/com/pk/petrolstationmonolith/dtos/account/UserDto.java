@@ -2,43 +2,31 @@ package com.pk.petrolstationmonolith.dtos.account;
 
 public class UserDto {
 
-    private String id;
-
-    private String username;
+    private long id;
 
     private String email;
 
     public UserDto() {
     }
 
-    public UserDto(String id, String username, String email) {
+    public UserDto(long id, String email) {
         this.id = id;
-        this.username = username;
         this.email = email;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
-    
 }
