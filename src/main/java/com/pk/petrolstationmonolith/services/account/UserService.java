@@ -36,5 +36,13 @@ public class UserService {
         return modelMapper.map(getUser(userId), UserDto.class);
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public boolean emailAlreadyTaken(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 
 }

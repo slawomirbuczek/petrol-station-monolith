@@ -12,6 +12,8 @@ public class Company {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
     private String regon;
 
     private String nip;
@@ -25,8 +27,9 @@ public class Company {
     public Company() {
     }
 
-    public Company(Long id, String regon, String nip, User user, Address address) {
+    public Company(Long id, String name, String regon, String nip, User user, Address address) {
         this.id = id;
+        this.name = name;
         this.regon = regon;
         this.nip = nip;
         this.user = user;
@@ -37,36 +40,44 @@ public class Company {
         return id;
     }
 
-    public String getRegon() {
-        return regon;
-    }
-
-    public String getNip() {
-        return nip;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRegon() {
+        return regon;
     }
 
     public void setRegon(String regon) {
         this.regon = regon;
     }
 
+    public String getNip() {
+        return nip;
+    }
+
     public void setNip(String nip) {
         this.nip = nip;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     public void setAddress(Address address) {

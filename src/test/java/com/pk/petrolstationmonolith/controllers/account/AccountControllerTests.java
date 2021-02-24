@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,8 +50,8 @@ class AccountControllerTests {
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
 
-    @MockBean
-    private static JwtProperties jwtProperties;
+    @SpyBean
+    private JwtProperties jwtProperties;
 
     private static UserCredentials credentials;
 

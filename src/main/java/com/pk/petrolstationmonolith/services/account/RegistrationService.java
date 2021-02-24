@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.entities.account.*;
 import com.pk.petrolstationmonolith.enums.account.UserType;
+import com.pk.petrolstationmonolith.exceptions.account.EmailAlreadyTakenException;
 import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
@@ -21,18 +22,18 @@ public class RegistrationService {
     private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
     private final IndividualRepository individualRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
     public RegistrationService(AddressRepository addressRepository, CompanyRepository companyRepository,
-                               EmployeeRepository employeeRepository, IndividualRepository individualRepository, UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
+                               EmployeeRepository employeeRepository, IndividualRepository individualRepository,
+                               UserService userService, PasswordEncoder passwordEncoder) {
         this.addressRepository = addressRepository;
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
         this.individualRepository = individualRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         modelMapper = new ModelMapper();
     }
@@ -41,12 +42,11 @@ public class RegistrationService {
     public UserCredentials registerIndividual(IndividualRegistrationCredentials credentials) {
         Address address = addAddress(modelMapper.map(credentials, Address.class));
 
-        String password = generatePassword();
-
         User user = modelMapper.map(credentials, User.class);
         user.setUserType(UserType.INDIVIDUAL);
-        user.setPassword(passwordEncoder.encode(password));
-        user = addUser(user);
+
+        String password = generatePassword();
+        user = addUser(user, password);
 
         Individual individual = modelMapper.map(credentials, Individual.class);
         individual.setAddress(address);
@@ -59,12 +59,11 @@ public class RegistrationService {
     public UserCredentials registerCompany(CompanyRegistrationCredentials credentials) {
         Address address = addAddress(modelMapper.map(credentials, Address.class));
 
-        String password = generatePassword();
-
         User user = modelMapper.map(credentials, User.class);
         user.setUserType(UserType.COMPANY);
-        user.setPassword(passwordEncoder.encode(password));
-        user = addUser(user);
+
+        String password = generatePassword();
+        user = addUser(user, password);
 
         Company company = modelMapper.map(credentials, Company.class);
         company.setAddress(address);
@@ -77,12 +76,11 @@ public class RegistrationService {
     public UserCredentials registerEmployee(EmployeeRegistrationCredentials credentials) {
         Address address = addAddress(modelMapper.map(credentials, Address.class));
 
-        String password = generatePassword();
-
         User user = modelMapper.map(credentials, User.class);
         user.setUserType(UserType.EMPLOYEE);
-        user.setPassword(passwordEncoder.encode(password));
-        user = addUser(user);
+
+        String password = generatePassword();
+        user = addUser(user, password);
 
         Employee employee = modelMapper.map(credentials, Employee.class);
         employee.setAddress(address);
@@ -92,8 +90,12 @@ public class RegistrationService {
         return new UserCredentials(user.getUsername(), password);
     }
 
-    private User addUser(User user) {
-        return userRepository.save(user);
+    private User addUser(User user, String password) {
+        if (userService.emailAlreadyTaken(user.getEmail())) {
+            throw new EmailAlreadyTakenException(user.getEmail());
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        return userService.saveUser(user);
     }
 
     private Address addAddress(Address address) {

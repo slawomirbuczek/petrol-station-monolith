@@ -32,7 +32,7 @@ class UserServiceTests {
     static void setUp() {
         user = new User();
         user.setId(1L);
-        user.setEmail("anon@mail.com");
+        user.setEmail("email@email.com");
         user.setPassword("password");
     }
 
@@ -62,16 +62,36 @@ class UserServiceTests {
         UserDto userDto = userService.getUserDto(1L);
 
         assertThat(userDto.getId()).isEqualTo(1L);
-        assertThat(userDto.getEmail()).isEqualTo("anon@mail.com");
+        assertThat(userDto.getEmail()).isEqualTo("email@email.com");
     }
 
     @Test
     void shouldThrowUserNotFoundExceptionWhenDtoUserDoesNotExist() {
-        given(userRepository.findById(2L)).willReturn(Optional.empty());
+        given(userRepository.findById(1L)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.getUserDto(2L))
+        assertThatThrownBy(() -> userService.getUserDto(1L))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("User with id: 2 not found");
+                .hasMessage("User with id: 1 not found");
+    }
+
+    @Test
+    void shouldReturnUserWhenUserWithEmailExists() {
+        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.of(user));
+
+        User user = userService.getUserByEmail("email@email.com");
+
+        assertThat(user.getId()).isEqualTo(1L);
+        assertThat(user.getPassword()).isEqualTo("password");
+        assertThat(user.getEmail()).isEqualTo("email@email.com");
+    }
+
+    @Test
+    void shouldThrowUseNotFoundExceptionWhenUserWithEmailDoesNotExist() {
+        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getUserByEmail("email@email.com"))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessage("User with id: email@email.com not found");
     }
 
 }
