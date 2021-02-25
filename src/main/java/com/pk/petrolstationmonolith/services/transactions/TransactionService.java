@@ -4,6 +4,8 @@ import com.pk.petrolstationmonolith.dtos.transactions.TransactionDto;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.entities.transactions.Transaction;
 import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
+import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
 import com.pk.petrolstationmonolith.models.transactions.RequestAddTransaction;
 import com.pk.petrolstationmonolith.models.transactions.Transactions;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
@@ -13,7 +15,6 @@ import com.pk.petrolstationmonolith.services.loyaltyprogram.LoyaltyProgramServic
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -72,7 +73,12 @@ public class TransactionService {
         return report;
     }
 
-    private TransactionDto mapTransactionToDto(Transaction transaction) {
+    public Transaction getTransaction(long id) {
+        return transactionRepository.findById(id)
+                .orElseThrow(() -> new InvalidTransactionIdException(id));
+    }
+
+    public TransactionDto mapTransactionToDto(Transaction transaction) {
         return modelMapper.map(transaction, TransactionDto.class);
     }
 

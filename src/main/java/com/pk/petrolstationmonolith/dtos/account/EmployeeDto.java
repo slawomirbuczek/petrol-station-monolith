@@ -1,14 +1,8 @@
-package com.pk.petrolstationmonolith.entities.account;
+package com.pk.petrolstationmonolith.dtos.account;
 
-import javax.persistence.*;
 import java.sql.Date;
 
-@Entity
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class EmployeeDto {
 
     private String phoneNumber;
 
@@ -20,36 +14,15 @@ public class Employee {
 
     private String startDateOfWork;
 
-    @OneToOne
-    private User user;
-
-    @OneToOne
-    private Individual individual;
-
-    @OneToOne
-    private Address address;
-
-    public Employee() {
+    public EmployeeDto() {
     }
 
-    public Employee(String phoneNumber, Date dateOfBirth, int salary, String accountNumber,
-                    String startDateOfWork, User user, Individual individual, Address address) {
+    public EmployeeDto(String phoneNumber, Date dateOfBirth, int salary, String accountNumber, String startDateOfWork) {
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.salary = salary;
         this.accountNumber = accountNumber;
         this.startDateOfWork = startDateOfWork;
-        this.user = user;
-        this.individual = individual;
-        this.address = address;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPhoneNumber() {
@@ -92,27 +65,4 @@ public class Employee {
         this.startDateOfWork = startDateOfWork;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Individual getIndividual() {
-        return individual;
-    }
-
-    public void setIndividual(Individual individual) {
-        this.individual = individual;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

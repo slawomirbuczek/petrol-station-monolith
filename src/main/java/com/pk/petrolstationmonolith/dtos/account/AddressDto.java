@@ -1,16 +1,6 @@
-package com.pk.petrolstationmonolith.entities.account;
+package com.pk.petrolstationmonolith.dtos.account;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AddressDto {
 
     private String country;
 
@@ -24,72 +14,63 @@ public class Address {
 
     private String apartmentNumber;
 
-    public Address() {
+    public AddressDto() {
     }
 
-    public Address(String country, String city, String zip, String street, String buildingNumber, String apartmentNumber) {
+    public AddressDto(String country, String city, String zip, String street, String buildingNumber, String apartmentNumber) {
         this.country = country;
         this.city = city;
         this.zip = zip;
         this.street = street;
         this.buildingNumber = buildingNumber;
         this.apartmentNumber = apartmentNumber;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public String getApartmentNumber() {
-        return apartmentNumber;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
+    public String getZip() {
+        return zip;
+    }
+
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public String getStreet() {
+        return street;
     }
 
     public void setStreet(String street) {
         this.street = street;
     }
 
+    public String getBuildingNumber() {
+        return buildingNumber;
+    }
+
     public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber;
+    }
+
+    public String getApartmentNumber() {
+        return apartmentNumber;
     }
 
     public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
     }
-
 }

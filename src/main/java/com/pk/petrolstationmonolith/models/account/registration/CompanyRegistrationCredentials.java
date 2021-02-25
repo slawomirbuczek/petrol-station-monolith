@@ -6,17 +6,19 @@ import javax.validation.constraints.Size;
 
 public class CompanyRegistrationCredentials {
 
-    @NotBlank(message = "Name cannot be blank")
-    private String name;
-
     @Email(message = "Email should be valid")
     private String email;
+
+
+    @NotBlank(message = "Name cannot be blank")
+    private String name;
 
     @Size(min = 9, max = 9, message = "Regon should be valid")
     private String regon;
 
     @Size(min = 10, max = 10, message = "Nip should be valid")
     private String nip;
+
 
     @NotBlank(message = "Country name cannot be blank")
     private String country;

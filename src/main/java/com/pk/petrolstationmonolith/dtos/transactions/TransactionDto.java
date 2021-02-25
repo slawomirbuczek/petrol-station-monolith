@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 public class TransactionDto {
 
+    private Long id;
+
     private ServiceType serviceType;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -19,11 +21,20 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(ServiceType serviceType, LocalDateTime dateTime, int number, double cost) {
+    public TransactionDto(Long id, ServiceType serviceType, LocalDateTime dateTime, int number, double cost) {
+        this.id = id;
         this.serviceType = serviceType;
         this.dateTime = dateTime;
         this.number = number;
         this.cost = cost;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public ServiceType getServiceType() {

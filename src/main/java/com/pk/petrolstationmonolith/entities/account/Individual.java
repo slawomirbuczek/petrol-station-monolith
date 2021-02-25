@@ -1,15 +1,12 @@
 package com.pk.petrolstationmonolith.entities.account;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Individual {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
@@ -29,8 +26,7 @@ public class Individual {
     public Individual() {
     }
 
-    public Individual(Long id, String firstName, String lastName, String pesel, String nip, User user, Address address) {
-        this.id = id;
+    public Individual(String firstName, String lastName, String pesel, String nip, User user, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;

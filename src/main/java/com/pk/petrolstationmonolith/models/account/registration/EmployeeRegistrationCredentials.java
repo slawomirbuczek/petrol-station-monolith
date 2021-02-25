@@ -5,20 +5,22 @@ import java.sql.Date;
 
 public class EmployeeRegistrationCredentials {
 
+    @Email(message = "Email should be valid")
+    private String email;
+
+
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
-    @Email(message = "Email should be valid")
-    private String email;
-
     @Size(min = 11, max = 11, message = "Pesel should be valid")
     private String pesel;
 
     @Size(min = 10, max = 10, message = "Nip should be valid")
     private String nip;
+
 
     @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$",
             message = "Phone number should be valid")
@@ -35,6 +37,7 @@ public class EmployeeRegistrationCredentials {
 
     @NotNull(message = "Start date of work cannot be null")
     private String startDateOfWork;
+
 
     @NotBlank(message = "Country name cannot be blank")
     private String country;

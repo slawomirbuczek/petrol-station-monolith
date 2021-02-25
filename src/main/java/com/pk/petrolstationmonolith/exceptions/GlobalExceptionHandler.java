@@ -8,6 +8,8 @@ import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateExcep
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.NotEnoughLoyaltyProgramPointsException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasAlreadyJoinedTheLoyaltyProgramException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasNotJoinedTheLoyaltyProgramException;
+import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
+import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.validation.ValidationExceptionMessages;
 import org.springframework.http.HttpStatus;
@@ -80,6 +82,24 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseMessage handleEmployeeNotFoundException(EmployeeNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CompanyNotFoundException.class)
+    public ResponseMessage handleCompanyNotFoundException(CompanyNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IndividualNotFoundException.class)
+    public ResponseMessage handleIndividualNotFoundException(IndividualNotFoundException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ReservationAlreadyTakenException.class)
     public ResponseMessage handleReservationAlreadyTakenException(ReservationAlreadyTakenException ex) {
         return new ResponseMessage(ex.getMessage());
@@ -118,6 +138,18 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotEnoughLoyaltyProgramPointsException.class)
     public ResponseMessage handleNotEnoughLoyaltyProgramPointsException(NotEnoughLoyaltyProgramPointsException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidTransactionIdException.class)
+    public ResponseMessage handleInvalidTransactionIdException(InvalidTransactionIdException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TransactionNotAssociatedWithUserException.class)
+    public ResponseMessage handleTransactionNotAssociatedWithUserException(TransactionNotAssociatedWithUserException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 

@@ -36,16 +36,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.addTransaction(request, userId));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Transactions> getTransactionsByUser(@PathVariable long userId) {
-        logger.trace("getTransactionsByUser method invoked");
-        return ResponseEntity.ok(transactionService.getTransactions(userId));
-    }
-
     @GetMapping
     public ResponseEntity<Transactions> getTransactions(Principal principal) {
         logger.trace("getTransactions method invoked");
         return ResponseEntity.ok(transactionService.getTransactions(Long.parseLong(principal.getName())));
     }
+
 
 }
