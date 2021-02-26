@@ -8,6 +8,7 @@ import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateExcep
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.NotEnoughLoyaltyProgramPointsException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasAlreadyJoinedTheLoyaltyProgramException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasNotJoinedTheLoyaltyProgramException;
+import com.pk.petrolstationmonolith.exceptions.supplies.SupplyNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
 import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
@@ -150,6 +151,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(TransactionNotAssociatedWithUserException.class)
     public ResponseMessage handleTransactionNotAssociatedWithUserException(TransactionNotAssociatedWithUserException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SupplyNotFoundException.class)
+    public ResponseMessage handleSupplyNotFoundException(SupplyNotFoundException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 
