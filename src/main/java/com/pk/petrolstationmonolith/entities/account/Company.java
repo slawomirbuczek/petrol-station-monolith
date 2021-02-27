@@ -18,19 +18,15 @@ public class Company {
     @OneToOne
     private User user;
 
-    @OneToOne
-    private Address address;
-
     public Company() {
     }
 
-    public Company(Long id, String name, String regon, String nip, User user, Address address) {
+    public Company(Long id, String name, String regon, String nip, User user) {
         this.id = id;
         this.name = name;
         this.regon = regon;
         this.nip = nip;
         this.user = user;
-        this.address = address;
     }
 
     public Long getId() {
@@ -73,11 +69,4 @@ public class Company {
         this.user = user;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

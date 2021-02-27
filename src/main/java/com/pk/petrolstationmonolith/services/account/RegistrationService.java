@@ -23,14 +23,15 @@ public class RegistrationService {
     private final ModelMapper mapper;
 
     public RegistrationService(UserService userService, AddressService addressService, CompanyService companyService,
-                               IndividualService individualService, EmployeeService employeeService) {
+                               IndividualService individualService, EmployeeService employeeService, ModelMapper mapper) {
         this.userService = userService;
         this.addressService = addressService;
         this.companyService = companyService;
         this.individualService = individualService;
         this.employeeService = employeeService;
-        mapper = new ModelMapper();
+        this.mapper = mapper;
     }
+
 
     public UserCredentials registerIndividual(IndividualRegistrationCredentials credentials) {
         String password = generatePassword();
@@ -41,10 +42,10 @@ public class RegistrationService {
         user = userService.addUser(user);
 
         Address address = mapper.map(credentials, Address.class);
-        address = addressService.addAddress(address);
+        address.setUser(user);
+        addressService.addAddress(address);
 
         Individual individual = mapper.map(credentials, Individual.class);
-        individual.setAddress(address);
         individual.setUser(user);
         individualService.addIndividual(individual);
 
@@ -60,10 +61,10 @@ public class RegistrationService {
         user = userService.addUser(user);
 
         Address address = mapper.map(credentials, Address.class);
-        address = addressService.addAddress(address);
+        address.setUser(user);
+        addressService.addAddress(address);
 
         Company company = mapper.map(credentials, Company.class);
-        company.setAddress(address);
         company.setUser(user);
         companyService.addCompany(company);
 
@@ -79,17 +80,15 @@ public class RegistrationService {
         user = userService.addUser(user);
 
         Address address = mapper.map(credentials, Address.class);
-        address = addressService.addAddress(address);
+        address.setUser(user);
+        addressService.addAddress(address);
 
         Individual individual = mapper.map(credentials, Individual.class);
-        individual.setAddress(address);
         individual.setUser(user);
-        individual = individualService.addIndividual(individual);
+        individualService.addIndividual(individual);
 
         Employee employee = mapper.map(credentials, Employee.class);
-        employee.setAddress(address);
         employee.setUser(user);
-        employee.setIndividual(individual);
         employeeService.addEmployee(employee);
 
         return new UserCredentials(user.getUsername(), password);

@@ -6,6 +6,7 @@ import com.pk.petrolstationmonolith.models.supplies.Supplies;
 import com.pk.petrolstationmonolith.services.supplies.SupplyService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/supplies")
+@PreAuthorize("hasRole('OWNER')")
 public class SupplyController {
 
     private final SupplyService supplyService;

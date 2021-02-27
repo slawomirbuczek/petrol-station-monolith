@@ -2,7 +2,6 @@ package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
-import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -17,13 +16,14 @@ import java.util.Random;
 @EnableScheduling
 public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
-    private final ParameterRepository parameterRepository;
+    private final MonitoringService monitoringService;
     private final MonitoringProperties properties;
 
-    public ScheduledMonitoringTask(ParameterRepository parameterRepository, MonitoringProperties properties) {
-        this.parameterRepository = parameterRepository;
+    public ScheduledMonitoringTask(MonitoringService monitoringService, MonitoringProperties properties) {
+        this.monitoringService = monitoringService;
         this.properties = properties;
     }
+
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -55,7 +55,7 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
         parameter.setLpgTemperature(getRandomTemperature());
         parameter.setLpgPressure(getRandomPressure());
         parameter.setLpgLevel(getRandomLevel());
-        parameterRepository.save(parameter);
+        monitoringService.addParameter(parameter);
     }
 
     private int getRandomTemperature() {

@@ -1,6 +1,10 @@
 package com.pk.petrolstationmonolith.entities.monitoring;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,9 +12,7 @@ import java.time.LocalDateTime;
 public class Parameter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateTime;
 
     private int e95Pressure;
@@ -56,15 +58,6 @@ public class Parameter {
         this.lpgPressure = lpgPressure;
         this.lpgTemperature = lpgTemperature;
         this.lpgLevel = lpgLevel;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {

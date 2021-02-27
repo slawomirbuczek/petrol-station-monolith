@@ -7,6 +7,7 @@ import com.pk.petrolstationmonolith.services.transactions.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,12 +25,14 @@ public class TransactionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<TransactionDto> addTransaction(@Valid @RequestBody RequestAddTransaction request) {
         logger.trace("addTransaction method invoked");
         return ResponseEntity.ok(transactionService.addTransaction(request, null));
     }
 
     @PostMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<TransactionDto> addTransactionWithUser(@PathVariable long userId,
                                                                  @Valid @RequestBody RequestAddTransaction request) {
         logger.trace("addTransactionWithUser method invoked");
@@ -37,6 +40,7 @@ public class TransactionController {
     }
 
     @GetMapping
+    @PreAuthorize("authenticated()")
     public ResponseEntity<Transactions> getTransactions(Principal principal) {
         logger.trace("getTransactions method invoked");
         return ResponseEntity.ok(transactionService.getTransactions(Long.parseLong(principal.getName())));

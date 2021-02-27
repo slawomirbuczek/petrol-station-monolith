@@ -8,8 +8,8 @@ import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -62,35 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/actuator/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
 
-                .antMatchers(HttpMethod.POST, "/account/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/account/password").permitAll()
-                .antMatchers(HttpMethod.POST, "/account/companies").permitAll()
-                .antMatchers(HttpMethod.POST, "/account/employees").permitAll()
-                .antMatchers(HttpMethod.POST, "/account/individuals").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/account/password").permitAll()
-                .antMatchers("/account/users/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
-
-                .antMatchers(HttpMethod.GET, "/pricelist").permitAll()
-                .antMatchers(HttpMethod.PUT, "/pricelist").hasRole(Roles.OWNER.name())
-
-                .antMatchers("/monitoring/parameters").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
-                .antMatchers(HttpMethod.POST, "/monitoring").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
-
-                .antMatchers(HttpMethod.PUT, "/loayltyprogram/services/**").hasRole(Roles.OWNER.name())
-                .antMatchers(HttpMethod.GET, "/loayltyprogram/services").permitAll()
-                .antMatchers("/loayltyprogram/points/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
-                .antMatchers("/loayltyprogram/points").authenticated()
-                .antMatchers(HttpMethod.PUT, "/loayltyprogram/users/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
-
-                .antMatchers("/reports/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
-
-                .antMatchers("/transactions/**").hasAnyRole(Roles.CASHIER.name(), Roles.ADMIN.name(), Roles.OWNER.name())
-                .antMatchers(HttpMethod.GET, "/transactions").authenticated()
-
-                .antMatchers("/simulations/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
-
-                .antMatchers("/supplies/**").hasRole(Roles.OWNER.name())
-
                 .anyRequest().authenticated()
 
                 .and()
@@ -107,6 +78,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         String secret = UUID.randomUUID().toString() + UUID.randomUUID().toString();
         byte[] keyBytes = Decoders.BASE64.decode(secret.replaceAll("-", "x"));
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    @Bean
+    public ModelMapper mapper() {
+        return new ModelMapper();
     }
 
 }

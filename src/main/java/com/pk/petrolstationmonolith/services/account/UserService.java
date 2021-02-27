@@ -3,7 +3,7 @@ package com.pk.petrolstationmonolith.services.account;
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.exceptions.account.EmailAlreadyTakenException;
-import com.pk.petrolstationmonolith.exceptions.account.UserNotFoundException;
+import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
+    private final ModelMapper mapper;
     private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepository, ModelMapper mapper, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.mapper = mapper;
         this.encoder = encoder;
-        modelMapper = new ModelMapper();
     }
 
     public User getUser(long userId) {
@@ -28,7 +28,11 @@ public class UserService {
     }
 
     public User getUser(String userId) {
-        return getUser(Long.parseLong(userId));
+        try {
+            return getUser(Long.parseLong(userId));
+        } catch (Exception e) {
+            throw new UserNotFoundException(userId);
+        }
     }
 
     public User getUserByEmail(String email) {
@@ -37,7 +41,7 @@ public class UserService {
     }
 
     public UserDto getUserDto(long userId) {
-        return modelMapper.map(getUser(userId), UserDto.class);
+        return mapUserToDto(getUser(userId));
     }
 
     public User addUser(User user) {
@@ -46,6 +50,10 @@ public class UserService {
             throw new EmailAlreadyTakenException(user.getEmail());
         }
         return userRepository.save(user);
+    }
+
+    private UserDto mapUserToDto(User user) {
+        return mapper.map(user, UserDto.class);
     }
 
 }

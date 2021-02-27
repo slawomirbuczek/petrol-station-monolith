@@ -1,19 +1,22 @@
 package com.pk.petrolstationmonolith.controllers.carwash;
 
-import com.pk.petrolstationmonolith.PetrolStationMonolithApplication;
-import com.pk.petrolstationmonolith.dtos.carwash.ReservationDto;
-import com.pk.petrolstationmonolith.models.carwash.RequestCancelReservation;
-import com.pk.petrolstationmonolith.models.carwash.RequestReservationDate;
-import com.pk.petrolstationmonolith.models.carwash.RequestReserve;
-import com.pk.petrolstationmonolith.models.carwash.ResponseReservations;
+import com.pk.petrolstationmonolith.models.RequestDateTime;
+import com.pk.petrolstationmonolith.models.carwash.ReservationDetails;
+import com.pk.petrolstationmonolith.models.carwash.Reservations;
+import com.pk.petrolstationmonolith.models.carwash.ResponseReservation;
 import com.pk.petrolstationmonolith.services.carwash.ReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/carwash/reservations")
@@ -26,24 +29,34 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @GetMapping("/{dateTime}")
+    @PreAuthorize("hasAnyRole('CAR_WASH','ADMIN','OWNER')")
+    public ResponseEntity<ReservationDetails> getReservationDetails(@PathVariable LocalDateTime dateTime) {
+        logger.trace("Get reservation details method invoked with dateTime " + dateTime.toString());
+        return ResponseEntity.ok(reservationService.getReservationDetails(dateTime));
+    }
+
+    @GetMapping
+    @PreAuthorize("authenticated()")
+    public ResponseEntity<Reservations> getReservations(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> optionalDate) {
+        logger.trace("Get reservations method invoked with optionalDate " + optionalDate.toString());
+        return ResponseEntity.ok(reservationService.getReservations(optionalDate));
+    }
+
     @PostMapping
-    public ResponseEntity<ResponseReservations> getReservation(@Valid @RequestBody RequestReservationDate request) {
-        logger.trace("getReservation method invoked");
-        return ResponseEntity.ok(reservationService.getReservations(request));
+    @PreAuthorize("authenticated()")
+    public ResponseEntity<ResponseReservation> reserve(@Valid @RequestBody RequestDateTime request, Principal principal) {
+        logger.trace("Reserve method invoked with date " + request.getDateTime().toString() + " and user " + principal.getName());
+        return ResponseEntity.ok(reservationService.reserve(request, Long.parseLong(principal.getName())));
     }
 
-    @PostMapping("/reservation")
-    public ResponseEntity<ReservationDto> reserve(@Valid @RequestBody RequestReserve request,
-                                                  Principal principal) {
-        logger.trace("reserve method invoked");
-        return ResponseEntity.ok(reservationService.reserve(request, principal));
-    }
-
-    @DeleteMapping("/reservation")
-    public ResponseEntity<ReservationDto> cancelReseravation(@Valid @RequestBody RequestCancelReservation request,
-                                                             Principal principal) {
-        logger.trace("cancelReseravation method invoked");
-        return ResponseEntity.ok(reservationService.cancelReservation(request, principal));
+    @DeleteMapping
+    @PreAuthorize("authenticated()")
+    public ResponseEntity<ResponseReservation> cancelReseravation(@Valid @RequestBody RequestDateTime request,
+                                                                  Principal principal) {
+        logger.trace("Cancel reseravation method invoked with date " + request.getDateTime().toString() + " and user " + principal.getName());
+        return ResponseEntity.ok(reservationService.cancelReservation(request, Long.parseLong(principal.getName())));
     }
 
 }

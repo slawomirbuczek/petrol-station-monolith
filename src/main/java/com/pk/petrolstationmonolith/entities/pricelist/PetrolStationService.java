@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.entities.pricelist;
 
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

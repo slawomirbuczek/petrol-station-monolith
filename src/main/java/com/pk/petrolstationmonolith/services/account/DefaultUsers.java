@@ -71,14 +71,13 @@ public class DefaultUsers {
         User user = new User(id, password, email, role, UserType.EMPLOYEE);
         user = userService.addUser(user);
 
-        Address address = new Address(country, city, zip, street, buildingNumber, apartmentNumber);
-        address = addressService.addAddress(address);
+        Address address = new Address(country, city, zip, street, buildingNumber, apartmentNumber, user);
+        addressService.addAddress(address);
 
-        Individual individual = new Individual(firstName, lastName, pesel, nip, user, address);
-        individual = individualService.addIndividual(individual);
+        Individual individual = new Individual(firstName, lastName, pesel, nip, user);
+        individualService.addIndividual(individual);
 
-        Employee employee = new Employee(phoneNumber, dateOfBirth, salary, accountNumber, startDateOfWork,
-                user, individual, address);
+        Employee employee = new Employee(phoneNumber, dateOfBirth, salary, accountNumber, startDateOfWork, user);
         employeeService.addEmployee(employee);
     }
 

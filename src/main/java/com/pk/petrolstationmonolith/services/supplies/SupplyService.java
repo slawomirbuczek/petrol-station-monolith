@@ -17,9 +17,9 @@ public class SupplyService {
     private final SupplyRepository supplyRepository;
     private final ModelMapper mapper;
 
-    public SupplyService(SupplyRepository supplyRepository) {
+    public SupplyService(SupplyRepository supplyRepository, ModelMapper mapper) {
         this.supplyRepository = supplyRepository;
-        mapper = new ModelMapper();
+        this.mapper = mapper;
     }
 
     public Supply getSupplyById(long id) {

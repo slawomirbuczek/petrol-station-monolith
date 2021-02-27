@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.exceptions.account;
+package com.pk.petrolstationmonolith.exceptions.account.user;
 
 public class UserNotFoundException extends RuntimeException {
 

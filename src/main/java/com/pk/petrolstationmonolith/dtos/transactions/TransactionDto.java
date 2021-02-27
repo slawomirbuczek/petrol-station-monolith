@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.dtos.transactions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.enums.pricelist;
+package com.pk.petrolstationmonolith.enums;
 
 import com.pk.petrolstationmonolith.models.loyaltyprogram.ServiceParameters;
 

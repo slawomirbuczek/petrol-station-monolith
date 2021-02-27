@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.mail;
 
+import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -25,7 +25,6 @@ import java.util.UUID;
 public class MailService {
 
     private final JavaMailSender mailSender;
-
     private final Configuration emailConfig;
 
     public MailService(JavaMailSender mailSender, @Qualifier("emailConfigBean") Configuration emailConfig) {

@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.exceptions.account;
+package com.pk.petrolstationmonolith.exceptions.account.employee;
 
 public class EmployeeNotFoundException extends RuntimeException{
 

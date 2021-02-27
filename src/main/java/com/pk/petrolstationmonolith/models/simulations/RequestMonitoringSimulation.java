@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.models.simulations;
 
+import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
 
 public class RequestMonitoringSimulation {
 

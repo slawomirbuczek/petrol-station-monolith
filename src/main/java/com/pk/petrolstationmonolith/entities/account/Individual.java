@@ -20,19 +20,15 @@ public class Individual {
     @OneToOne
     private User user;
 
-    @OneToOne
-    private Address address;
-
     public Individual() {
     }
 
-    public Individual(String firstName, String lastName, String pesel, String nip, User user, Address address) {
+    public Individual(String firstName, String lastName, String pesel, String nip, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
         this.nip = nip;
         this.user = user;
-        this.address = address;
     }
 
     public Long getId() {
@@ -83,11 +79,4 @@ public class Individual {
         this.user = user;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

@@ -1,8 +1,8 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import com.pk.petrolstationmonolith.services.mail.MailService;
@@ -28,7 +28,7 @@ public class MonitoringAlarms {
     }
 
     public void checkMonitoringAlarmState() {
-        Parameter parameter = parameterRepository.findTopByOrderByIdDesc();
+        Parameter parameter = parameterRepository.findTopByOrderByDateTimeDesc();
 
         if (parameter.getE95Level() <= monitoringProperties.getLowLevelE95()) {
             sendAlarmEmail(ServiceType.E95, AlarmType.LOW_LEVEL, parameter.getE95Level(), parameter.getDateTime());

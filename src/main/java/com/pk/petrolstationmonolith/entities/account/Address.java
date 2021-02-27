@@ -1,9 +1,6 @@
 package com.pk.petrolstationmonolith.entities.account;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Address {
@@ -24,16 +21,20 @@ public class Address {
 
     private String apartmentNumber;
 
+    @OneToOne
+    private User user;
+
     public Address() {
     }
 
-    public Address(String country, String city, String zip, String street, String buildingNumber, String apartmentNumber) {
+    public Address(String country, String city, String zip, String street, String buildingNumber, String apartmentNumber, User user) {
         this.country = country;
         this.city = city;
         this.zip = zip;
         this.street = street;
         this.buildingNumber = buildingNumber;
         this.apartmentNumber = apartmentNumber;
+        this.user = user;
     }
 
     public Long getId() {
@@ -92,4 +93,11 @@ public class Address {
         this.apartmentNumber = apartmentNumber;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

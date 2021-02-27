@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.entities.transactions;
 
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

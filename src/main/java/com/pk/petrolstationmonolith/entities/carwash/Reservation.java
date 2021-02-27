@@ -1,9 +1,11 @@
 package com.pk.petrolstationmonolith.entities.carwash;
 
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.enums.carwash.WashingType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,13 +13,7 @@ import java.time.LocalDateTime;
 public class Reservation {
 
     @Id
-    @GeneratedValue
-    private Long id;
-
     private LocalDateTime dateTime;
-
-    @Enumerated(EnumType.STRING)
-    private WashingType washingType;
 
     @OneToOne
     private User user;
@@ -25,18 +21,9 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(LocalDateTime dateTime, WashingType washingType, User user) {
+    public Reservation(LocalDateTime dateTime, User user) {
         this.dateTime = dateTime;
-        this.washingType = washingType;
         this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -45,14 +32,6 @@ public class Reservation {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
-    }
-
-    public WashingType getWashingType() {
-        return washingType;
-    }
-
-    public void setWashingType(WashingType washingType) {
-        this.washingType = washingType;
     }
 
     public User getUser() {

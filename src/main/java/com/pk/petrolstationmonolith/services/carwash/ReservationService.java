@@ -1,27 +1,29 @@
 package com.pk.petrolstationmonolith.services.carwash;
 
-import com.pk.petrolstationmonolith.dtos.carwash.ReservationDto;
+import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
 import com.pk.petrolstationmonolith.entities.carwash.Reservation;
+import com.pk.petrolstationmonolith.enums.account.UserType;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
 import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateException;
-import com.pk.petrolstationmonolith.models.carwash.RequestCancelReservation;
-import com.pk.petrolstationmonolith.models.carwash.RequestReservationDate;
-import com.pk.petrolstationmonolith.models.carwash.RequestReserve;
-import com.pk.petrolstationmonolith.models.carwash.ResponseReservations;
+import com.pk.petrolstationmonolith.models.RequestDateTime;
+import com.pk.petrolstationmonolith.models.carwash.ReservationDetails;
+import com.pk.petrolstationmonolith.models.carwash.Reservations;
+import com.pk.petrolstationmonolith.models.carwash.ResponseReservation;
 import com.pk.petrolstationmonolith.repositories.carwash.ReservationRepository;
+import com.pk.petrolstationmonolith.services.account.CompanyService;
+import com.pk.petrolstationmonolith.services.account.IndividualService;
 import com.pk.petrolstationmonolith.services.account.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,61 +31,82 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserService userService;
+    private final IndividualService individualService;
+    private final CompanyService companyService;
 
-    public ReservationService(ReservationRepository reservationRepository, UserService userService) {
+    public ReservationService(ReservationRepository reservationRepository, UserService userService,
+                              IndividualService individualService, CompanyService companyService) {
         this.reservationRepository = reservationRepository;
         this.userService = userService;
+        this.individualService = individualService;
+        this.companyService = companyService;
     }
 
-    public ResponseReservations getReservations(RequestReservationDate request) {
+    public ReservationDetails getReservationDetails(LocalDateTime dateTime) {
+        Reservation reservation = getReservation(dateTime);
+        long userId = reservation.getUser().getId();
+        String name;
 
-        if (request.getDate().isBefore(LocalDate.now())
-                || request.getDate().isAfter(LocalDate.now().plusDays(14))) {
+        if (reservation.getUser().getUserType() == UserType.COMPANY) {
+            name = companyService.getCompanyDto(userId).getName();
+        } else {
+            IndividualDto individualDto = individualService.getIndividualDto(userId);
+            name = individualDto.getFirstName() + " " + individualDto.getLastName();
+        }
+
+        return new ReservationDetails(dateTime, userId, name);
+    }
+
+    public Reservations getReservations(Optional<LocalDate> optionalDate) {
+        LocalDate date = optionalDate.orElseGet(LocalDate::now);
+
+        if (date.isBefore(LocalDate.now()) || date.isAfter(LocalDate.now().plusDays(14))) {
             throw new WrongReservationDateException();
         }
 
         List<Reservation> reservations = reservationRepository
-                .findAllByDateTimeBetween(request.getDate().atStartOfDay(), request.getDate().plusDays(1).atStartOfDay());
+                .findAllByDateTimeBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
 
         if (reservations.isEmpty()) {
-            return createEmptyReservationsForDate(request.getDate());
+            return createEmptyReservationsForDate(date);
         }
 
-        return new ResponseReservations(
-                reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
+        return new Reservations(
+                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
         );
 
     }
 
-    public ReservationDto reserve(RequestReserve request, Principal principal) {
-        Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
-                .orElseThrow(() -> new ReservationNotFoundException((request.getDateTime())));
+    public ResponseReservation reserve(RequestDateTime request, long userId) {
+        Reservation reservation = getReservation(request.getDateTime());
 
         if (Objects.nonNull(reservation.getUser())) {
             throw new ReservationAlreadyTakenException(request.getDateTime());
         }
 
-        reservation.setUser(userService.getUser(Long.parseLong(principal.getName())));
-        reservation.setWashingType(request.getWashingType());
+        reservation.setUser(userService.getUser(userId));
 
-        return mapReservationtoDTO(reservationRepository.save(reservation));
+        return mapReservationToResponse(reservationRepository.save(reservation));
     }
 
-    public ReservationDto cancelReservation(RequestCancelReservation request, Principal principal) {
-        Reservation reservation = reservationRepository.findByDateTime(request.getDateTime())
-                .orElseThrow(() -> new ReservationNotFoundException(request.getDateTime()));
+    public ResponseReservation cancelReservation(RequestDateTime request, long userId) {
+        Reservation reservation = getReservation(request.getDateTime());
 
-        Long userId = userService.getUser(Long.parseLong(principal.getName())).getId();
         if (Objects.isNull(reservation.getUser()) || !Objects.equals(reservation.getUser().getId(), userId)) {
             throw new ReservationNotReservedByUserException(userId);
         }
 
-        reservation.setWashingType(null);
         reservation.setUser(null);
-        return mapReservationtoDTO(reservationRepository.save(reservation));
+
+        return mapReservationToResponse(reservationRepository.save(reservation));
     }
 
-    private ResponseReservations createEmptyReservationsForDate(LocalDate date) {
+    private Reservation getReservation(LocalDateTime dateTime) {
+        return reservationRepository.findByDateTime(dateTime)
+                .orElseThrow(() -> new ReservationNotFoundException(dateTime));
+    }
+
+    private Reservations createEmptyReservationsForDate(LocalDate date) {
         List<Reservation> reservations = new ArrayList<>();
 
         for (int i = 0; i < 34; i++) {
@@ -92,8 +115,8 @@ public class ReservationService {
             )));
         }
 
-        return new ResponseReservations(
-                reservations.stream().map(this::mapReservationtoDTO).collect(Collectors.toList())
+        return new Reservations(
+                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
         );
     }
 
@@ -103,12 +126,11 @@ public class ReservationService {
         return reservation;
     }
 
-    private ReservationDto mapReservationtoDTO(Reservation reservation) {
-        ReservationDto reservationDto = new ModelMapper().map(reservation, ReservationDto.class);
-        if (Objects.nonNull(reservation.getUser())) {
-            reservationDto.setUserId(reservation.getUser().getId());
-        }
-        return reservationDto;
+    private ResponseReservation mapReservationToResponse(Reservation reservation) {
+        ResponseReservation responseReservation = new ResponseReservation();
+        responseReservation.setDateTime(reservation.getDateTime());
+        responseReservation.setAvailable(Objects.isNull(reservation.getUser()));
+        return responseReservation;
     }
 
 }

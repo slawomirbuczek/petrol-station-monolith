@@ -12,6 +12,6 @@ public interface ParameterRepository extends JpaRepository<Parameter, Long> {
 
     List<Parameter> findAllByDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
-    Parameter findTopByOrderByIdDesc();
+    Parameter findTopByOrderByDateTimeDesc();
 
 }

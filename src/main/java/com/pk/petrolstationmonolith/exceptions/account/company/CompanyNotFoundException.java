@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.exceptions.account;
+package com.pk.petrolstationmonolith.exceptions.account.company;
 
 public class CompanyNotFoundException extends RuntimeException {
 

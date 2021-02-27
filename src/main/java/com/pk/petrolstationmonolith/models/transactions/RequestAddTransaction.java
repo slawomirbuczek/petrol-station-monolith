@@ -1,20 +1,23 @@
 package com.pk.petrolstationmonolith.models.transactions;
 
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class RequestAddTransaction {
 
+    @NotNull
     private ServiceType serviceType;
 
+    @NotNull
     private LocalDateTime dateTime;
 
-    @Min(0)
+    @Positive
     private int number;
 
-    @Min(0)
+    @Positive
     private double cost;
 
     public RequestAddTransaction() {

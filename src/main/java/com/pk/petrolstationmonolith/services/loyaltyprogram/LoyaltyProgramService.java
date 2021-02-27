@@ -1,19 +1,15 @@
 package com.pk.petrolstationmonolith.services.loyaltyprogram;
 
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.entities.loyaltyprogram.LoyaltyProgram;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.NotEnoughLoyaltyProgramPointsException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasAlreadyJoinedTheLoyaltyProgramException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasNotJoinedTheLoyaltyProgramException;
-import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestChangeProgramParameters;
-import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestPointsChange;
 import com.pk.petrolstationmonolith.models.loyaltyprogram.Points;
-import com.pk.petrolstationmonolith.models.loyaltyprogram.ResponseProgramParameters;
-import com.pk.petrolstationmonolith.repositories.account.UserRepository;
+import com.pk.petrolstationmonolith.models.loyaltyprogram.ProgramParameters;
+import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestChangeProgramParameters;
 import com.pk.petrolstationmonolith.repositories.loyaltyprogram.LoyaltyProgramRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.pk.petrolstationmonolith.services.account.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,92 +18,79 @@ import java.util.Optional;
 public class LoyaltyProgramService {
 
     private final LoyaltyProgramRepository loyaltyProgramRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public LoyaltyProgramService(LoyaltyProgramRepository loyaltyProgramRepository, UserRepository userRepository) {
+    public LoyaltyProgramService(LoyaltyProgramRepository loyaltyProgramRepository, UserService userService) {
         this.loyaltyProgramRepository = loyaltyProgramRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
-    public Points joinLoyaltyProgram() {
-        long userId = getUserIdFromAuth();
+    public Points joinLoyaltyProgram(long userId) {
         if (loyaltyProgramRepository.findByUserId(userId).isPresent()) {
             throw new UserHasAlreadyJoinedTheLoyaltyProgramException(userId);
         }
         LoyaltyProgram loyaltyProgram = new LoyaltyProgram();
-        loyaltyProgram.setUser(getUserFromAuth());
+        loyaltyProgram.setUser(userService.getUser(userId));
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
     }
 
-    public Points getPoints() {
-        return new Points(getLoyaltyProgram(getUserIdFromAuth()).getPoints());
-    }
-
-    public Points getPointsByUser(long userId) {
+    public Points getPoints(long userId) {
         return new Points(getLoyaltyProgram(userId).getPoints());
     }
 
-    public Points addProgramPoints(long userId, ServiceType serviceType, RequestPointsChange request) {
+    public Points addProgramPoints(long userId, ServiceType serviceType, Points points) {
         LoyaltyProgram loyaltyProgram = getLoyaltyProgram(userId);
 
-        long points = serviceType.getPoints() * request.getNumber();
+        long additionalPoints = serviceType.getPoints() * points.getPoints();
 
-        loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
+        loyaltyProgram.setPoints(loyaltyProgram.getPoints() + additionalPoints);
 
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
     }
 
     public void addProgramPointsAfterTransaction(long userId, ServiceType serviceType, int number) {
         Optional<LoyaltyProgram> optionalLoyaltyProgram = loyaltyProgramRepository.findByUserId(userId);
-        if (optionalLoyaltyProgram.isPresent()) {
-            LoyaltyProgram loyaltyProgram = optionalLoyaltyProgram.get();
 
-            long points = serviceType.getPoints() * number;
-
-            loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
-
-            loyaltyProgramRepository.save(loyaltyProgram);
+        if (optionalLoyaltyProgram.isEmpty()) {
+            return;
         }
+
+        LoyaltyProgram loyaltyProgram = optionalLoyaltyProgram.get();
+
+        long points = serviceType.getPoints() * number;
+
+        loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
+
+        loyaltyProgramRepository.save(loyaltyProgram);
     }
 
-    public Points exchangePoints(ServiceType serviceType, RequestPointsChange request) {
-        LoyaltyProgram loyaltyProgram = getLoyaltyProgram(getUserIdFromAuth());
+    public Points exchangePoints(long userId, ServiceType serviceType, Points points) {
+        LoyaltyProgram loyaltyProgram = getLoyaltyProgram(userId);
 
-        long points = serviceType.getCost() * request.getNumber();
+        long exchangingPoints = serviceType.getCost() * points.getPoints();
 
-        if (loyaltyProgram.getPoints() - points < 0) {
-            throw new NotEnoughLoyaltyProgramPointsException(getUserIdFromAuth());
+        if (loyaltyProgram.getPoints() - exchangingPoints < 0) {
+            throw new NotEnoughLoyaltyProgramPointsException(userId);
         }
 
-        loyaltyProgram.setPoints(loyaltyProgram.getPoints() - points);
+        loyaltyProgram.setPoints(loyaltyProgram.getPoints() - exchangingPoints);
 
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
     }
 
-    public ResponseProgramParameters changeProgramParameters(ServiceType serviceType, RequestChangeProgramParameters request) {
+    public ProgramParameters changeProgramParameters(ServiceType serviceType, RequestChangeProgramParameters request) {
         serviceType.setPoints(request.getPoints());
         serviceType.setCost(request.getCost());
-        return new ResponseProgramParameters();
+        return new ProgramParameters();
     }
 
-    public ResponseProgramParameters getProgramParameters() {
-        return new ResponseProgramParameters();
+    public ProgramParameters getProgramParameters() {
+        return new ProgramParameters();
     }
 
     private LoyaltyProgram getLoyaltyProgram(Long userId) {
         return loyaltyProgramRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserHasNotJoinedTheLoyaltyProgramException(userId));
-    }
-
-    private User getUserFromAuth() {
-        long id = getUserIdFromAuth();
-        return userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("User with id: " + id + " not found.")
-        );
-    }
-
-    private long getUserIdFromAuth() {
-        return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 }

@@ -18,6 +18,10 @@ public class PriceListService {
         return new ResponsePriceList(serviceRepository.findAll());
     }
 
+    public void addService(PetrolStationService service) {
+        serviceRepository.save(service);
+    }
+
     public PetrolStationService updateService(PetrolStationService service) {
         return serviceRepository.save(service);
     }

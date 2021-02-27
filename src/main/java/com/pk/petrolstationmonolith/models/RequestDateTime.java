@@ -1,20 +1,17 @@
-package com.pk.petrolstationmonolith.models.carwash;
+package com.pk.petrolstationmonolith.models;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class RequestCancelReservation {
+public class RequestDateTime {
 
     @NotNull
     private LocalDateTime dateTime;
 
-    public RequestCancelReservation() {
+    public RequestDateTime() {
     }
 
-    public RequestCancelReservation(@NotNull LocalDateTime dateTime) {
+    public RequestDateTime(@NotNull LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

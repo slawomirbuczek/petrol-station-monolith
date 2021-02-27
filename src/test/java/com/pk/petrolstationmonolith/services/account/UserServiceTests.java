@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.exceptions.account.UserNotFoundException;
+import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

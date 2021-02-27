@@ -23,25 +23,17 @@ public class Employee {
     @OneToOne
     private User user;
 
-    @OneToOne
-    private Individual individual;
-
-    @OneToOne
-    private Address address;
-
     public Employee() {
     }
 
     public Employee(String phoneNumber, Date dateOfBirth, int salary, String accountNumber,
-                    String startDateOfWork, User user, Individual individual, Address address) {
+                    String startDateOfWork, User user) {
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.salary = salary;
         this.accountNumber = accountNumber;
         this.startDateOfWork = startDateOfWork;
         this.user = user;
-        this.individual = individual;
-        this.address = address;
     }
 
     public Long getId() {
@@ -100,19 +92,4 @@ public class Employee {
         this.user = user;
     }
 
-    public Individual getIndividual() {
-        return individual;
-    }
-
-    public void setIndividual(Individual individual) {
-        this.individual = individual;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 }

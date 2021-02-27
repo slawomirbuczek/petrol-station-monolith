@@ -1,11 +1,9 @@
 package com.pk.petrolstationmonolith.services.transactions;
 
 import com.pk.petrolstationmonolith.dtos.transactions.TransactionDto;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.entities.transactions.Transaction;
-import com.pk.petrolstationmonolith.enums.pricelist.ServiceType;
+import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
-import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
 import com.pk.petrolstationmonolith.models.transactions.RequestAddTransaction;
 import com.pk.petrolstationmonolith.models.transactions.Transactions;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
@@ -19,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,17 +26,32 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final LoyaltyProgramService loyaltyProgramService;
     private final UserService userService;
-    private final ModelMapper modelMapper;
+    private final ModelMapper mapper;
 
-    public TransactionService(TransactionRepository transactionRepository, LoyaltyProgramService loyaltyProgramService, UserService userService) {
+    public TransactionService(TransactionRepository transactionRepository, LoyaltyProgramService loyaltyProgramService,
+                              UserService userService, ModelMapper mapper) {
         this.transactionRepository = transactionRepository;
         this.loyaltyProgramService = loyaltyProgramService;
         this.userService = userService;
-        this.modelMapper = new ModelMapper();
+        this.mapper = mapper;
+    }
+
+    public TransactionDto getTransactionDto(long transactionId) {
+        return mapTransactionToDto(getTransaction(transactionId));
+    }
+
+    public Transaction getTransaction(long transactionId) {
+        return transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new InvalidTransactionIdException(transactionId));
+    }
+
+    public Transactions getTransactions(long userId) {
+        return new Transactions(transactionRepository.findAllByUserId(userId).stream()
+                .map(this::mapTransactionToDto).collect(Collectors.toList()));
     }
 
     public TransactionDto addTransaction(RequestAddTransaction request, Long userId) {
-        Transaction transaction = modelMapper.map(request, Transaction.class);
+        Transaction transaction = mapper.map(request, Transaction.class);
 
         if (Objects.nonNull(userId)) {
             transaction.setUser(userService.getUser(userId));
@@ -47,13 +61,15 @@ public class TransactionService {
         return mapTransactionToDto(transactionRepository.save(transaction));
     }
 
-    public Transactions getTransactions(long userId) {
-        User user = userService.getUser(userId);
-        return new Transactions(transactionRepository.findAllByUser(user).stream()
-                .map(this::mapTransactionToDto).collect(Collectors.toList()));
+    public boolean transactionAssociatedWithUser(long transactionId, long userId) {
+        Transaction transaction = getTransaction(transactionId);
+        return Objects.nonNull(transaction.getUser()) && transaction.getUser().getId() == userId;
     }
 
-    public TransactionsReport getTransactionsMonthlyReport(int year, int month) {
+    public TransactionsReport getTransactionsMonthlyReport(Optional<Integer> optionalYear, Optional<Integer> optionalMonth) {
+        int year = optionalYear.orElseGet(() -> LocalDate.now().getYear());
+        int month = optionalMonth.orElseGet(() -> LocalDate.now().getMonthValue());
+
         LocalDateTime from = LocalDate.of(year, month, 1).atStartOfDay();
         LocalDateTime to = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth()).plusDays(1).atStartOfDay();
 
@@ -73,13 +89,8 @@ public class TransactionService {
         return report;
     }
 
-    public Transaction getTransaction(long id) {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new InvalidTransactionIdException(id));
-    }
-
-    public TransactionDto mapTransactionToDto(Transaction transaction) {
-        return modelMapper.map(transaction, TransactionDto.class);
+    private TransactionDto mapTransactionToDto(Transaction transaction) {
+        return mapper.map(transaction, TransactionDto.class);
     }
 
 }
