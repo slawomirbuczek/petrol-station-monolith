@@ -1,6 +1,9 @@
 package com.pk.petrolstationmonolith.entities.account;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -8,10 +11,11 @@ import java.util.UUID;
 public class EmailToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID token;
+
+    private LocalDateTime creationDateTime;
 
     @OneToOne
     private User user;
@@ -19,34 +23,38 @@ public class EmailToken {
     public EmailToken() {
     }
 
-    public EmailToken(Long id, UUID token, User user) {
-        this.id = id;
-        this.token = token;
+    public EmailToken(User user) {
         this.user = user;
+        creationDateTime = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
+    public EmailToken(UUID token, User user) {
+        this.token = token;
+        this.user = user;
+        creationDateTime = LocalDateTime.now();
     }
 
     public UUID getToken() {
         return token;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setToken(UUID token) {
         this.token = token;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
-
 }

@@ -23,7 +23,6 @@ public class PriceListController {
     }
 
     @GetMapping
-    @PreAuthorize("permitAll()")
     public ResponseEntity<ResponsePriceList> getPriceList() {
         logger.trace("getPriceList method invoked");
         return ResponseEntity.ok(priceListService.getPriceList());

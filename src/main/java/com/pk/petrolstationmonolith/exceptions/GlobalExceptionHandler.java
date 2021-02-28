@@ -18,6 +18,8 @@ import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssoci
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.validation.ValidationExceptionMessages;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,6 +55,17 @@ public class GlobalExceptionHandler {
                 )));
 
         return new ValidationExceptionMessages(errorMessages);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseMessage handleAccessDeniedException(AccessDeniedException ex) {
+        return new ResponseMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseMessage handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+        return new ResponseMessage("Wrong data format");
     }
 
     @ExceptionHandler(UserNotFoundException.class)

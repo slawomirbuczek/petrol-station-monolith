@@ -45,11 +45,24 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(encodePassword(user.getPassword()));
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new EmailAlreadyTakenException(user.getEmail());
         }
         return userRepository.save(user);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(encodePassword(newPassword));
+        userRepository.save(user);
+    }
+
+    public boolean passwordMatches(String encodedPassword, String password) {
+        return encoder.matches(password, encodedPassword);
+    }
+
+    private String encodePassword(String password) {
+        return encoder.encode(password);
     }
 
     private UserDto mapUserToDto(User user) {

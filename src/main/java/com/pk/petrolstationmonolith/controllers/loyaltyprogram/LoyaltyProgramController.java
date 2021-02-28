@@ -26,14 +26,12 @@ public class LoyaltyProgramController {
     }
 
     @PostMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<Points> joinLoyaltyProgram(Principal principal) {
         logger.trace("joinLoyaltyProgram method invoked");
         return ResponseEntity.ok(loyaltyProgramService.joinLoyaltyProgram(Long.parseLong(principal.getName())));
     }
 
     @GetMapping("/points")
-    @PreAuthorize("authenticated()")
     public ResponseEntity<Points> getPoints(Principal principal) {
         logger.trace("getPoints method invoked");
         return ResponseEntity.ok(loyaltyProgramService.getPoints(Long.parseLong(principal.getName())));
@@ -57,7 +55,6 @@ public class LoyaltyProgramController {
     }
 
     @PostMapping("/services/{serviceType}")
-    @PreAuthorize("authenticated()")
     public ResponseEntity<Points> exchangePoints(
             @PathVariable ServiceType serviceType,
             @Valid @RequestBody Points points,
@@ -76,7 +73,6 @@ public class LoyaltyProgramController {
     }
 
     @GetMapping("/services")
-    @PreAuthorize("permitAll()")
     public ResponseEntity<ProgramParameters> getProgramParameters() {
         logger.trace("getProgramParameters method invoked");
         return ResponseEntity.ok(loyaltyProgramService.getProgramParameters());

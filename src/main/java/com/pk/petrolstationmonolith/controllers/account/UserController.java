@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/account/users")
+@RequestMapping("/account")
 public class UserController {
 
     private final UserService userService;
@@ -23,14 +23,13 @@ public class UserController {
     public void login(@RequestBody UserCredentials credentials) {
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/users/{userId}")
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<UserDto> getUserDtoByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getUserDto(userId));
     }
 
-    @GetMapping
-    @PreAuthorize("authenticated()")
+    @GetMapping("/users")
     public ResponseEntity<UserDto> getUserDto(Principal principal) {
         return ResponseEntity.ok(userService.getUserDto(Long.parseLong(principal.getName())));
     }

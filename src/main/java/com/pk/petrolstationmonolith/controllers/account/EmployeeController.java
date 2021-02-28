@@ -20,7 +20,6 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<EmployeeDto> getEmployee(Principal principal) {
         return ResponseEntity.ok(employeeService.getEmployeeDto(Long.parseLong(principal.getName())));
     }

@@ -20,7 +20,6 @@ public class CompanyController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<CompanyDto> getCompany(Principal principal) {
         return ResponseEntity.ok(companyService.getCompanyDto(Long.parseLong(principal.getName())));
     }

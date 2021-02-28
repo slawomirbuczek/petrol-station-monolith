@@ -10,7 +10,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +25,7 @@ import java.security.Key;
 import java.util.UUID;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -61,6 +64,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
 
                 .antMatchers("/actuator/**").hasAnyRole(Roles.ADMIN.name(), Roles.OWNER.name())
+
+                .antMatchers(HttpMethod.POST, "/account/login").permitAll()
+
+                .antMatchers("/account/registration/**").permitAll()
+
+                .antMatchers(HttpMethod.POST,"/account/password").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/account/password").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/loayltyprogram/services").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/pricelist").permitAll()
 
                 .anyRequest().authenticated()
 

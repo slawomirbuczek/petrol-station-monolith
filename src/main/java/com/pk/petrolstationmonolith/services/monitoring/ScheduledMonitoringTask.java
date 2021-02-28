@@ -2,18 +2,16 @@ package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
-@Configuration
-@EnableScheduling
+@Component
 public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
     private final MonitoringService monitoringService;
@@ -23,7 +21,6 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
         this.monitoringService = monitoringService;
         this.properties = properties;
     }
-
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {

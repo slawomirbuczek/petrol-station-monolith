@@ -69,7 +69,7 @@ class PasswordServiceTests {
 
         RequestUpdatePassword request = new RequestUpdatePassword("password", "newPassword");
 
-        ResponseMessage response = passwordService.updatePassword(request, principal);
+        ResponseMessage response = passwordService.updatePassword(request, Long.parseLong(principal.getName()));
 
         assertThat(response.getMessage()).contains("Password successfully updated.");
 
@@ -81,7 +81,7 @@ class PasswordServiceTests {
 
         RequestUpdatePassword request = new RequestUpdatePassword("WRONG", "newPassword");
 
-        assertThatThrownBy(() -> passwordService.updatePassword(request, principal))
+        assertThatThrownBy(() -> passwordService.updatePassword(request, Long.parseLong(principal.getName())))
                 .isInstanceOf(InvalidPasswordException.class)
                 .hasMessage("Invalid password");
 
@@ -101,7 +101,7 @@ class PasswordServiceTests {
     @Test
     void shouldReturnResponseMessageWhenCredentialsAreCorrect() {
         UUID uuid = UUID.randomUUID();
-        EmailToken emailToken = new EmailToken(1L, uuid, user);
+        EmailToken emailToken = new EmailToken(uuid, user);
 
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));
@@ -117,7 +117,7 @@ class PasswordServiceTests {
     @Test
     void shouldThrowInvalidEmailTokenExceptionWhenTokenIsInvalid() {
         UUID uuid = UUID.randomUUID();
-        EmailToken emailToken = new EmailToken(1L, uuid, user);
+        EmailToken emailToken = new EmailToken(uuid, user);
 
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.empty());
@@ -134,7 +134,7 @@ class PasswordServiceTests {
         UUID uuid = UUID.randomUUID();
         User emailTokenUser = new User();
         emailTokenUser.setId(2L);
-        EmailToken emailToken = new EmailToken(1L, uuid, emailTokenUser);
+        EmailToken emailToken = new EmailToken(uuid, emailTokenUser);
 
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));

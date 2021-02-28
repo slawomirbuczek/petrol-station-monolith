@@ -20,7 +20,6 @@ public class AddressController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<AddressDto> getAddress(Principal principal) {
         return ResponseEntity.ok(addressService.getAddressDto(Long.parseLong(principal.getName())));
     }

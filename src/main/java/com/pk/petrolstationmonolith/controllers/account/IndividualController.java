@@ -20,7 +20,6 @@ public class IndividualController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<IndividualDto> getIndividual(Principal principal) {
         return ResponseEntity.ok(individualService.getIndividualDto(Long.parseLong(principal.getName())));
     }

@@ -40,7 +40,6 @@ public class TransactionController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<Transactions> getTransactions(Principal principal) {
         logger.trace("getTransactions method invoked");
         return ResponseEntity.ok(transactionService.getTransactions(Long.parseLong(principal.getName())));

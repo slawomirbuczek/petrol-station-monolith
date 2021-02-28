@@ -37,7 +37,6 @@ public class ReservationController {
     }
 
     @GetMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<Reservations> getReservations(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> optionalDate) {
         logger.trace("Get reservations method invoked with optionalDate " + optionalDate.toString());
@@ -45,14 +44,12 @@ public class ReservationController {
     }
 
     @PostMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<ResponseReservation> reserve(@Valid @RequestBody RequestDateTime request, Principal principal) {
         logger.trace("Reserve method invoked with date " + request.getDateTime().toString() + " and user " + principal.getName());
         return ResponseEntity.ok(reservationService.reserve(request, Long.parseLong(principal.getName())));
     }
 
     @DeleteMapping
-    @PreAuthorize("authenticated()")
     public ResponseEntity<ResponseReservation> cancelReseravation(@Valid @RequestBody RequestDateTime request,
                                                                   Principal principal) {
         logger.trace("Cancel reseravation method invoked with date " + request.getDateTime().toString() + " and user " + principal.getName());
