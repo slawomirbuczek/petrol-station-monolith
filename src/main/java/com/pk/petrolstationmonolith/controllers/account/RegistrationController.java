@@ -1,11 +1,13 @@
 package com.pk.petrolstationmonolith.controllers.account;
 
+import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
 import com.pk.petrolstationmonolith.services.account.RegistrationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +36,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<UserCredentials> registerEmployee(@Valid @RequestBody EmployeeRegistrationCredentials credentials) {
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+    public ResponseEntity<EmployeeDto> registerEmployee(@Valid @RequestBody EmployeeRegistrationCredentials credentials) {
         return ResponseEntity.ok(registrationService.registerEmployee(credentials));
     }
 

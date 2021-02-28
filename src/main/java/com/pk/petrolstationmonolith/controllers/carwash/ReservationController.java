@@ -43,6 +43,11 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservations(optionalDate));
     }
 
+    @GetMapping("/history")
+    public ResponseEntity<Reservations> getUserReservations(Principal principal) {
+        return ResponseEntity.ok(reservationService.getUserReservation(Long.parseLong(principal.getName())));
+    }
+
     @PostMapping
     public ResponseEntity<ResponseReservation> reserve(@Valid @RequestBody RequestDateTime request, Principal principal) {
         logger.trace("Reserve method invoked with date " + request.getDateTime().toString() + " and user " + principal.getName());

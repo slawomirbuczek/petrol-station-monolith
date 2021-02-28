@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/simulations")
-@PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+@PreAuthorize("hasRole('OWNER')")
 public class SimulationController {
 
     private final Logger logger = LoggerFactory.getLogger(SimulationController.class);

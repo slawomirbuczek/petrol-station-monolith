@@ -1,5 +1,6 @@
 package com.pk.petrolstationmonolith.services.account;
 
+import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
 import com.pk.petrolstationmonolith.entities.account.*;
 import com.pk.petrolstationmonolith.enums.account.UserType;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
@@ -71,27 +72,14 @@ public class RegistrationService {
         return new UserCredentials(user.getUsername(), password);
     }
 
-    public UserCredentials registerEmployee(EmployeeRegistrationCredentials credentials) {
-        String password = generatePassword();
-
-        User user = mapper.map(credentials, User.class);
-        user.setUserType(UserType.EMPLOYEE);
-        user.setPassword(password);
-        user = userService.addUser(user);
-
-        Address address = mapper.map(credentials, Address.class);
-        address.setUser(user);
-        addressService.addAddress(address);
-
-        Individual individual = mapper.map(credentials, Individual.class);
-        individual.setUser(user);
-        individualService.addIndividual(individual);
+    public EmployeeDto registerEmployee(EmployeeRegistrationCredentials credentials) {
+        User user = userService.changeUserTypeToEmployeeAndSetRole(credentials.getUserId(), credentials.getRole());
 
         Employee employee = mapper.map(credentials, Employee.class);
         employee.setUser(user);
         employeeService.addEmployee(employee);
 
-        return new UserCredentials(user.getUsername(), password);
+        return employeeService.getEmployeeDto(credentials.getUserId());
     }
 
     private String generatePassword() {

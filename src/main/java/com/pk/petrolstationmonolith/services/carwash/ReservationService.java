@@ -57,6 +57,10 @@ public class ReservationService {
         return new ReservationDetails(dateTime, userId, name);
     }
 
+    public Reservations getUserReservation(long userId) {
+        return mapListOfReservationsToReservations(reservationRepository.findAllByUserId(userId));
+    }
+
     public Reservations getReservations(Optional<LocalDate> optionalDate) {
         LocalDate date = optionalDate.orElseGet(LocalDate::now);
 
@@ -71,9 +75,7 @@ public class ReservationService {
             return createEmptyReservationsForDate(date);
         }
 
-        return new Reservations(
-                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
-        );
+        return mapListOfReservationsToReservations(reservations);
 
     }
 
@@ -115,9 +117,7 @@ public class ReservationService {
             )));
         }
 
-        return new Reservations(
-                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
-        );
+        return mapListOfReservationsToReservations(reservations);
     }
 
     private Reservation createNewReservation(LocalDateTime dateTime) {
@@ -133,4 +133,9 @@ public class ReservationService {
         return responseReservation;
     }
 
+    private Reservations mapListOfReservationsToReservations(List<Reservation> reservations) {
+        return new Reservations(
+                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
+        );
+    }
 }

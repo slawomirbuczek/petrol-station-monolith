@@ -2,6 +2,8 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.account.UserType;
 import com.pk.petrolstationmonolith.exceptions.account.EmailAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
@@ -59,6 +61,13 @@ public class UserService {
 
     public boolean passwordMatches(String encodedPassword, String password) {
         return encoder.matches(password, encodedPassword);
+    }
+
+    public User changeUserTypeToEmployeeAndSetRole(long userId, Roles role) {
+        User user = getUser(userId);
+        user.setUserType(UserType.EMPLOYEE);
+        user.setRole(role);
+        return userRepository.save(user);
     }
 
     private String encodePassword(String password) {
