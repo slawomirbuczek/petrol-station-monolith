@@ -32,9 +32,9 @@ public class MailService {
         this.emailConfig = emailConfig;
     }
 
-    public void sendPasswordResetEmail(String email, UUID token) {
+    public void sendPasswordResetMail(String email, UUID token) {
         Map<String, String> model = new HashMap<>();
-        model.put("link", "http://localhost:8080/account/password?token=" + token + "&email=" + email);
+        model.put("token", token.toString());
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -54,7 +54,51 @@ public class MailService {
 
     }
 
-    public void sendMonitoringAlarmEmail(String email, ServiceType serviceType, AlarmType alarmType, int number, LocalDateTime dateTime) {
+    public void sendEmailConfirmationMail(String email, UUID token) {
+        Map<String, String> model = new HashMap<>();
+        model.put("link", "http://localhost:8080/account/registration/" + token);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+            Template template = emailConfig.getTemplate("email_confirmation.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setText(html, true);
+            mimeMessageHelper.setSubject("Active Your Petrol Station Account");
+
+            mailSender.send(message);
+        } catch (IOException | MessagingException | TemplateException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void sendEmailUpdateMail(String email, UUID token) {
+        Map<String, String> model = new HashMap<>();
+        model.put("token", token.toString());
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+            Template template = emailConfig.getTemplate("email_update.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setText(html, true);
+            mimeMessageHelper.setSubject("Update Your Petrol Station Account Email");
+
+            mailSender.send(message);
+        } catch (IOException | MessagingException | TemplateException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void sendMonitoringAlarmMail(String email, ServiceType serviceType, AlarmType alarmType, int number, LocalDateTime dateTime) {
         Map<String, String> model = new HashMap<>();
         model.put("serviceType", serviceType.name());
         model.put("alarmType", alarmType.name());
@@ -78,6 +122,5 @@ public class MailService {
         }
 
     }
-
 
 }

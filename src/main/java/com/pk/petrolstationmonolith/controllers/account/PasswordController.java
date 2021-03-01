@@ -33,11 +33,8 @@ public class PasswordController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> setNewPassword(
-            @Valid @RequestBody RequestNewPassword request,
-            @RequestParam String token,
-            @RequestParam String email) {
-        return ResponseEntity.ok(passwordService.setNewPassword(request, token, email));
+    public ResponseEntity<ResponseMessage> setNewPassword(@Valid @RequestBody RequestNewPassword request) {
+        return ResponseEntity.ok(passwordService.setNewPassword(request));
     }
 
 }

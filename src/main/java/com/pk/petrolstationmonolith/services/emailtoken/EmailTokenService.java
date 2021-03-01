@@ -40,7 +40,7 @@ public class EmailTokenService {
         emailTokenRepository.deleteByToken(getUUIDFromString(token));
     }
 
-    @Scheduled(fixedRate = 86_400_000)
+    @Scheduled(fixedRate = 3_600_000)
     public void deleteInactiveTokens() {
         LocalDateTime yesterdayDateTime = LocalDateTime.now().minusDays(1);
         emailTokenRepository.deleteAllByCreationDateTimeBefore(yesterdayDateTime);

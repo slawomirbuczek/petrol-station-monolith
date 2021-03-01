@@ -29,8 +29,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
+    private boolean enabled;
+
     public User() {
         this.role = Roles.USER;
+        this.enabled = false;
     }
 
     public User(String password, String email, UserType userType) {
@@ -38,6 +41,7 @@ public class User implements UserDetails {
         this.email = email;
         this.role = Roles.USER;
         this.userType = userType;
+        this.enabled = false;
     }
 
     public User(Long id, String password, String email, Roles role, UserType userType) {
@@ -46,6 +50,7 @@ public class User implements UserDetails {
         this.email = email;
         this.role = role;
         this.userType = userType;
+        this.enabled = true;
     }
 
     @Override
@@ -78,9 +83,13 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     public Long getId() {

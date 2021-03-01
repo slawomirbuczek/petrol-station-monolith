@@ -20,7 +20,7 @@ public class MonitoringAlarmSimulation {
 
     public void simulateMonitoringAlarm(RequestMonitoringSimulation request) {
         logger.trace("Sending simulated monitoring alarm.");
-        mailService.sendMonitoringAlarmEmail(request.getEmail(), request.getServiceType(),
+        mailService.sendMonitoringAlarmMail(request.getEmail(), request.getServiceType(),
                 request.getAlarmType(), request.getNumber(), LocalDateTime.now());
     }
 

@@ -6,12 +6,10 @@ import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrat
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
 import com.pk.petrolstationmonolith.services.account.RegistrationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -39,6 +37,12 @@ public class RegistrationController {
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
     public ResponseEntity<EmployeeDto> registerEmployee(@Valid @RequestBody EmployeeRegistrationCredentials credentials) {
         return ResponseEntity.ok(registrationService.registerEmployee(credentials));
+    }
+
+    @GetMapping("/{token}")
+    @ResponseStatus(HttpStatus.OK)
+    public void confirmEmail(@PathVariable String token) {
+        registrationService.confirmEmail(token);
     }
 
 }

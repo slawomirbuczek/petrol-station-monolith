@@ -9,22 +9,23 @@
 
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
-    <!-- use the font -->
     <style type="text/css">
         body {
             font-family: 'Roboto', sans-serif;
             font-size: 48px;
         }
     </style>
+
 </head>
 
 <body style="margin: 0; padding: 0;">
 
 <p>Hello there,</p>
-<p>Did you forget your password?</p>
-<a href=${link} class="button">Reset Password</a>
-<p>If you don't want to change your password or didn't request this, please ignore and delete this message.</p>
-<p>Thanks you,</p>
+<p>You are receiving this email beacause we received a password reset request for your account.</p>
+<p>Your token: ${token}</p>
+<p>If you did not request a password reset, please ignore and delete this mail.</p>
+
+<p>Regards,</p>
 <p>Petrol Station Team</p>
 
 </body>

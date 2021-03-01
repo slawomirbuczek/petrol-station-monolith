@@ -106,10 +106,9 @@ class PasswordServiceTests {
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));
 
-        RequestNewPassword request = new RequestNewPassword("newPassowrd");
+        RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
 
-        ResponseMessage responseMessage = passwordService.setNewPassword(
-                request, uuid.toString(), "email@email.com");
+        ResponseMessage responseMessage = passwordService.setNewPassword(request);
 
         assertThat(responseMessage.getMessage()).isEqualTo("New password has been set.");
     }
@@ -122,9 +121,9 @@ class PasswordServiceTests {
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.empty());
 
-        RequestNewPassword request = new RequestNewPassword("newPassowrd");
+        RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
 
-        assertThatThrownBy(() -> passwordService.setNewPassword(request, uuid.toString(), "email@email.com"))
+        assertThatThrownBy(() -> passwordService.setNewPassword(request))
                 .isInstanceOf(InvalidEmailTokenException.class)
                 .hasMessage("Invalid email token");
     }
@@ -139,9 +138,9 @@ class PasswordServiceTests {
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));
 
-        RequestNewPassword request = new RequestNewPassword("newPassowrd");
+        RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
 
-        assertThatThrownBy(() -> passwordService.setNewPassword(request, uuid.toString(), "email@email.com"))
+        assertThatThrownBy(() -> passwordService.setNewPassword(request))
                 .isInstanceOf(InvalidEmailTokenException.class)
                 .hasMessage("Invalid email token");
     }

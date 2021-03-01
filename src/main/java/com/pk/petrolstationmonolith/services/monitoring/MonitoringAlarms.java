@@ -75,7 +75,7 @@ public class MonitoringAlarms {
         logger.trace("Sending Alarm Email, serviceType: " + serviceType + " alarmType: " +
                 alarmType + " number: " + number + " dateTime: " + dateTime);
         String mail = "eal08544@zwoho.com"; //paste ur temp email here
-        mailService.sendMonitoringAlarmEmail(mail, serviceType, alarmType, number, dateTime);
+        mailService.sendMonitoringAlarmMail(mail, serviceType, alarmType, number, dateTime);
     }
 
 }

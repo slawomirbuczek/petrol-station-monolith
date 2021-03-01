@@ -1,8 +1,10 @@
 package com.pk.petrolstationmonolith.controllers.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
+import com.pk.petrolstationmonolith.models.account.RequestUpdateEmail;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.services.account.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +36,16 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserDto(Long.parseLong(principal.getName())));
     }
 
+    @PostMapping("/email")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendUpdateEmailMail(Principal principal) {
+        userService.sendUpdateEmailMail(Long.parseLong(principal.getName()));
+    }
+
+    @PutMapping("/email")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateEmail(Principal principal, RequestUpdateEmail request) {
+        userService.updateEmail(Long.parseLong(principal.getName()), request);
+    }
 
 }

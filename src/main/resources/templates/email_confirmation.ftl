@@ -20,12 +20,12 @@
 
 <body style="margin: 0; padding: 0;">
 
-<p>Monitoring alarm,</p>
-<p>Service type: ${serviceType}</p>
-<p>Alarm type: ${alarmType}</p>
-<p>Number: ${number}</p>
-<p>Date: ${dataTime}</p>
-<br/>
+<p>Hello there,</p>
+<p>Pleas click the button below to confirm your email.</p>
+<a href=${link} class="button">Confirm email</a>
+<p>If You didn't request this, please ignore and delete this message.</p>
+
+<p>Regards,</p>
 <p>Petrol Station Team</p>
 
 </body>

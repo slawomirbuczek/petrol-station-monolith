@@ -1,8 +1,12 @@
 package com.pk.petrolstationmonolith.models.account;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 public class RequestUpdateEmail {
+
+    @NotBlank
+    private String token;
 
     @Email
     private String email;
@@ -10,8 +14,17 @@ public class RequestUpdateEmail {
     public RequestUpdateEmail() {
     }
 
-    public RequestUpdateEmail(String email) {
+    public RequestUpdateEmail(@NotBlank String token, @Email String email) {
+        this.token = token;
         this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getEmail() {

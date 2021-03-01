@@ -20,12 +20,12 @@
 
 <body style="margin: 0; padding: 0;">
 
-<p>Monitoring alarm,</p>
-<p>Service type: ${serviceType}</p>
-<p>Alarm type: ${alarmType}</p>
-<p>Number: ${number}</p>
-<p>Date: ${dataTime}</p>
-<br/>
+<p>Hello there,</p>
+<p>You are receiving this email beacause we received a email change request for your account.</p>
+<p>Your token: ${token}</p>
+<p>If you did not request a email change, please change your password immediately.</p>
+
+<p>Regards,</p>
 <p>Petrol Station Team</p>
 
 </body>

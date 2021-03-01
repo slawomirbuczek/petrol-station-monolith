@@ -41,20 +41,20 @@ public class PasswordService {
 
         EmailToken emailToken = emailTokenService.createNewToken(user);
 
-        mailService.sendPasswordResetEmail(user.getEmail(), emailToken.getToken());
+        mailService.sendPasswordResetMail(user.getEmail(), emailToken.getToken());
 
         return new ResponseMessage("Reset password email has been sent.");
     }
 
-    public ResponseMessage setNewPassword(RequestNewPassword request, String token, String email) {
-        User user = userService.getUserByEmail(email);
+    public ResponseMessage setNewPassword(RequestNewPassword request) {
+        User user = userService.getUserByEmail(request.getEmail());
 
-        if (!emailTokenService.validateToken(token, user.getId())) {
+        if (!emailTokenService.validateToken(request.getToken(), user.getId())) {
             throw new InvalidEmailTokenException();
         }
 
         userService.updatePassword(user, request.getNewPassword());
-        emailTokenService.deleteToken(token);
+        emailTokenService.deleteToken(request.getToken());
 
         return new ResponseMessage("New password has been set.");
     }

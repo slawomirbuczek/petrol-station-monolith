@@ -22,4 +22,5 @@ public interface EmailTokenRepository extends JpaRepository<EmailToken, Long> {
     @Transactional
     void deleteAllByCreationDateTimeBefore(LocalDateTime creationDateTime);
 
+
 }

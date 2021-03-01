@@ -102,6 +102,13 @@
             <version>2.9.2</version>
         </dependency>
 
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- Model mapper -->
         <dependency>
             <groupId>org.modelmapper</groupId>
