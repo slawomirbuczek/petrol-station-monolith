@@ -6,6 +6,7 @@ import com.pk.petrolstationmonolith.models.monitoring.Parameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
 import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,11 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/monitoring")
 @PreAuthorize("hasAnyRole('MONITORING','ADMIN','OWNER')")
+@AllArgsConstructor
 public class MonitoringController {
 
     private final Logger logger = LoggerFactory.getLogger(MonitoringController.class);
     private final MonitoringService monitoringService;
-
-    public MonitoringController(MonitoringService monitoringService) {
-        this.monitoringService = monitoringService;
-    }
 
     @GetMapping("/parameters")
     public ResponseEntity<Parameter> getCurrentParameters() {

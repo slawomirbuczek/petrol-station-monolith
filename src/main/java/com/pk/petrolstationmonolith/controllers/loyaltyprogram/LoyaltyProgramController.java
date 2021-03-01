@@ -5,6 +5,7 @@ import com.pk.petrolstationmonolith.models.loyaltyprogram.Points;
 import com.pk.petrolstationmonolith.models.loyaltyprogram.ProgramParameters;
 import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestChangeProgramParameters;
 import com.pk.petrolstationmonolith.services.loyaltyprogram.LoyaltyProgramService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,11 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/loayltyprogram")
+@AllArgsConstructor
 public class LoyaltyProgramController {
 
     private final Logger logger = LoggerFactory.getLogger(LoyaltyProgramController.class);
     private final LoyaltyProgramService loyaltyProgramService;
-
-    public LoyaltyProgramController(LoyaltyProgramService loyaltyProgramService) {
-        this.loyaltyProgramService = loyaltyProgramService;
-    }
 
     @PostMapping
     public ResponseEntity<Points> joinLoyaltyProgram(Principal principal) {

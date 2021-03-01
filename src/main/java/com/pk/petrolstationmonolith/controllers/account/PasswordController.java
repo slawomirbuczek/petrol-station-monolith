@@ -5,6 +5,7 @@ import com.pk.petrolstationmonolith.models.account.password.RequestNewPassword;
 import com.pk.petrolstationmonolith.models.account.password.RequestResetPassword;
 import com.pk.petrolstationmonolith.models.account.password.RequestUpdatePassword;
 import com.pk.petrolstationmonolith.services.account.PasswordService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +14,10 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/account/password")
+@AllArgsConstructor
 public class PasswordController {
 
     private final PasswordService passwordService;
-
-    public PasswordController(PasswordService passwordService) {
-        this.passwordService = passwordService;
-    }
 
     @PutMapping
     public ResponseEntity<ResponseMessage> updatePassword(@Valid @RequestBody RequestUpdatePassword request,

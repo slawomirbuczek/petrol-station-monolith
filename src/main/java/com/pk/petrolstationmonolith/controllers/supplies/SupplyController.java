@@ -4,6 +4,7 @@ import com.pk.petrolstationmonolith.dtos.supplies.SupplyDto;
 import com.pk.petrolstationmonolith.entities.supplies.Supply;
 import com.pk.petrolstationmonolith.models.supplies.Supplies;
 import com.pk.petrolstationmonolith.services.supplies.SupplyService;
+import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +17,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/supplies")
 @PreAuthorize("hasRole('OWNER')")
+@AllArgsConstructor
 public class SupplyController {
 
     private final SupplyService supplyService;
-
-    public SupplyController(SupplyService supplyService) {
-        this.supplyService = supplyService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Supply> getSupplyById(@PathVariable long id) {

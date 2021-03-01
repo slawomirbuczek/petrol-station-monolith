@@ -1,10 +1,16 @@
 package com.pk.petrolstationmonolith.models.account.registration;
 
 import com.pk.petrolstationmonolith.enums.account.Roles;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.sql.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeRegistrationCredentials {
 
     @Positive(message = "User id must be a positive number")
@@ -29,73 +35,4 @@ public class EmployeeRegistrationCredentials {
     @NotNull(message = "Start date of work cannot be null")
     private String startDateOfWork;
 
-    public EmployeeRegistrationCredentials() {
-    }
-
-    public EmployeeRegistrationCredentials(long userId, Roles role, String phoneNumber, Date dateOfBirth, int salary, String accountNumber,
-                                           String startDateOfWork) {
-        this.userId = userId;
-        this.role = role;
-        this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
-        this.salary = salary;
-        this.accountNumber = accountNumber;
-        this.startDateOfWork = startDateOfWork;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getStartDateOfWork() {
-        return startDateOfWork;
-    }
-
-    public void setStartDateOfWork(String startDateOfWork) {
-        this.startDateOfWork = startDateOfWork;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public Roles getRole() {
-        return role;
-    }
-
-    public void setRole(Roles role) {
-        this.role = role;
-    }
 }

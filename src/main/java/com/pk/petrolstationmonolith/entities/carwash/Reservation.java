@@ -1,6 +1,9 @@
 package com.pk.petrolstationmonolith.entities.carwash;
 
 import com.pk.petrolstationmonolith.entities.account.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservation")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
     @Id
@@ -18,27 +24,4 @@ public class Reservation {
     @OneToOne
     private User user;
 
-    public Reservation() {
-    }
-
-    public Reservation(LocalDateTime dateTime, User user) {
-        this.dateTime = dateTime;
-        this.user = user;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

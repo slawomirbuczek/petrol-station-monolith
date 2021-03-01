@@ -10,20 +10,16 @@ import com.pk.petrolstationmonolith.models.account.password.RequestResetPassword
 import com.pk.petrolstationmonolith.models.account.password.RequestUpdatePassword;
 import com.pk.petrolstationmonolith.services.emailtoken.EmailTokenService;
 import com.pk.petrolstationmonolith.services.mail.MailService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class PasswordService {
 
     private final UserService userService;
     private final EmailTokenService emailTokenService;
     private final MailService mailService;
-
-    public PasswordService(UserService userService, EmailTokenService emailTokenService, MailService mailService) {
-        this.userService = userService;
-        this.emailTokenService = emailTokenService;
-        this.mailService = mailService;
-    }
 
     public ResponseMessage updatePassword(RequestUpdatePassword request, long userId) {
         User user = userService.getUser(userId);

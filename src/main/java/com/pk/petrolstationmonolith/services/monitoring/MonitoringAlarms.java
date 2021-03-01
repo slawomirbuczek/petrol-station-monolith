@@ -6,6 +6,7 @@ import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import com.pk.petrolstationmonolith.services.mail.MailService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,19 +14,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
+@AllArgsConstructor
 public class MonitoringAlarms {
 
     private final ParameterRepository parameterRepository;
     private final MonitoringProperties monitoringProperties;
     private final MailService mailService;
     private final Logger logger = LoggerFactory.getLogger(MonitoringAlarms.class);
-
-    public MonitoringAlarms(ParameterRepository parameterRepository,
-                            MonitoringProperties monitoringProperties, MailService mailService) {
-        this.parameterRepository = parameterRepository;
-        this.monitoringProperties = monitoringProperties;
-        this.mailService = mailService;
-    }
 
     public void checkMonitoringAlarmState() {
         Parameter parameter = parameterRepository.findTopByOrderByDateTimeDesc();

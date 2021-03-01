@@ -6,25 +6,20 @@ import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.enums.account.UserType;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.sql.Date;
 
 @Component
+@AllArgsConstructor
 public class DefaultUsers {
 
     private final UserService userService;
     private final AddressService addressService;
     private final IndividualService individualService;
     private final EmployeeService employeeService;
-
-    public DefaultUsers(UserService userService, AddressService addressService, IndividualService individualService, EmployeeService employeeService) {
-        this.userService = userService;
-        this.addressService = addressService;
-        this.individualService = individualService;
-        this.employeeService = employeeService;
-    }
 
     @PostConstruct
     private void addDefaultUsers() {

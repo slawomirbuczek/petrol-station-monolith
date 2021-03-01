@@ -3,6 +3,7 @@ package com.pk.petrolstationmonolith.controllers.pricelist;
 import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
 import com.pk.petrolstationmonolith.models.pricelist.ResponsePriceList;
 import com.pk.petrolstationmonolith.services.pricelist.PriceListService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,11 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/pricelist")
+@AllArgsConstructor
 public class PriceListController {
 
     private final Logger logger = LoggerFactory.getLogger(PriceListController.class);
     private final PriceListService priceListService;
-
-    public PriceListController(PriceListService priceListService) {
-        this.priceListService = priceListService;
-    }
 
     @GetMapping
     public ResponseEntity<ResponsePriceList> getPriceList() {

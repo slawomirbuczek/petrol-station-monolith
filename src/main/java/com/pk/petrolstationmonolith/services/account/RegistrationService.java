@@ -9,6 +9,7 @@ import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistra
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
 import com.pk.petrolstationmonolith.services.emailtoken.EmailTokenService;
 import com.pk.petrolstationmonolith.services.mail.MailService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 @Service
+@AllArgsConstructor
 public class RegistrationService {
 
     private final UserService userService;
@@ -26,18 +28,6 @@ public class RegistrationService {
     private final EmailTokenService emailTokenService;
     private final MailService mailService;
     private final ModelMapper mapper;
-
-    public RegistrationService(UserService userService, AddressService addressService, CompanyService companyService,
-                               IndividualService individualService, EmployeeService employeeService, EmailTokenService emailTokenService, MailService mailService, ModelMapper mapper) {
-        this.userService = userService;
-        this.addressService = addressService;
-        this.companyService = companyService;
-        this.individualService = individualService;
-        this.employeeService = employeeService;
-        this.emailTokenService = emailTokenService;
-        this.mailService = mailService;
-        this.mapper = mapper;
-    }
 
     public UserCredentials registerIndividual(IndividualRegistrationCredentials credentials) {
         String password = generatePassword();

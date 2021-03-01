@@ -7,23 +7,17 @@ import com.pk.petrolstationmonolith.services.account.AddressService;
 import com.pk.petrolstationmonolith.services.account.CompanyService;
 import com.pk.petrolstationmonolith.services.account.IndividualService;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class InvoiceService {
 
     private final TransactionService transactionService;
     private final CompanyService companyService;
     private final IndividualService individualService;
     private final AddressService addressService;
-
-    public InvoiceService(TransactionService transactionService, CompanyService companyService,
-                          IndividualService individualService, AddressService addressService) {
-        this.transactionService = transactionService;
-        this.companyService = companyService;
-        this.individualService = individualService;
-        this.addressService = addressService;
-    }
 
     public CompanyInvoice getCompanyInvoice(long transactionId, long userId) {
 

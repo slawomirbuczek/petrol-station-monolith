@@ -4,19 +4,16 @@ import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
 import com.pk.petrolstationmonolith.entities.account.Employee;
 import com.pk.petrolstationmonolith.exceptions.account.employee.EmployeeNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.EmployeeRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ModelMapper mapper;
-
-    public EmployeeService(EmployeeRepository employeeRepository, ModelMapper mapper) {
-        this.employeeRepository = employeeRepository;
-        this.mapper = mapper;
-    }
 
     public EmployeeDto getEmployeeDto(long userId) {
         return mapEmployeeToDto(getEmployee(userId));

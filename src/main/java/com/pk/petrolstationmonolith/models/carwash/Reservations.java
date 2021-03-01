@@ -1,24 +1,16 @@
 package com.pk.petrolstationmonolith.models.carwash;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservations {
 
     private List<ResponseReservation> reservations;
-
-    public Reservations() {
-    }
-
-    public Reservations(List<ResponseReservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public List<ResponseReservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<ResponseReservation> reservations) {
-        this.reservations = reservations;
-    }
 
 }

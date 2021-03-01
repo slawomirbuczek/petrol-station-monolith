@@ -1,8 +1,16 @@
 package com.pk.petrolstationmonolith.entities.account;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "individual")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Individual {
 
     @Id
@@ -20,62 +28,11 @@ public class Individual {
     @OneToOne
     private User user;
 
-    public Individual() {
-    }
-
     public Individual(String firstName, String lastName, String pesel, String nip, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
         this.nip = nip;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public String getNip() {
-        return nip;
-    }
-
-    public void setNip(String nip) {
-        this.nip = nip;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
         this.user = user;
     }
 

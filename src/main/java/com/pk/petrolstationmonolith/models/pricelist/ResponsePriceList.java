@@ -1,26 +1,17 @@
 package com.pk.petrolstationmonolith.models.pricelist;
 
 import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ResponsePriceList {
 
     private List<PetrolStationService> priceList;
 
-
-    public ResponsePriceList() {
-    }
-
-    public ResponsePriceList(List<PetrolStationService> priceList) {
-        this.priceList = priceList;
-    }
-
-    public List<PetrolStationService> getPriceList() {
-        return priceList;
-    }
-
-    public void setPriceList(List<PetrolStationService> priceList) {
-        this.priceList = priceList;
-    }
 }

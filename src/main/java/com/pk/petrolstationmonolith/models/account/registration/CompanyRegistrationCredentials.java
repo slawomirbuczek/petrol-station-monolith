@@ -1,9 +1,16 @@
 package com.pk.petrolstationmonolith.models.account.registration;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyRegistrationCredentials {
 
     @Email(message = "Email should be valid")
@@ -36,102 +43,5 @@ public class CompanyRegistrationCredentials {
     private String buildingNumber;
 
     private String apartmentNumber;
-
-    public CompanyRegistrationCredentials() {
-    }
-
-    public CompanyRegistrationCredentials(String name, String email, String regon, String nip, String country, String city,
-                                          String zip, String street, String buildingNumber, String apartmentNumber) {
-        this.name = name;
-        this.email = email;
-        this.regon = regon;
-        this.nip = nip;
-        this.country = country;
-        this.city = city;
-        this.zip = zip;
-        this.street = street;
-        this.buildingNumber = buildingNumber;
-        this.apartmentNumber = apartmentNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getRegon() {
-        return regon;
-    }
-
-    public String getNip() {
-        return nip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public String getApartmentNumber() {
-        return apartmentNumber;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setRegon(String regon) {
-        this.regon = regon;
-    }
-
-    public void setNip(String nip) {
-        this.nip = nip;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
-    }
 
 }

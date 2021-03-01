@@ -3,18 +3,16 @@ package com.pk.petrolstationmonolith.services.pricelist;
 
 import com.pk.petrolstationmonolith.entities.pricelist.PetrolStationService;
 import com.pk.petrolstationmonolith.enums.ServiceType;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @Component
+@AllArgsConstructor
 public class DefaultServices {
 
     private final PriceListService priceListService;
-
-    public DefaultServices(PriceListService priceListService) {
-        this.priceListService = priceListService;
-    }
 
     @PostConstruct
     private void addDefauldServices() {

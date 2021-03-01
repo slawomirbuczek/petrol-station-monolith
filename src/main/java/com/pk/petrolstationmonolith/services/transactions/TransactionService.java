@@ -10,6 +10,7 @@ import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
 import com.pk.petrolstationmonolith.repositories.transactions.TransactionRepository;
 import com.pk.petrolstationmonolith.services.account.UserService;
 import com.pk.petrolstationmonolith.services.loyaltyprogram.LoyaltyProgramService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final LoyaltyProgramService loyaltyProgramService;
     private final UserService userService;
     private final ModelMapper mapper;
-
-    public TransactionService(TransactionRepository transactionRepository, LoyaltyProgramService loyaltyProgramService,
-                              UserService userService, ModelMapper mapper) {
-        this.transactionRepository = transactionRepository;
-        this.loyaltyProgramService = loyaltyProgramService;
-        this.userService = userService;
-        this.mapper = mapper;
-    }
 
     public TransactionDto getTransactionDto(long transactionId) {
         return mapTransactionToDto(getTransaction(transactionId));

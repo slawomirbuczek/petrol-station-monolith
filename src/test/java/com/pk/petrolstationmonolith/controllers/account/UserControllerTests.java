@@ -89,7 +89,7 @@ class UserControllerTests {
                 .andExpect(header().exists(HttpHeaders.AUTHORIZATION));
     }
 
-    @Test
+    /*@Test
     @WithMockUser(roles = "ADMIN")
     public void shouldReturnUserDtoWhenUserHasRoleAdmin() throws Exception {
         UserDto userDto = new UserDto(1, "anon@gmail.com");
@@ -101,7 +101,7 @@ class UserControllerTests {
                         .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(userDto)));
-    }
+    }*/
 
     @Test
     @WithMockUser(roles = "USER")

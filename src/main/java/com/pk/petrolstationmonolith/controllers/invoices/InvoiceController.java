@@ -3,6 +3,7 @@ package com.pk.petrolstationmonolith.controllers.invoices;
 import com.pk.petrolstationmonolith.models.invoices.CompanyInvoice;
 import com.pk.petrolstationmonolith.models.invoices.IndividualInvoice;
 import com.pk.petrolstationmonolith.services.invoices.InvoiceService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +16,10 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/invoices")
 @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+@AllArgsConstructor
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
-
-    public InvoiceController(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
-    }
 
     @GetMapping("/company/{transactionId}")
     public ResponseEntity<CompanyInvoice> getCompanyInvoice(@PathVariable long transactionId, Principal principal) {

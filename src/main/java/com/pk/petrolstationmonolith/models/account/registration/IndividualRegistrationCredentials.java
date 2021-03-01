@@ -1,9 +1,16 @@
 package com.pk.petrolstationmonolith.models.account.registration;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class IndividualRegistrationCredentials {
 
     @Email(message = "Email should be valid")
@@ -40,110 +47,4 @@ public class IndividualRegistrationCredentials {
 
     private String apartmentNumber;
 
-    public IndividualRegistrationCredentials() {
-    }
-
-    public IndividualRegistrationCredentials(String firstName, String lastName, String email, String pesel,
-                                             String nip, String country, String city, String zip, String street,
-                                             String buildingNumber, String apartmentNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.pesel = pesel;
-        this.nip = nip;
-        this.country = country;
-        this.city = city;
-        this.zip = zip;
-        this.street = street;
-        this.buildingNumber = buildingNumber;
-        this.apartmentNumber = apartmentNumber;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public String getNip() {
-        return nip;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public String getApartmentNumber() {
-        return apartmentNumber;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public void setNip(String nip) {
-        this.nip = nip;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
-    }
 }

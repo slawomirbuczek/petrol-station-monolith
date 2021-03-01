@@ -1,8 +1,15 @@
 package com.pk.petrolstationmonolith.models.account;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestUpdateEmail {
 
     @NotBlank
@@ -11,27 +18,4 @@ public class RequestUpdateEmail {
     @Email
     private String email;
 
-    public RequestUpdateEmail() {
-    }
-
-    public RequestUpdateEmail(@NotBlank String token, @Email String email) {
-        this.token = token;
-        this.email = email;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

@@ -5,6 +5,7 @@ import com.pk.petrolstationmonolith.models.carwash.ReservationDetails;
 import com.pk.petrolstationmonolith.models.carwash.Reservations;
 import com.pk.petrolstationmonolith.models.carwash.ResponseReservation;
 import com.pk.petrolstationmonolith.services.carwash.ReservationService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,14 +21,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/carwash/reservations")
+@AllArgsConstructor
 public class ReservationController {
 
     private final Logger logger = LoggerFactory.getLogger(ReservationController.class);
     private final ReservationService reservationService;
-
-    public ReservationController(ReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
 
     @GetMapping("/{dateTime}")
     @PreAuthorize("hasAnyRole('CAR_WASH','ADMIN','OWNER')")

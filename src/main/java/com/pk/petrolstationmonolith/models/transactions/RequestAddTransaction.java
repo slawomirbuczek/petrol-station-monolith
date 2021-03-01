@@ -1,64 +1,29 @@
 package com.pk.petrolstationmonolith.models.transactions;
 
 import com.pk.petrolstationmonolith.enums.ServiceType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestAddTransaction {
 
-    @NotNull
+    @NotNull(message = "Service type cannot be null")
     private ServiceType serviceType;
 
-    @NotNull
+    @NotNull(message = "Date cannot be null")
     private LocalDateTime dateTime;
 
-    @Positive
+    @Positive(message = "Number must be positive")
     private int number;
 
-    @Positive
+    @Positive(message = "Cost must be positive number")
     private double cost;
 
-    public RequestAddTransaction() {
-    }
-
-    public RequestAddTransaction(ServiceType serviceType, LocalDateTime dateTime, int number, double cost) {
-        this.serviceType = serviceType;
-        this.dateTime = dateTime;
-        this.number = number;
-        this.cost = cost;
-    }
-
-    public ServiceType getServiceType() {
-        return serviceType;
-    }
-
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
 }

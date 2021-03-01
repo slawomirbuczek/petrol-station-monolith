@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.controllers.account;
 
 import com.pk.petrolstationmonolith.dtos.account.AddressDto;
 import com.pk.petrolstationmonolith.services.account.AddressService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,10 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/account/addresses")
+@AllArgsConstructor
 public class AddressController {
 
     private final AddressService addressService;
-
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
     @GetMapping
     public ResponseEntity<AddressDto> getAddress(Principal principal) {

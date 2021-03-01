@@ -1,5 +1,6 @@
 package com.pk.petrolstationmonolith.properties.auth;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("jwt")

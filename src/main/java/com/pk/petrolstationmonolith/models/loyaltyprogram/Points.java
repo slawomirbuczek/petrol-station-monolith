@@ -1,25 +1,17 @@
 package com.pk.petrolstationmonolith.models.loyaltyprogram;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Positive;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Points {
 
     @Positive
     private long points;
-
-    public Points() {
-    }
-
-    public Points(long points) {
-        this.points = points;
-    }
-
-    public long getPoints() {
-        return points;
-    }
-
-    public void setPoints(long points) {
-        this.points = points;
-    }
 
 }

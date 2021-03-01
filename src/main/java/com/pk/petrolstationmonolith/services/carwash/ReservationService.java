@@ -15,6 +15,7 @@ import com.pk.petrolstationmonolith.repositories.carwash.ReservationRepository;
 import com.pk.petrolstationmonolith.services.account.CompanyService;
 import com.pk.petrolstationmonolith.services.account.IndividualService;
 import com.pk.petrolstationmonolith.services.account.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,20 +28,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserService userService;
     private final IndividualService individualService;
     private final CompanyService companyService;
-
-    public ReservationService(ReservationRepository reservationRepository, UserService userService,
-                              IndividualService individualService, CompanyService companyService) {
-        this.reservationRepository = reservationRepository;
-        this.userService = userService;
-        this.individualService = individualService;
-        this.companyService = companyService;
-    }
 
     public ReservationDetails getReservationDetails(LocalDateTime dateTime) {
         Reservation reservation = getReservation(dateTime);

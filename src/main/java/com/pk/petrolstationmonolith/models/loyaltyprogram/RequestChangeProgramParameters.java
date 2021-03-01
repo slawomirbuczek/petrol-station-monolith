@@ -1,7 +1,14 @@
 package com.pk.petrolstationmonolith.models.loyaltyprogram;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Positive;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestChangeProgramParameters {
 
     @Positive
@@ -10,27 +17,4 @@ public class RequestChangeProgramParameters {
     @Positive
     private long cost;
 
-    public RequestChangeProgramParameters() {
-    }
-
-    public RequestChangeProgramParameters(long points, long cost) {
-        this.points = points;
-        this.cost = cost;
-    }
-
-    public long getPoints() {
-        return points;
-    }
-
-    public void setPoints(long points) {
-        this.points = points;
-    }
-
-    public long getCost() {
-        return cost;
-    }
-
-    public void setCost(long cost) {
-        this.cost = cost;
-    }
 }

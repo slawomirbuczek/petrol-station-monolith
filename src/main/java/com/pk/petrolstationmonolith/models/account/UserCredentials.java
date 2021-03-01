@@ -1,32 +1,20 @@
 package com.pk.petrolstationmonolith.models.account;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCredentials {
 
+    @NotBlank
     private String username;
+
+    @NotBlank
     private String password;
-
-    public UserCredentials() {
-    }
-
-    public UserCredentials(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 }

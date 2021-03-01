@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.controllers.account;
 
 import com.pk.petrolstationmonolith.dtos.account.CompanyDto;
 import com.pk.petrolstationmonolith.services.account.CompanyService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,10 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/account/companies")
+@AllArgsConstructor
 public class CompanyController {
 
     private final CompanyService companyService;
-
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
 
     @GetMapping
     public ResponseEntity<CompanyDto> getCompany(Principal principal) {

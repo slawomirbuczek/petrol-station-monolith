@@ -10,20 +10,17 @@ import com.pk.petrolstationmonolith.models.loyaltyprogram.ProgramParameters;
 import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestChangeProgramParameters;
 import com.pk.petrolstationmonolith.repositories.loyaltyprogram.LoyaltyProgramRepository;
 import com.pk.petrolstationmonolith.services.account.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class LoyaltyProgramService {
 
     private final LoyaltyProgramRepository loyaltyProgramRepository;
     private final UserService userService;
-
-    public LoyaltyProgramService(LoyaltyProgramRepository loyaltyProgramRepository, UserService userService) {
-        this.loyaltyProgramRepository = loyaltyProgramRepository;
-        this.userService = userService;
-    }
 
     public Points joinLoyaltyProgram(long userId) {
         if (loyaltyProgramRepository.findByUserId(userId).isPresent()) {

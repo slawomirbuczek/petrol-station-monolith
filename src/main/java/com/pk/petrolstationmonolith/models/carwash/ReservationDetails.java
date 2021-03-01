@@ -1,9 +1,15 @@
 package com.pk.petrolstationmonolith.models.carwash;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReservationDetails {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -13,36 +19,4 @@ public class ReservationDetails {
 
     private String name;
 
-    public ReservationDetails() {
-    }
-
-    public ReservationDetails(LocalDateTime dateTime, long userId, String name) {
-        this.dateTime = dateTime;
-        this.userId = userId;
-        this.name = name;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

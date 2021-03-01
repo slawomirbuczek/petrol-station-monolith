@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.controllers.account;
 
 import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
 import com.pk.petrolstationmonolith.services.account.IndividualService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,10 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/account/individuals")
+@AllArgsConstructor
 public class IndividualController {
 
     private final IndividualService individualService;
-
-    public IndividualController(IndividualService individualService) {
-        this.individualService = individualService;
-    }
 
     @GetMapping
     public ResponseEntity<IndividualDto> getIndividual(Principal principal) {

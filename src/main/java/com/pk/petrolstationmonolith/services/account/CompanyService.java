@@ -4,19 +4,16 @@ import com.pk.petrolstationmonolith.dtos.account.CompanyDto;
 import com.pk.petrolstationmonolith.entities.account.Company;
 import com.pk.petrolstationmonolith.exceptions.account.company.CompanyNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.CompanyRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final ModelMapper mapper;
-
-    public CompanyService(CompanyRepository companyRepository, ModelMapper mapper) {
-        this.companyRepository = companyRepository;
-        this.mapper = mapper;
-    }
 
     public CompanyDto getCompanyDto(long userId) {
         return mapCompanyToDto(getCompany(userId));

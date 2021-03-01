@@ -7,6 +7,7 @@ import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +17,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class MonitoringService {
 
     private final ParameterRepository parameterRepository;
     private final MonitoringProperties monitoringProperties;
     private final ModelMapper modelMapper;
-
-    public MonitoringService(ParameterRepository parameterRepository, MonitoringProperties monitoringProperties,
-                             ModelMapper modelMapper) {
-        this.parameterRepository = parameterRepository;
-        this.monitoringProperties = monitoringProperties;
-        this.modelMapper = modelMapper;
-    }
 
     public void addParameter(Parameter parameter) {
         parameterRepository.save(parameter);

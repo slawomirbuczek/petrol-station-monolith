@@ -4,19 +4,16 @@ import com.pk.petrolstationmonolith.dtos.account.AddressDto;
 import com.pk.petrolstationmonolith.entities.account.Address;
 import com.pk.petrolstationmonolith.exceptions.account.address.AddressNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.AddressRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AddressService {
 
     private final AddressRepository addressRepository;
     private final ModelMapper mapper;
-
-    public AddressService(AddressRepository addressRepository, ModelMapper mapper) {
-        this.addressRepository = addressRepository;
-        this.mapper = mapper;
-    }
 
     public AddressDto getAddressDto(long userId) {
         return mapAddressToDto(getAddress(userId));

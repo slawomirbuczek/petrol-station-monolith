@@ -4,6 +4,7 @@ import com.pk.petrolstationmonolith.models.monitoring.Parameters;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
 import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/reports")
 @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+@AllArgsConstructor
 public class ReportsController {
 
     private final Logger logger = LoggerFactory.getLogger(ReportsController.class);
     private final MonitoringService monitoringService;
     private final TransactionService transactionService;
-
-    public ReportsController(MonitoringService monitoringService, TransactionService transactionService) {
-        this.monitoringService = monitoringService;
-        this.transactionService = transactionService;
-    }
 
     @GetMapping("/monitoring")
     public ResponseEntity<Parameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,

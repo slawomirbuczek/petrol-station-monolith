@@ -1,25 +1,17 @@
 package com.pk.petrolstationmonolith.models.monitoring;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Positive;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestChangeInterval {
 
-    @Positive
+    @Positive(message = "Interval must be positive number")
     private int interval;
-
-    public RequestChangeInterval() {
-    }
-
-    public RequestChangeInterval(int interval) {
-        this.interval = interval;
-    }
-
-    public int getInterval() {
-        return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
-    }
 
 }

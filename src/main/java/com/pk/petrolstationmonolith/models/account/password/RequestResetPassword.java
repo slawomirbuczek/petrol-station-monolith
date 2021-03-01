@@ -1,24 +1,17 @@
 package com.pk.petrolstationmonolith.models.account.password;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.Email;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestResetPassword {
 
     @Email
     private String email;
 
-    public RequestResetPassword() {
-    }
-
-    public RequestResetPassword(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

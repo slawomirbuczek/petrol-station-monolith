@@ -4,6 +4,7 @@ import com.pk.petrolstationmonolith.entities.account.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.repositories.account.EmailTokenRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class EmailTokenService {
 
     private final EmailTokenRepository emailTokenRepository;
-
-    public EmailTokenService(EmailTokenRepository emailTokenRepository) {
-        this.emailTokenRepository = emailTokenRepository;
-    }
 
     public EmailToken getByToken(String token) {
         return emailTokenRepository.findByToken(getUUIDFromString(token))

@@ -1,5 +1,8 @@
 package com.pk.petrolstationmonolith.entities.account;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +11,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "email_token")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmailToken {
 
     @Id
@@ -20,8 +26,6 @@ public class EmailToken {
     @OneToOne
     private User user;
 
-    public EmailToken() {
-    }
 
     public EmailToken(User user) {
         this.user = user;
@@ -34,27 +38,4 @@ public class EmailToken {
         creationDateTime = LocalDateTime.now();
     }
 
-    public UUID getToken() {
-        return token;
-    }
-
-    public void setToken(UUID token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getCreationDateTime() {
-        return creationDateTime;
-    }
-
-    public void setCreationDateTime(LocalDateTime creationDateTime) {
-        this.creationDateTime = creationDateTime;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

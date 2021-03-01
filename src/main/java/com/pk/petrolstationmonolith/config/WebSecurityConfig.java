@@ -8,6 +8,7 @@ import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -26,15 +27,11 @@ import java.util.UUID;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
+@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtProperties jwtProperties;
-
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, JwtProperties jwtProperties) {
-        this.userDetailsService = userDetailsService;
-        this.jwtProperties = jwtProperties;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

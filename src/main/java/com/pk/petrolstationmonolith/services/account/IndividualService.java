@@ -4,19 +4,16 @@ import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
 import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.exceptions.account.IndividualNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.IndividualRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class IndividualService {
 
     private final IndividualRepository individualRepository;
     private final ModelMapper mapper;
-
-    public IndividualService(IndividualRepository individualRepository, ModelMapper mapper) {
-        this.individualRepository = individualRepository;
-        this.mapper = mapper;
-    }
 
     public IndividualDto getIndividualDto(long userId) {
         return mapIndividualToDto(getIndividual(userId));

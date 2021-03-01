@@ -6,6 +6,7 @@ import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrat
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
 import com.pk.petrolstationmonolith.services.account.RegistrationService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,13 +16,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account/registration")
+@AllArgsConstructor
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
 
     @PostMapping("/individuals")
     public ResponseEntity<UserCredentials> registerIndividual(@Valid @RequestBody IndividualRegistrationCredentials credentials) {

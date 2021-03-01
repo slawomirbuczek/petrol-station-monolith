@@ -5,6 +5,7 @@ import com.pk.petrolstationmonolith.entities.supplies.Supply;
 import com.pk.petrolstationmonolith.exceptions.supplies.SupplyNotFoundException;
 import com.pk.petrolstationmonolith.models.supplies.Supplies;
 import com.pk.petrolstationmonolith.repositories.supplies.SupplyRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +13,11 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SupplyService {
 
     private final SupplyRepository supplyRepository;
     private final ModelMapper mapper;
-
-    public SupplyService(SupplyRepository supplyRepository, ModelMapper mapper) {
-        this.supplyRepository = supplyRepository;
-        this.mapper = mapper;
-    }
 
     public Supply getSupplyById(long id) {
         return supplyRepository.findById(id).orElseThrow(() -> new SupplyNotFoundException(id));

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
         this.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/account/login", HttpMethod.POST.name()));
     }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)

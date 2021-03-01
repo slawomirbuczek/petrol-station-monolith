@@ -4,6 +4,7 @@ import com.pk.petrolstationmonolith.dtos.transactions.TransactionDto;
 import com.pk.petrolstationmonolith.models.transactions.RequestAddTransaction;
 import com.pk.petrolstationmonolith.models.transactions.Transactions;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,11 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/transactions")
+@AllArgsConstructor
 public class TransactionController {
 
     private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
     private final TransactionService transactionService;
-
-    public TransactionController(TransactionService transactionService) {
-        this.transactionService = transactionService;
-    }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")

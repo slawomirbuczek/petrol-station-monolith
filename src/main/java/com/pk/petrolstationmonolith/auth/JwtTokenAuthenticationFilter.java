@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,13 +18,10 @@ import java.security.Key;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final Key jwtSecret;
-
-    public JwtTokenAuthenticationFilter(Key jwtSecret) {
-        this.jwtSecret = jwtSecret;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

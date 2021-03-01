@@ -12,11 +12,13 @@ import com.pk.petrolstationmonolith.models.account.RequestUpdateEmail;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
 import com.pk.petrolstationmonolith.services.emailtoken.EmailTokenService;
 import com.pk.petrolstationmonolith.services.mail.MailService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
@@ -24,14 +26,6 @@ public class UserService {
     private final MailService mailService;
     private final ModelMapper mapper;
     private final PasswordEncoder encoder;
-
-    public UserService(UserRepository userRepository, EmailTokenService emailTokenService, MailService mailService, ModelMapper mapper, PasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.emailTokenService = emailTokenService;
-        this.mailService = mailService;
-        this.mapper = mapper;
-        this.encoder = encoder;
-    }
 
     public User getUser(long userId) {
         return userRepository.findById(userId)
