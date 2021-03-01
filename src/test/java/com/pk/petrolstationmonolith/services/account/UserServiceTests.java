@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,10 +31,7 @@ class UserServiceTests {
 
     @BeforeAll
     static void setUp() {
-        user = new User();
-        user.setId(1L);
-        user.setEmail("email@email.com");
-        user.setPassword("password");
+        user = new User(1L, "password", "email@email.com", Roles.USER_INDIVIDUAL);
     }
 
     @Test

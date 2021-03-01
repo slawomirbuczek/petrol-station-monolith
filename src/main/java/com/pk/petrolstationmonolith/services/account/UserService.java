@@ -4,7 +4,6 @@ import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.account.Roles;
-import com.pk.petrolstationmonolith.enums.account.UserType;
 import com.pk.petrolstationmonolith.exceptions.account.EmailAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
@@ -66,9 +65,8 @@ public class UserService {
         return encoder.matches(password, encodedPassword);
     }
 
-    public User changeUserTypeToEmployeeAndSetRole(long userId, Roles role) {
+    public User changeUserRole(long userId, Roles role) {
         User user = getUser(userId);
-        user.setUserType(UserType.EMPLOYEE);
         user.setRole(role);
         return userRepository.save(user);
     }

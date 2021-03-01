@@ -8,6 +8,7 @@ public enum Roles {
     MONITORING,
     CAR_WASH,
     LPG_SERVICE,
-    USER
+    USER_INDIVIDUAL,
+    USER_COMPANY
 
 }

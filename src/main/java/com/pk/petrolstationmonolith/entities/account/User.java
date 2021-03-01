@@ -1,8 +1,7 @@
 package com.pk.petrolstationmonolith.entities.account;
 
 import com.pk.petrolstationmonolith.enums.account.Roles;
-import com.pk.petrolstationmonolith.enums.account.UserType;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +16,7 @@ import static java.util.Collections.singletonList;
 @Entity
 @Table(name = "app_user")
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
 
     @Id
@@ -30,30 +30,20 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
     private boolean enabled;
 
-    public User() {
-        this.role = Roles.USER;
-        this.enabled = false;
-    }
-
-    public User(String password, String email, UserType userType) {
+    public User(String password, String email, Roles role) {
         this.password = password;
         this.email = email;
-        this.role = Roles.USER;
-        this.userType = userType;
+        this.role = role;
         this.enabled = false;
     }
 
-    public User(Long id, String password, String email, Roles role, UserType userType) {
+    public User(Long id, String password, String email, Roles role) {
         this.id = id;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.userType = userType;
         this.enabled = true;
     }
 

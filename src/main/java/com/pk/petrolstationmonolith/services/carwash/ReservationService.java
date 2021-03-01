@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.carwash;
 
 import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
 import com.pk.petrolstationmonolith.entities.carwash.Reservation;
-import com.pk.petrolstationmonolith.enums.account.UserType;
+import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
@@ -41,7 +41,7 @@ public class ReservationService {
         long userId = reservation.getUser().getId();
         String name;
 
-        if (reservation.getUser().getUserType() == UserType.COMPANY) {
+        if (reservation.getUser().getRole() == Roles.USER_COMPANY) {
             name = companyService.getCompanyDto(userId).getName();
         } else {
             IndividualDto individualDto = individualService.getIndividualDto(userId);

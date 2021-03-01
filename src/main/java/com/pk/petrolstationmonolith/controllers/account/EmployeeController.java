@@ -18,6 +18,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('LPG_SERVICE','CAR_WASH','MONITORING','CASHIER','ADMIN','OWNER')")
     public ResponseEntity<EmployeeDto> getEmployee(Principal principal) {
         return ResponseEntity.ok(employeeService.getEmployeeDto(Long.parseLong(principal.getName())));
     }
@@ -29,6 +30,7 @@ public class EmployeeController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('LPG_SERVICE','CAR_WASH','MONITORING','CASHIER','ADMIN','OWNER')")
     public ResponseEntity<EmployeeDto> updateEmployee(Principal principal,
                                                     @Valid @RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.updateEmployee(Long.parseLong(principal.getName()), employeeDto));

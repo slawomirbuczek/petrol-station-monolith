@@ -18,6 +18,7 @@ public class IndividualController {
     private final IndividualService individualService;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER_INDIVIDUAL')")
     public ResponseEntity<IndividualDto> getIndividual(Principal principal) {
         return ResponseEntity.ok(individualService.getIndividualDto(Long.parseLong(principal.getName())));
     }
@@ -29,6 +30,7 @@ public class IndividualController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('USER_INDIVIDUAL')")
     public ResponseEntity<IndividualDto> updateIndividual(Principal principal,
                                                     @Valid @RequestBody IndividualDto individualDto) {
         return ResponseEntity.ok(individualService.updateIndividual(Long.parseLong(principal.getName()), individualDto));

@@ -2,8 +2,8 @@ package com.pk.petrolstationmonolith.controllers.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
-import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import com.pk.petrolstationmonolith.services.account.PasswordService;
@@ -24,7 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = UserController.class)
 class UserControllerTests {
@@ -73,9 +74,7 @@ class UserControllerTests {
 
     @Test
     void shouldReturnStatusOkWhenCredentialsAreCorrect() throws Exception {
-        User user = new User();
-        user.setId(1L);
-        user.setPassword(passwordEncoder.encode("password"));
+        User user = new User(1L, passwordEncoder.encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
 
         given(userDetailsService.loadUserByUsername("1")).willReturn(user);
         given(jwtProperties.getExpirationTime()).willReturn(10L);

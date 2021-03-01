@@ -18,6 +18,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER_COMPANY')")
     public ResponseEntity<CompanyDto> getCompany(Principal principal) {
         return ResponseEntity.ok(companyService.getCompanyDto(Long.parseLong(principal.getName())));
     }
@@ -29,6 +30,7 @@ public class CompanyController {
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('USER_COMPANY')")
     public ResponseEntity<CompanyDto> updateCompany(Principal principal,
                                                     @Valid @RequestBody CompanyDto companyDto) {
         return ResponseEntity.ok(companyService.updateCompany(Long.parseLong(principal.getName()), companyDto));

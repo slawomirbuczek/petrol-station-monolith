@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
 import com.pk.petrolstationmonolith.entities.account.*;
-import com.pk.petrolstationmonolith.enums.account.UserType;
+import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
@@ -33,7 +33,7 @@ public class RegistrationService {
         String password = generatePassword();
 
         User user = mapper.map(credentials, User.class);
-        user.setUserType(UserType.INDIVIDUAL);
+        user.setRole(Roles.USER_INDIVIDUAL);
         user.setPassword(password);
         user = userService.addUser(user);
 
@@ -53,7 +53,7 @@ public class RegistrationService {
         String password = generatePassword();
 
         User user = mapper.map(credentials, User.class);
-        user.setUserType(UserType.COMPANY);
+        user.setRole(Roles.USER_COMPANY);
         user.setPassword(password);
         user = userService.addUser(user);
 
@@ -70,7 +70,7 @@ public class RegistrationService {
     }
 
     public EmployeeDto registerEmployee(EmployeeRegistrationCredentials credentials) {
-        User user = userService.changeUserTypeToEmployeeAndSetRole(credentials.getUserId(), credentials.getRole());
+        User user = userService.changeUserRole(credentials.getUserId(), credentials.getRole());
 
         Employee employee = mapper.map(credentials, Employee.class);
         employee.setUser(user);

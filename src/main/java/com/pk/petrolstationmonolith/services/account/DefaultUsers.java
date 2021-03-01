@@ -5,7 +5,6 @@ import com.pk.petrolstationmonolith.entities.account.Employee;
 import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.account.Roles;
-import com.pk.petrolstationmonolith.enums.account.UserType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +62,7 @@ public class DefaultUsers {
                              String firstName, String lastName, String pesel, String nip, String phoneNumber,
                              Date dateOfBirth, int salary, String accountNumber, String startDateOfWork) {
 
-        User user = new User(id, password, email, role, UserType.EMPLOYEE);
+        User user = new User(id, password, email, role);
         user = userService.addUser(user);
 
         Address address = new Address(country, city, zip, street, buildingNumber, apartmentNumber, user);

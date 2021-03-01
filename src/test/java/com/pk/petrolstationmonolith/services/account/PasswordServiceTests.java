@@ -2,6 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.entities.account.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.enums.account.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
@@ -57,9 +58,7 @@ class PasswordServiceTests {
     @BeforeAll
     static void setUp() {
         encoder = new BCryptPasswordEncoder();
-        user = new User();
-        user.setId(1L);
-        user.setPassword(new BCryptPasswordEncoder().encode("password"));
+        user = new User(1L, new BCryptPasswordEncoder().encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
         principal = () -> "1";
     }
 
@@ -131,8 +130,7 @@ class PasswordServiceTests {
     @Test
     void shouldThrowInvalidEmailTokenExceptionWhenEmailTokenUserIsDifferent() {
         UUID uuid = UUID.randomUUID();
-        User emailTokenUser = new User();
-        emailTokenUser.setId(2L);
+        User emailTokenUser = new User(2L, user.getPassword(), user.getEmail(), user.getRole());
         EmailToken emailToken = new EmailToken(uuid, emailTokenUser);
 
         given(userService.getUserByEmail("email@email.com")).willReturn(user);
