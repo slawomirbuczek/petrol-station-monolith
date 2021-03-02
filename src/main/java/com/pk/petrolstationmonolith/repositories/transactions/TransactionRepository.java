@@ -1,6 +1,5 @@
 package com.pk.petrolstationmonolith.repositories.transactions;
 
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.entities.transactions.Transaction;
 import com.pk.petrolstationmonolith.enums.ServiceType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +19,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Optional<Long> sumNumberByServiceTypeAndDateTimeBetween(ServiceType serviceType, LocalDateTime from, LocalDateTime to);
 
     @Query("SELECT SUM(cost) FROM Transaction WHERE serviceType = ?1 AND dateTime >= ?2 AND dateTime <= ?3")
-    Optional<Double> sumProfitByServiceTypeAndDateTimeBetween(ServiceType serviceType, LocalDateTime from, LocalDateTime to);
+    Optional<Double> profitByServiceTypeAndDateTimeBetween(ServiceType serviceType, LocalDateTime from, LocalDateTime to);
 
 }

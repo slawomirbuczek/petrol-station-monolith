@@ -29,8 +29,7 @@ public class AddressController {
     }
 
     @PutMapping
-    public ResponseEntity<AddressDto> updateAddress(Principal principal,
-                                                            @Valid @RequestBody AddressDto addressDto) {
+    public ResponseEntity<AddressDto> updateAddress(Principal principal, @Valid @RequestBody AddressDto addressDto) {
         return ResponseEntity.ok(addressService.updateAddress(Long.parseLong(principal.getName()), addressDto));
     }
 

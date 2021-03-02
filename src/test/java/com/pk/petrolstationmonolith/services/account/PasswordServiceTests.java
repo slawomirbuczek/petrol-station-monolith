@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.entities.account.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;

@@ -4,7 +4,7 @@ import com.pk.petrolstationmonolith.auth.JwtAuthenticationEntryPoint;
 import com.pk.petrolstationmonolith.auth.JwtTokenAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.JwtUsernameAndPasswordAuthenticationFilter;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

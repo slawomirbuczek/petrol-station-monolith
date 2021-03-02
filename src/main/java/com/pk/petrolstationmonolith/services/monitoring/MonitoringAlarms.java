@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.monitoring;
 
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import com.pk.petrolstationmonolith.enums.ServiceType;
-import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
+import com.pk.petrolstationmonolith.enums.AlarmType;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import com.pk.petrolstationmonolith.services.mail.MailService;
@@ -66,11 +66,11 @@ public class MonitoringAlarms {
 
     }
 
-    public void sendAlarmEmail(ServiceType serviceType, AlarmType alarmType, int number, LocalDateTime dateTime) {
+    public void sendAlarmEmail(ServiceType serviceType, AlarmType alarmType, int value, LocalDateTime dateTime) {
         logger.trace("Sending Alarm Email, serviceType: " + serviceType + " alarmType: " +
-                alarmType + " number: " + number + " dateTime: " + dateTime);
+                alarmType + " value: " + value + " dateTime: " + dateTime);
         String mail = "eal08544@zwoho.com"; //paste ur temp email here
-        mailService.sendMonitoringAlarmMail(mail, serviceType, alarmType, number, dateTime);
+        mailService.sendMonitoringAlarmMail(mail, serviceType, alarmType, 1, value, dateTime);
     }
 
 }

@@ -19,11 +19,15 @@
 </head>
 
 <body style="margin: 0; padding: 0;">
+<#assign optionalValue = "${value}">
 
 <p>Monitoring alarm,</p>
 <p>Service type: ${serviceType}</p>
 <p>Alarm type: ${alarmType}</p>
-<p>Number: ${number}</p>
+<p>Tank number: ${tankNumber}</p>
+<#if optionalValue != "">
+<p>Value: ${optionalValue}</p>
+</#if>
 <p>Date: ${dataTime}</p>
 <br/>
 <p>Petrol Station Team</p>

@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.dtos.account;
 
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

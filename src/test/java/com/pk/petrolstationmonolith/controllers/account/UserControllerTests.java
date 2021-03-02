@@ -3,7 +3,7 @@ package com.pk.petrolstationmonolith.controllers.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import com.pk.petrolstationmonolith.services.account.PasswordService;

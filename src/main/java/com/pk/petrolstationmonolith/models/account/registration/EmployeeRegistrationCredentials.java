@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.models.account.registration;
 
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

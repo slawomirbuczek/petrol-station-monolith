@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.controllers.simluations;
 
-import com.pk.petrolstationmonolith.models.simulations.RequestMonitoringSimulation;
+import com.pk.petrolstationmonolith.models.simulations.RequestMonitoringAlarm;
 import com.pk.petrolstationmonolith.services.simulations.MonitoringAlarmSimulation;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class SimulationController {
 
     @PostMapping("/monitoring")
     @ResponseStatus(HttpStatus.OK)
-    public void simulateMonitoringAlarm(@RequestBody RequestMonitoringSimulation request) {
+    public void simulateMonitoringAlarm(@RequestBody RequestMonitoringAlarm request) {
         logger.trace("simulateMonitoringAlarm method invoked");
         monitoringAlarmSimulation.simulateMonitoringAlarm(request);
     }

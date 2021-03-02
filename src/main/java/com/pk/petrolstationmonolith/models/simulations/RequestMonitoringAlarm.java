@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.models.simulations;
 
 import com.pk.petrolstationmonolith.enums.ServiceType;
-import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
+import com.pk.petrolstationmonolith.enums.AlarmType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestMonitoringSimulation {
+public class RequestMonitoringAlarm {
 
     @Email(message = "Invalid email")
     private String email;
@@ -24,7 +24,10 @@ public class RequestMonitoringSimulation {
     @NotNull(message = "Alert type cannot be null")
     private AlarmType alarmType;
 
-    @Positive(message = "Number must be positive")
-    private int number;
+    @Positive(message = "Tank number must be positive")
+    private int tankNumber;
+
+    @NotNull(message = "Value cannot be null")
+    private int value;
 
 }

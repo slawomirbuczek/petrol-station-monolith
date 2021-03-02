@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.enums.supplies;
+package com.pk.petrolstationmonolith.enums;
 
 public enum FuelType {
 

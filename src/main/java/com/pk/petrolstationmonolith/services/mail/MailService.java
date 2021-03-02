@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.mail;
 
 import com.pk.petrolstationmonolith.enums.ServiceType;
-import com.pk.petrolstationmonolith.enums.monitoring.AlarmType;
+import com.pk.petrolstationmonolith.enums.AlarmType;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -98,11 +98,13 @@ public class MailService {
 
     }
 
-    public void sendMonitoringAlarmMail(String email, ServiceType serviceType, AlarmType alarmType, int number, LocalDateTime dateTime) {
+    public void sendMonitoringAlarmMail(String email, ServiceType serviceType, AlarmType alarmType, int tankNumber,
+                                        int value, LocalDateTime dateTime) {
         Map<String, String> model = new HashMap<>();
         model.put("serviceType", serviceType.name());
         model.put("alarmType", alarmType.name());
-        model.put("number", String.valueOf(number));
+        model.put("tankNumber", String.valueOf(tankNumber));
+        model.put("value", value == -1 ? "" : String.valueOf(value));
         model.put("dataTime", dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         try {

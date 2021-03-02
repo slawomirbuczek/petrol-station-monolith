@@ -68,19 +68,27 @@ public class TransactionService {
         LocalDateTime to = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth()).plusDays(1).atStartOfDay();
 
         TransactionsReport report = new TransactionsReport();
-        report.setE95Number(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.E95, from, to).orElse(0L));
-        report.setE95Profit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.E95, from, to).orElse(0d));
-        report.setE98Number(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.E98, from, to).orElse(0L));
-        report.setE98Profit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.E98, from, to).orElse(0d));
-        report.setOnNumber(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.ON, from, to).orElse(0L));
-        report.setOnProfit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.ON, from, to).orElse(0d));
-        report.setLpgNumber(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.LPG, from, to).orElse(0L));
-        report.setLpgProfit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.LPG, from, to).orElse(0d));
-        report.setWashingStandardNumber(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.WASHING_STANDARD, from, to).orElse(0L));
-        report.setWashingStandardProfit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.WASHING_STANDARD, from, to).orElse(0d));
-        report.setWashingWaxingNumber(transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(ServiceType.WASHING_WAXING, from, to).orElse(0L));
-        report.setWashingWaxingProfit(transactionRepository.sumProfitByServiceTypeAndDateTimeBetween(ServiceType.WASHING_WAXING, from, to).orElse(0d));
+        report.setE95Number(getSumNumber(from, to, ServiceType.E95));
+        report.setE95Profit(getProfit(from, to, ServiceType.E95));
+        report.setE98Number(getSumNumber(from, to, ServiceType.E98));
+        report.setE98Profit(getProfit(from, to, ServiceType.E98));
+        report.setOnNumber(getSumNumber(from, to, ServiceType.ON));
+        report.setOnProfit(getProfit(from, to, ServiceType.ON));
+        report.setLpgNumber(getSumNumber(from, to, ServiceType.LPG));
+        report.setLpgProfit(getProfit(from, to, ServiceType.LPG));
+        report.setWashingStandardNumber(getSumNumber(from, to, ServiceType.WASHING_STANDARD));
+        report.setWashingStandardProfit(getProfit(from, to, ServiceType.WASHING_STANDARD));
+        report.setWashingWaxingNumber(getSumNumber(from, to, ServiceType.WASHING_WAXING));
+        report.setWashingWaxingProfit(getProfit(from, to, ServiceType.WASHING_WAXING));
         return report;
+    }
+
+    private Double getProfit(LocalDateTime from, LocalDateTime to, ServiceType serviceType) {
+        return transactionRepository.profitByServiceTypeAndDateTimeBetween(serviceType, from, to).orElse(0d);
+    }
+
+    private Long getSumNumber(LocalDateTime from, LocalDateTime to, ServiceType serviceType) {
+        return transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(serviceType, from, to).orElse(0L);
     }
 
     private TransactionDto mapTransactionToDto(Transaction transaction) {

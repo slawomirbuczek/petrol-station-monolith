@@ -1,4 +1,4 @@
-package com.pk.petrolstationmonolith.enums.account;
+package com.pk.petrolstationmonolith.enums;
 
 public enum Roles {
 

@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
 import com.pk.petrolstationmonolith.entities.account.*;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;

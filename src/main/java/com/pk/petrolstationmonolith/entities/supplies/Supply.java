@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.entities.supplies;
 
-import com.pk.petrolstationmonolith.enums.supplies.FuelType;
+import com.pk.petrolstationmonolith.enums.FuelType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

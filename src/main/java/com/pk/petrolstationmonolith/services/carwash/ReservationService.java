@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.services.carwash;
 
 import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
 import com.pk.petrolstationmonolith.entities.carwash.Reservation;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;

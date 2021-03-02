@@ -4,7 +4,7 @@ import com.pk.petrolstationmonolith.entities.account.Address;
 import com.pk.petrolstationmonolith.entities.account.Employee;
 import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.entities.account.User;
-import com.pk.petrolstationmonolith.enums.account.Roles;
+import com.pk.petrolstationmonolith.enums.Roles;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
