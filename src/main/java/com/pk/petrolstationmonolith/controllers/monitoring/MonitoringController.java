@@ -21,24 +21,20 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class MonitoringController {
 
-    private final Logger logger = LoggerFactory.getLogger(MonitoringController.class);
     private final MonitoringService monitoringService;
 
     @GetMapping("/parameters")
     public ResponseEntity<Parameter> getCurrentParameters() {
-        logger.trace("getCurrentParameters method invoked");
         return ResponseEntity.ok(monitoringService.getCurrentParameters());
     }
 
     @PostMapping("/parameters")
     public ResponseEntity<Parameters> getParametersBetweenDates(@Valid @RequestBody RequestParametersBetweenDates request) {
-        logger.trace("getParametersBetweenDates method invoked");
         return ResponseEntity.ok(monitoringService.getParametersBetweenDates(request));
     }
 
     @PutMapping
     public ResponseEntity<ResponseMessage> changeMonitoringInterval(@Valid @RequestBody RequestChangeInterval request) {
-        logger.trace("changeMonitoringInterval method invoked");
         return ResponseEntity.ok(monitoringService.changeMonitoringInterval(request));
     }
 

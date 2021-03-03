@@ -22,21 +22,18 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ReportsController {
 
-    private final Logger logger = LoggerFactory.getLogger(ReportsController.class);
     private final MonitoringService monitoringService;
     private final TransactionService transactionService;
 
     @GetMapping("/monitoring")
     public ResponseEntity<Parameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,
                                                                  @RequestParam Optional<Integer> optionalMonth) {
-        logger.trace("getMonitoringMonthlyReport method invoked");
         return ResponseEntity.ok(monitoringService.getMonitoringMonthlyReport(optionalYear, optionalMonth));
     }
 
     @GetMapping("/transactions")
     public ResponseEntity<TransactionsReport> getTransactiontsMonthlyReport(@RequestParam Optional<Integer> optionalYear,
                                                                             @RequestParam Optional<Integer> optionalMonth) {
-        logger.trace("getTransactiontsMonthlyReport method invoked");
         return ResponseEntity.ok(transactionService.getTransactionsMonthlyReport(optionalYear, optionalMonth));
     }
 

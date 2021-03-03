@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.services.account;
 
-import com.pk.petrolstationmonolith.entities.account.EmailToken;
+import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
@@ -11,10 +11,12 @@ import com.pk.petrolstationmonolith.models.account.password.RequestUpdatePasswor
 import com.pk.petrolstationmonolith.services.emailtoken.EmailTokenService;
 import com.pk.petrolstationmonolith.services.mail.MailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PasswordService {
 
     private final UserService userService;
@@ -22,6 +24,7 @@ public class PasswordService {
     private final MailService mailService;
 
     public ResponseMessage updatePassword(RequestUpdatePassword request, long userId) {
+        log.trace("Updating password for user with id " + userId);
         User user = userService.getUser(userId);
 
         if (!userService.passwordMatches(user.getPassword(), request.getOldPassword())) {
@@ -33,6 +36,7 @@ public class PasswordService {
     }
 
     public ResponseMessage sendPasswordResetMail(RequestResetPassword request) {
+        log.trace("Sending password reset mail for user with email " + request.getEmail());
         User user = userService.getUserByEmail(request.getEmail());
 
         EmailToken emailToken = emailTokenService.createNewToken(user);
@@ -43,9 +47,10 @@ public class PasswordService {
     }
 
     public ResponseMessage setNewPassword(RequestNewPassword request) {
+        log.trace("Setting new password for user with email " + request.getEmail());
         User user = userService.getUserByEmail(request.getEmail());
 
-        if (!emailTokenService.validateToken(request.getToken(), user.getId())) {
+        if (emailTokenService.tokenNotValid(request.getToken(), user.getId())) {
             throw new InvalidEmailTokenException();
         }
 

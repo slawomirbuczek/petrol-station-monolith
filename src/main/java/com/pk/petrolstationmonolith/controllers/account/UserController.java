@@ -46,4 +46,9 @@ public class UserController {
         userService.updateEmail(Long.parseLong(principal.getName()), request);
     }
 
+    @DeleteMapping
+    public ResponseEntity<UserDto> disableUser(Principal principal) {
+        return ResponseEntity.ok(userService.disableUser(Long.parseLong(principal.getName())));
+    }
+
 }

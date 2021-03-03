@@ -6,6 +6,7 @@ import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.Roles;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import java.sql.Date;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class DefaultUsers {
 
     private final UserService userService;
@@ -22,6 +24,7 @@ public class DefaultUsers {
 
     @PostConstruct
     private void addDefaultUsers() {
+        log.trace("Adding default users");
 
         addEmployee(1L, "kowalski", "jankowalski@gmail.com", Roles.OWNER,
                 "Poland", "Kraków", "30-063", "3 Maja Al.", "15", "207A",

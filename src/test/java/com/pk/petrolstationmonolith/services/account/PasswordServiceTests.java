@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.services.account;
 
-import com.pk.petrolstationmonolith.entities.account.EmailToken;
+import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;

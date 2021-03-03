@@ -1,7 +1,9 @@
 package com.pk.petrolstationmonolith.enums;
 
 import com.pk.petrolstationmonolith.models.loyaltyprogram.ServiceParameters;
+import lombok.ToString;
 
+@ToString
 public enum ServiceType {
 
     E95(2, 100),

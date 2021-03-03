@@ -20,25 +20,21 @@ import java.security.Principal;
 @AllArgsConstructor
 public class LoyaltyProgramController {
 
-    private final Logger logger = LoggerFactory.getLogger(LoyaltyProgramController.class);
     private final LoyaltyProgramService loyaltyProgramService;
 
     @PostMapping
     public ResponseEntity<Points> joinLoyaltyProgram(Principal principal) {
-        logger.trace("joinLoyaltyProgram method invoked");
         return ResponseEntity.ok(loyaltyProgramService.joinLoyaltyProgram(Long.parseLong(principal.getName())));
     }
 
     @GetMapping("/points")
     public ResponseEntity<Points> getPoints(Principal principal) {
-        logger.trace("getPoints method invoked");
         return ResponseEntity.ok(loyaltyProgramService.getPoints(Long.parseLong(principal.getName())));
     }
 
     @GetMapping("/points/users/{userId}")
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<Points> getPointsByUser(@PathVariable long userId) {
-        logger.trace("getPointsByUser method invoked");
         return ResponseEntity.ok(loyaltyProgramService.getPoints(userId));
     }
 
@@ -48,7 +44,6 @@ public class LoyaltyProgramController {
             @PathVariable long userId,
             @PathVariable ServiceType serviceType,
             @Valid @RequestBody Points points) {
-        logger.trace("addPoints method invoked");
         return ResponseEntity.ok(loyaltyProgramService.addProgramPoints(userId, serviceType, points));
     }
 
@@ -57,7 +52,6 @@ public class LoyaltyProgramController {
             @PathVariable ServiceType serviceType,
             @Valid @RequestBody Points points,
             Principal principal) {
-        logger.trace("exchangePoints method invoked");
         return ResponseEntity.ok(loyaltyProgramService.exchangePoints(Long.parseLong(principal.getName()), serviceType, points));
     }
 
@@ -66,13 +60,11 @@ public class LoyaltyProgramController {
     public ResponseEntity<ProgramParameters> changeProgramParameters(
             @PathVariable ServiceType serviceType,
             @Valid @RequestBody RequestChangeProgramParameters request) {
-        logger.trace("changeProgramParameters method invoked");
         return ResponseEntity.ok(loyaltyProgramService.changeProgramParameters(serviceType, request));
     }
 
     @GetMapping("/services")
     public ResponseEntity<ProgramParameters> getProgramParameters() {
-        logger.trace("getProgramParameters method invoked");
         return ResponseEntity.ok(loyaltyProgramService.getProgramParameters());
     }
 

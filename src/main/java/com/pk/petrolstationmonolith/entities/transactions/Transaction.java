@@ -27,7 +27,7 @@ public class Transaction {
 
     private double cost;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
     public Transaction(ServiceType serviceType, LocalDateTime dateTime, int number, double cost, User user) {

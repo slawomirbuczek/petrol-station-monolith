@@ -11,6 +11,7 @@ import com.pk.petrolstationmonolith.repositories.transactions.TransactionReposit
 import com.pk.petrolstationmonolith.services.account.UserService;
 import com.pk.petrolstationmonolith.services.loyaltyprogram.LoyaltyProgramService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -31,22 +33,25 @@ public class TransactionService {
     private final ModelMapper mapper;
 
     public TransactionDto getTransactionDto(long transactionId) {
+        log.trace("Getting transaction dto with id " + transactionId);
         return mapTransactionToDto(getTransaction(transactionId));
     }
 
     public Transaction getTransaction(long transactionId) {
+        log.trace("Getting transaction with id " + transactionId);
         return transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new InvalidTransactionIdException(transactionId));
     }
 
     public Transactions getTransactions(long userId) {
+        log.trace("Getting transactions for user with id " + userId);
         return new Transactions(transactionRepository.findAllByUserId(userId).stream()
                 .map(this::mapTransactionToDto).collect(Collectors.toList()));
     }
 
     public TransactionDto addTransaction(RequestAddTransaction request, Long userId) {
         Transaction transaction = mapper.map(request, Transaction.class);
-
+        log.trace("Adding new transaction" + (Objects.nonNull(userId) ? " for user with id " + userId : ""));
         if (Objects.nonNull(userId)) {
             transaction.setUser(userService.getUser(userId));
             loyaltyProgramService.addProgramPointsAfterTransaction(userId, request.getServiceType(), request.getNumber());
@@ -63,7 +68,7 @@ public class TransactionService {
     public TransactionsReport getTransactionsMonthlyReport(Optional<Integer> optionalYear, Optional<Integer> optionalMonth) {
         int year = optionalYear.orElseGet(() -> LocalDate.now().getYear());
         int month = optionalMonth.orElseGet(() -> LocalDate.now().getMonthValue());
-
+        log.trace("Getting transactions monthly report for year " + year + " and month " + month);
         LocalDateTime from = LocalDate.of(year, month, 1).atStartOfDay();
         LocalDateTime to = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth()).plusDays(1).atStartOfDay();
 

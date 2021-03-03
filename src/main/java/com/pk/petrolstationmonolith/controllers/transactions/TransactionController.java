@@ -19,13 +19,11 @@ import java.security.Principal;
 @AllArgsConstructor
 public class TransactionController {
 
-    private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
     private final TransactionService transactionService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<TransactionDto> addTransaction(@Valid @RequestBody RequestAddTransaction request) {
-        logger.trace("addTransaction method invoked");
         return ResponseEntity.ok(transactionService.addTransaction(request, null));
     }
 
@@ -33,13 +31,11 @@ public class TransactionController {
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<TransactionDto> addTransactionWithUser(@PathVariable long userId,
                                                                  @Valid @RequestBody RequestAddTransaction request) {
-        logger.trace("addTransactionWithUser method invoked");
         return ResponseEntity.ok(transactionService.addTransaction(request, userId));
     }
 
     @GetMapping
     public ResponseEntity<Transactions> getTransactions(Principal principal) {
-        logger.trace("getTransactions method invoked");
         return ResponseEntity.ok(transactionService.getTransactions(Long.parseLong(principal.getName())));
     }
 

@@ -16,6 +16,7 @@ import com.pk.petrolstationmonolith.services.account.CompanyService;
 import com.pk.petrolstationmonolith.services.account.IndividualService;
 import com.pk.petrolstationmonolith.services.account.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
@@ -40,7 +42,7 @@ public class ReservationService {
         Reservation reservation = getReservation(dateTime);
         long userId = reservation.getUser().getId();
         String name;
-
+        log.trace("Getting car wash reservation details with date " + dateTime.toString());
         if (reservation.getUser().getRole() == Roles.USER_COMPANY) {
             name = companyService.getCompanyDto(userId).getName();
         } else {
@@ -51,13 +53,14 @@ public class ReservationService {
         return new ReservationDetails(dateTime, userId, name);
     }
 
-    public Reservations getUserReservation(long userId) {
+    public Reservations getUserReservations(long userId) {
+        log.trace("Getting car wash reservations for user with id " + userId);
         return mapListOfReservationsToReservations(reservationRepository.findAllByUserId(userId));
     }
 
     public Reservations getReservations(Optional<LocalDate> optionalDate) {
         LocalDate date = optionalDate.orElseGet(LocalDate::now);
-
+        log.trace("Getting car wash reservations for date " + date.toString());
         if (date.isBefore(LocalDate.now()) || date.isAfter(LocalDate.now().plusDays(14))) {
             throw new WrongReservationDateException();
         }
@@ -75,25 +78,23 @@ public class ReservationService {
 
     public ResponseReservation reserve(RequestDateTime request, long userId) {
         Reservation reservation = getReservation(request.getDateTime());
-
+        log.trace("Reserving car wash with date " + reservation.getDateTime() + " for user with id " + userId);
         if (Objects.nonNull(reservation.getUser())) {
             throw new ReservationAlreadyTakenException(request.getDateTime());
         }
 
         reservation.setUser(userService.getUser(userId));
-
         return mapReservationToResponse(reservationRepository.save(reservation));
     }
 
     public ResponseReservation cancelReservation(RequestDateTime request, long userId) {
         Reservation reservation = getReservation(request.getDateTime());
-
+        log.trace("Canceling car wash reservation with date " + reservation.getDateTime() + " for user with id " + userId);
         if (Objects.isNull(reservation.getUser()) || !Objects.equals(reservation.getUser().getId(), userId)) {
             throw new ReservationNotReservedByUserException(userId);
         }
 
         reservation.setUser(null);
-
         return mapReservationToResponse(reservationRepository.save(reservation));
     }
 

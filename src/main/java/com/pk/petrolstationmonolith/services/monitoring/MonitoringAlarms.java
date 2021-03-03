@@ -7,6 +7,7 @@ import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import com.pk.petrolstationmonolith.services.mail.MailService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class MonitoringAlarms {
 
     private final ParameterRepository parameterRepository;
@@ -23,6 +25,7 @@ public class MonitoringAlarms {
     private final Logger logger = LoggerFactory.getLogger(MonitoringAlarms.class);
 
     public void checkMonitoringAlarmState() {
+        log.trace("Checking monitoring alarm state");
         Parameter parameter = parameterRepository.findTopByOrderByDateTimeDesc();
 
         if (parameter.getE95Level() <= monitoringProperties.getLowLevelE95()) {

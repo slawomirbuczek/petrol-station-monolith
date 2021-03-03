@@ -1,5 +1,6 @@
-package com.pk.petrolstationmonolith.entities.account;
+package com.pk.petrolstationmonolith.entities.emailtoken;
 
+import com.pk.petrolstationmonolith.entities.account.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class EmailToken {
 
     private LocalDateTime creationDateTime;
 
-    @OneToOne
+    @ManyToOne
     private User user;
 
 

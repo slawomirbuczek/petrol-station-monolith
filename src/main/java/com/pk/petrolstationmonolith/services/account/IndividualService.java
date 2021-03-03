@@ -5,25 +5,30 @@ import com.pk.petrolstationmonolith.entities.account.Individual;
 import com.pk.petrolstationmonolith.exceptions.account.IndividualNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.IndividualRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class IndividualService {
 
     private final IndividualRepository individualRepository;
     private final ModelMapper mapper;
 
     public IndividualDto getIndividualDto(long userId) {
+        log.trace("Getting individual dto for user with id " + userId);
         return mapIndividualToDto(getIndividual(userId));
     }
 
     public void addIndividual(Individual individual) {
+        log.trace("Adding new individual for user with id " + individual.getUser().getId());
         individualRepository.save(individual);
     }
 
     public IndividualDto updateIndividual(long userId, IndividualDto individualDto) {
+        log.trace("Updating individual for user with id " + userId);
         Individual oldIndividual = getIndividual(userId);
 
         Individual individual = mapDtoToIndividual(individualDto);
@@ -35,6 +40,7 @@ public class IndividualService {
     }
 
     public IndividualDto deleteIndividual(long userId) {
+        log.trace("Deleting individual for user with id " + userId);
         Individual individual = getIndividual(userId);
         individualRepository.delete(individual);
         return mapIndividualToDto(individual);

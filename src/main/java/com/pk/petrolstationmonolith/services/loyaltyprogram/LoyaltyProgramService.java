@@ -11,12 +11,14 @@ import com.pk.petrolstationmonolith.models.loyaltyprogram.RequestChangeProgramPa
 import com.pk.petrolstationmonolith.repositories.loyaltyprogram.LoyaltyProgramRepository;
 import com.pk.petrolstationmonolith.services.account.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class LoyaltyProgramService {
 
     private final LoyaltyProgramRepository loyaltyProgramRepository;
@@ -28,10 +30,12 @@ public class LoyaltyProgramService {
         }
         LoyaltyProgram loyaltyProgram = new LoyaltyProgram();
         loyaltyProgram.setUser(userService.getUser(userId));
+        log.trace("User with id " + userId + " joined loyalty program");
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
     }
 
     public Points getPoints(long userId) {
+        log.trace("Getting points for user with id " + userId);
         return new Points(getLoyaltyProgram(userId).getPoints());
     }
 
@@ -39,7 +43,7 @@ public class LoyaltyProgramService {
         LoyaltyProgram loyaltyProgram = getLoyaltyProgram(userId);
 
         long additionalPoints = serviceType.getPoints() * points.getPoints();
-
+        log.trace("Adding " + additionalPoints + " points to user with id " + userId);
         loyaltyProgram.setPoints(loyaltyProgram.getPoints() + additionalPoints);
 
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
@@ -55,7 +59,7 @@ public class LoyaltyProgramService {
         LoyaltyProgram loyaltyProgram = optionalLoyaltyProgram.get();
 
         long points = serviceType.getPoints() * number;
-
+        log.trace("Adding " + points + " points to user with id " + userId + " after transaction");
         loyaltyProgram.setPoints(loyaltyProgram.getPoints() + points);
 
         loyaltyProgramRepository.save(loyaltyProgram);
@@ -69,7 +73,7 @@ public class LoyaltyProgramService {
         if (loyaltyProgram.getPoints() - exchangingPoints < 0) {
             throw new NotEnoughLoyaltyProgramPointsException(userId);
         }
-
+        log.trace("Exchanging " + exchangingPoints + " points for service " + serviceType + " with amount " + points.getPoints());
         loyaltyProgram.setPoints(loyaltyProgram.getPoints() - exchangingPoints);
 
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
@@ -78,10 +82,12 @@ public class LoyaltyProgramService {
     public ProgramParameters changeProgramParameters(ServiceType serviceType, RequestChangeProgramParameters request) {
         serviceType.setPoints(request.getPoints());
         serviceType.setCost(request.getCost());
+        log.trace("Changing program parameters for service " + serviceType.toString());
         return new ProgramParameters();
     }
 
     public ProgramParameters getProgramParameters() {
+        log.trace("Getting program parameters");
         return new ProgramParameters();
     }
 

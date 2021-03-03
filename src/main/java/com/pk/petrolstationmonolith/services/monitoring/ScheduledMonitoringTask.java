@@ -3,6 +3,7 @@ package com.pk.petrolstationmonolith.services.monitoring;
 import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
     private final MonitoringService monitoringService;
@@ -35,6 +37,7 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
     }
 
     private void scheduledTask() {
+        log.trace("Executing scheduled monitoring task with interval " + properties.getInterval());
         Parameter parameter = new Parameter();
         parameter.setDateTime(LocalDateTime.now());
         parameter.setE95Temperature(getRandomTemperature());

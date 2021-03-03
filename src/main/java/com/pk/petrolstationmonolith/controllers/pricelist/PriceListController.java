@@ -17,19 +17,16 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class PriceListController {
 
-    private final Logger logger = LoggerFactory.getLogger(PriceListController.class);
     private final PriceListService priceListService;
 
     @GetMapping
     public ResponseEntity<ResponsePriceList> getPriceList() {
-        logger.trace("getPriceList method invoked");
         return ResponseEntity.ok(priceListService.getPriceList());
     }
 
     @PutMapping
     @PreAuthorize("hasRole('OWNER')")
     public ResponseEntity<PetrolStationService> updateService(@Valid @RequestBody PetrolStationService service) {
-        logger.trace("updateService method invoked");
         return ResponseEntity.ok(priceListService.updateService(service));
     }
 

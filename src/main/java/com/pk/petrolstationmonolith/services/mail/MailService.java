@@ -5,6 +5,7 @@ import com.pk.petrolstationmonolith.enums.AlarmType;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class MailService {
 
     private final JavaMailSender mailSender;
@@ -48,8 +50,9 @@ public class MailService {
             mimeMessageHelper.setSubject("Reset Your Petrol Station Account Password");
 
             mailSender.send(message);
+            log.trace("Password reset mail has been sent");
         } catch (IOException | MessagingException | TemplateException e) {
-            e.printStackTrace();
+            log.error("Error during sending password reset mail. Message: " + e.getMessage());
         }
 
     }
@@ -70,8 +73,9 @@ public class MailService {
             mimeMessageHelper.setSubject("Active Your Petrol Station Account");
 
             mailSender.send(message);
+            log.trace("Email confirmation mail has been sent");
         } catch (IOException | MessagingException | TemplateException e) {
-            e.printStackTrace();
+            log.error("Error during sending email confirmation mail. Message: " + e.getMessage());
         }
 
     }
@@ -92,8 +96,9 @@ public class MailService {
             mimeMessageHelper.setSubject("Update Your Petrol Station Account Email");
 
             mailSender.send(message);
+            log.trace("Email update mail has been sent");
         } catch (IOException | MessagingException | TemplateException e) {
-            e.printStackTrace();
+            log.error("Error during sending email update mail. Message: " + e.getMessage());
         }
 
     }
@@ -119,8 +124,9 @@ public class MailService {
             mimeMessageHelper.setSubject("Monitoring alarm");
 
             mailSender.send(message);
+            log.trace("Monitoring alarm mail has been sent");
         } catch (IOException | MessagingException | TemplateException e) {
-            e.printStackTrace();
+            log.error("Error during sending monitoring alarm mail. Message: " + e.getMessage());
         }
 
     }

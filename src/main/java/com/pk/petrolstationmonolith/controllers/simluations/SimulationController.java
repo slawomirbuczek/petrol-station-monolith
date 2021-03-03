@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class SimulationController {
 
-    private final Logger logger = LoggerFactory.getLogger(SimulationController.class);
     private final MonitoringAlarmSimulation monitoringAlarmSimulation;
 
     @PostMapping("/monitoring")
     @ResponseStatus(HttpStatus.OK)
     public void simulateMonitoringAlarm(@RequestBody RequestMonitoringAlarm request) {
-        logger.trace("simulateMonitoringAlarm method invoked");
         monitoringAlarmSimulation.simulateMonitoringAlarm(request);
     }
 
