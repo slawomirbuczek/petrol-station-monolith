@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "employee")
@@ -20,19 +21,19 @@ public class Employee {
 
     private String phoneNumber;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private int salary;
 
     private String accountNumber;
 
-    private String startDateOfWork;
+    private LocalDate startDateOfWork;
 
     @OneToOne
     private User user;
 
-    public Employee(String phoneNumber, Date dateOfBirth, int salary, String accountNumber,
-                    String startDateOfWork, User user) {
+    public Employee(String phoneNumber, LocalDate dateOfBirth, int salary, String accountNumber,
+                    LocalDate startDateOfWork, User user) {
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.salary = salary;
@@ -40,5 +41,4 @@ public class Employee {
         this.startDateOfWork = startDateOfWork;
         this.user = user;
     }
-
 }

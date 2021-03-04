@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Component
 @AllArgsConstructor
@@ -26,49 +26,79 @@ public class DefaultUsers {
     private void addDefaultUsers() {
         log.trace("Adding default users");
 
-        addEmployee(1L, "kowalski", "jankowalski@gmail.com", Roles.OWNER,
-                "Poland", "Kraków", "30-063", "3 Maja Al.", "15", "207A",
+        addEmployee(1L, "kowalski", "pk.petrolstation@gmail.com", Roles.OWNER,
+                "Kraków", "30-063", "3 Maja Al.", "15", "207A",
                 "Jan", "Kowalski", "15301224419", "7629382099", "123456789",
-                Date.valueOf("1990-01-01"), 15000, "PL73109014768083997739562290", "2000-01-01");
+                LocalDate.of(1981, 1, 1), 15000, "PL73109014768083997739562290",
+                LocalDate.of(2000, 1, 1));
 
 
-        addEmployee(2L, "zero", "zbigniewZero@gmail.com", Roles.ADMIN, "Poland",
-                "Warszawa", "30-063", "Warszawska", "12", "14", "Zbigniew",
-                "Zero", "36080477898", "9719662751", "123765789", Date.valueOf("1990-01-01"),
-                9000, "PL73935410202944519044050628", "2000-01-01");
+        addEmployee(2L, "zero", "zbigniewzero@gmail.com", Roles.ADMIN,
+                "Warszawa", "30-063", "Warszawska", "12", "14",
+                "Zbigniew", "Zero", "36080477898", "9719662751", "123765789",
+                LocalDate.of(1980, 1, 1), 9000, "PL73935410202944519044050628",
+                LocalDate.of(2000, 1, 1));
 
-        addEmployee(3L, "nowak", "aix24557@cuoly.com", Roles.CASHIER,
-                "Poland", "Kraków", "30-063", "Warszawska", "23", "2207C",
+        addEmployee(3L, "nowak", "tomasznowak@cuoly.com", Roles.CASHIER,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
                 "Tomasz", "Nowak", "17252723968", "1081306978", "321123789",
-                Date.valueOf("1996-01-26"), 4000, "PL41876210190000761639083626", "2010-03-01");
+                LocalDate.of(1980, 1, 1), 4000, "PL41876210190000761639083626",
+                LocalDate.of(2000, 1, 1));
 
-
-        addEmployee(4L, "kowalczyk", "karolKowalczyk@gmail.com", Roles.CASHIER,
-                "Poland", "Kraków", "30-063", "Warszawska", "124", "3107C",
+        addEmployee(4L, "kowalczyk", "karolkowalczyk@gmail.com", Roles.CASHIER,
+                "Kraków", "30-063", "Warszawska", "124", "3107C",
                 "Karol", "Kowalczyk", "07100305954", "1163426157", "321123459",
-                Date.valueOf("1993-12-21"), 5000, "PL75815100014087171075178326", "2006-02-01");
+                LocalDate.of(1980, 1, 1), 5000, "PL75815100014087171075178326",
+                LocalDate.of(2000, 1, 1));
 
-        /*userRepository.save(new User("wincenty", passwordEncoder.encode("raczek"), Roles.MONITORING, UserType.EMPLOYEE));
-        userRepository.save(new User("eugeniusz", passwordEncoder.encode("zuczek"), Roles.MONITORING, UserType.EMPLOYEE));
+        addEmployee(5L, "raczek", "wincentyraczek@testmail.com", Roles.MONITORING,
+                "Katowice", "40-001", "Krakowska", "123", "123",
+                "Wincenty", "Raczek", "09080918012", "7743201136", "123123123",
+                LocalDate.of(1999, 5, 5), 3500, "PL22820010189463966477011120",
+                LocalDate.of(2020, 3, 3));
 
-        userRepository.save(new User("alojzy", passwordEncoder.encode("mydlak"), Roles.CAR_WASH, UserType.EMPLOYEE));
-        userRepository.save(new User("baltazar", passwordEncoder.encode("gabka"), Roles.CAR_WASH, UserType.EMPLOYEE));
+        addEmployee(6L, "zuczek", "eugeniuszzuczek@testmail.com", Roles.MONITORING,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
+                "Eugeniusz", "Żuczek", "10032079765", "3414875819", "321123789",
+                LocalDate.of(1998, 1, 1), 4000, "PL98102046493859092155604682",
+                LocalDate.of(2017, 2, 1));
 
-        userRepository.save(new User("czeslaw", passwordEncoder.encode("ratajczak"), Roles.LPG_SERVICE, UserType.EMPLOYEE));
-        userRepository.save(new User("radoslaw", passwordEncoder.encode("rataj"), Roles.LPG_SERVICE, UserType.EMPLOYEE));
+        addEmployee(7L, "mydlak", "alojzymydlak@testmail.com", Roles.CAR_WASH,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
+                "Alojzy", "Mydlak", "64082259563", "9525970180", "321123789",
+                LocalDate.of(1998, 1, 1), 3000, "PL23103012188320529518438007",
+                LocalDate.of(2017, 2, 1));
 
-        userRepository.save(new User("Anon", passwordEncoder.encode("password"), Roles.USER, UserType.EMPLOYEE));*/
+        addEmployee(8L, "gabka", "baltazargabka@testmail.com", Roles.CAR_WASH,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
+                "Baltazar", "Gąbka", "14072431659", "9524908859", "321123789",
+                LocalDate.of(1998, 1, 1), 3000, "PL22101000004617782885108273",
+                LocalDate.of(2017, 2, 1));
+
+
+        addEmployee(9L, "ratajczak", "baltazargabka@testmail.com", Roles.LPG_SERVICE,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
+                "Czesław", "Ratajczak", "22021558780", "7620175973", "321123789",
+                LocalDate.of(1998, 1, 1), 3000, "PL98907500099661392189199554",
+                LocalDate.of(2017, 2, 1));
+
+        addEmployee(10L, "rataj", "baltazargabka@testmail.com", Roles.LPG_SERVICE,
+                "Kraków", "30-063", "Warszawska", "23", "2207C",
+                "Radosław", "Rataj", "41041085210", "1086591162", "321123789",
+                LocalDate.of(1998, 1, 1), 3000, "PL06812610337733474715136641",
+                LocalDate.of(2017, 2, 1));
+
     }
 
-    private void addEmployee(Long id, String password, String email, Roles role, String country,
+    private void addEmployee(Long id, String password, String email, Roles role,
                              String city, String zip, String street, String buildingNumber, String apartmentNumber,
                              String firstName, String lastName, String pesel, String nip, String phoneNumber,
-                             Date dateOfBirth, int salary, String accountNumber, String startDateOfWork) {
+                             LocalDate dateOfBirth, int salary, String accountNumber, LocalDate startDateOfWork) {
 
         User user = new User(id, password, email, role);
         user = userService.addUser(user);
 
-        Address address = new Address(country, city, zip, street, buildingNumber, apartmentNumber, user);
+        Address address = new Address("Polska", city, zip, street, buildingNumber, apartmentNumber, user);
         addressService.addAddress(address);
 
         Individual individual = new Individual(firstName, lastName, pesel, nip, user);
@@ -77,6 +107,5 @@ public class DefaultUsers {
         Employee employee = new Employee(phoneNumber, dateOfBirth, salary, accountNumber, startDateOfWork, user);
         employeeService.addEmployee(employee);
     }
-
 
 }
