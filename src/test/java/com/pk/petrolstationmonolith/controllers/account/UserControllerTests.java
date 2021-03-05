@@ -1,13 +1,14 @@
 package com.pk.petrolstationmonolith.controllers.account;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
+import com.pk.petrolstationmonolith.dtos.account.UserDto;
 import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.Roles;
-import com.pk.petrolstationmonolith.models.account.UserCredentials;
+import com.pk.petrolstationmonolith.models.ResponseMessage;
+import com.pk.petrolstationmonolith.models.account.RequestUpdateEmail;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
-import com.pk.petrolstationmonolith.services.account.PasswordService;
-import com.pk.petrolstationmonolith.services.account.RegistrationService;
 import com.pk.petrolstationmonolith.services.account.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,38 +16,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(UserController.class)
 class UserControllerTests {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private RegistrationService registrationService;
-
-    @MockBean
-    private PasswordService passwordService;
+    private UserService userService;
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @MockBean
-    private UserService userService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -54,61 +45,97 @@ class UserControllerTests {
     @SpyBean
     private JwtProperties jwtProperties;
 
-    private static UserCredentials credentials;
+    private static UserDto userDto;
+    private static User user;
 
     @BeforeAll
-    static void setUp() {
-        credentials = new UserCredentials("1", "password");
+    private static void setUp() {
+        user = new User(1L, "password", "mail@mail.com", Roles.USER_INDIVIDUAL);
+        userDto = new UserDto(1L, "mail@mail.com", Roles.USER_INDIVIDUAL);
     }
 
     @Test
-    void shouldReturnStatusUnauthorizedWhenCredentialsAreIncorrect() throws Exception {
-        mvc.perform(
-                post("/account/login")
-                        .content(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(credentials)))
-
-                .andExpect(status().isUnauthorized())
-                .andExpect(header().doesNotExist(HttpHeaders.AUTHORIZATION));
-    }
-
-    @Test
-    void shouldReturnStatusOkWhenCredentialsAreCorrect() throws Exception {
-        User user = new User(1L, passwordEncoder.encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
-
-        given(userDetailsService.loadUserByUsername("1")).willReturn(user);
-        given(jwtProperties.getExpirationTime()).willReturn(10L);
-
-        mvc.perform(
-                post("/account/login")
-                        .content(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(credentials)))
-
-                .andExpect(status().isOk())
-                .andExpect(header().exists(HttpHeaders.AUTHORIZATION));
-    }
-
-    /*@Test
     @WithMockUser(roles = "ADMIN")
-    public void shouldReturnUserDtoWhenUserHasRoleAdmin() throws Exception {
-        UserDto userDto = new UserDto(1, "anon@gmail.com");
-
+    void shouldReturnUserDtoOfTheGivenUserWhenUserIsAuthorizedToMakeRequest() throws Exception {
         given(userService.getUserDto(1)).willReturn(userDto);
 
         mvc.perform(
-                get("/account/users/1")
-                        .content(MediaType.APPLICATION_JSON_VALUE))
+                get("/account/users/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(userDto)));
-    }*/
+                .andExpect(content().json(toJson(userDto)));
+
+    }
 
     @Test
-    @WithMockUser(roles = "USER")
-    public void shouldReturnStatusUnauthorizedWhenUserHasRoleUser() throws Exception {
+    @WithMockUser(roles = "USER_INDIVIDUAL")
+    void shouldReturnStatusForbiddenWhenUserIsNotAuthorizedToMakeRequest() throws Exception {
         mvc.perform(
-                get("/account/users/1")
-                        .content(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isForbidden());
+                get("/account/users/1"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().json(toJson(new ResponseMessage("Access is denied"))));
+    }
+
+    @Test
+    @WithMockUser("1")
+    void shouldReturnUserDtoOfTheUser() throws Exception {
+        given(userService.getUserDto(1)).willReturn(userDto);
+
+        mvc.perform(
+                get("/account/users"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(userDto)));
+
+    }
+
+    @Test
+    @WithMockUser("1")
+    void shouldReturnStatusOkWhenRequestingSendUpdateEmailMail() throws Exception {
+        mvc.perform(post("/account/email"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser("1")
+    void shouldReturnStatusOkWhenUpdatingEmail() throws Exception {
+        RequestUpdateEmail request = new RequestUpdateEmail(UUID.randomUUID().toString(), "email@email.com");
+
+        mvc.perform(put("/account/email")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(toJson(request)))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser("1")
+    void shouldReturnDtoOfDisabledUser() throws Exception {
+        given(userService.disableUser(1)).willReturn(userDto);
+
+        mvc.perform(delete("/account/users"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(userDto)));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldReturnDtoOfDisabledUserGivenByUserId() throws Exception {
+        given(userService.disableUser(1)).willReturn(userDto);
+
+        mvc.perform(delete("/account/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(userDto)));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER_INDIVIDUAL")
+    void shouldReturnStatusForbiddenWhenUserIsNotAuthorizedToMakeDisableUserRequest() throws Exception {
+        mvc.perform(delete("/account/users/1"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().json(toJson(new ResponseMessage("Access is denied"))));
+    }
+
+    private String toJson(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(object);
     }
 
 }

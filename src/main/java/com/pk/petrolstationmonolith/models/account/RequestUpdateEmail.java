@@ -12,10 +12,10 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class RequestUpdateEmail {
 
-    @NotBlank
+    @NotBlank(message = "Token cannot be blank")
     private String token;
 
-    @Email
+    @Email(message = "Email should be valid")
     private String email;
 
 }

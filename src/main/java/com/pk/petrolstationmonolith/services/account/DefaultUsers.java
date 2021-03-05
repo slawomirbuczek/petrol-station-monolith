@@ -76,13 +76,13 @@ public class DefaultUsers {
                 LocalDate.of(2017, 2, 1));
 
 
-        addEmployee(9L, "ratajczak", "baltazargabka@testmail.com", Roles.LPG_SERVICE,
+        addEmployee(9L, "ratajczak", "czeslawratajczak@testmail.com", Roles.LPG_SERVICE,
                 "Kraków", "30-063", "Warszawska", "23", "2207C",
                 "Czesław", "Ratajczak", "22021558780", "7620175973", "321123789",
                 LocalDate.of(1998, 1, 1), 3000, "PL98907500099661392189199554",
                 LocalDate.of(2017, 2, 1));
 
-        addEmployee(10L, "rataj", "baltazargabka@testmail.com", Roles.LPG_SERVICE,
+        addEmployee(10L, "rataj", "radoslawrataj@testmail.com", Roles.LPG_SERVICE,
                 "Kraków", "30-063", "Warszawska", "23", "2207C",
                 "Radosław", "Rataj", "41041085210", "1086591162", "321123789",
                 LocalDate.of(1998, 1, 1), 3000, "PL06812610337733474715136641",

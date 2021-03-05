@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -42,13 +43,21 @@ public class UserController {
 
     @PutMapping("/email")
     @ResponseStatus(HttpStatus.OK)
-    public void updateEmail(Principal principal, RequestUpdateEmail request) {
+    public void updateEmail(@Valid @RequestBody RequestUpdateEmail request, Principal principal) {
         userService.updateEmail(Long.parseLong(principal.getName()), request);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/users")
     public ResponseEntity<UserDto> disableUser(Principal principal) {
         return ResponseEntity.ok(userService.disableUser(Long.parseLong(principal.getName())));
     }
+
+    @DeleteMapping("/users/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
+    public ResponseEntity<UserDto> disableUserById(@PathVariable long userId) {
+        return ResponseEntity.ok(userService.disableUser(userId));
+    }
+
+
 
 }
