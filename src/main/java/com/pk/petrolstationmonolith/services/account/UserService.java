@@ -1,8 +1,8 @@
 package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.EmailAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
@@ -28,12 +28,12 @@ public class UserService {
     private final ModelMapper mapper;
     private final PasswordEncoder encoder;
 
-    public User getUser(long userId) {
+    public Customers getUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    public User getUser(String userId) {
+    public Customers getUser(String userId) {
         try {
             return getUser(Long.parseLong(userId));
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class UserService {
         }
     }
 
-    public User getUserByEmail(String email) {
+    public Customers getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
     }
@@ -51,43 +51,43 @@ public class UserService {
         return mapUserToDto(getUser(userId));
     }
 
-    public User addUser(User user) {
-        log.trace("Adding new user with email " + user.getEmail() + "and role " + user.getRole());
-        user.setPassword(encodePassword(user.getPassword()));
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new EmailAlreadyTakenException(user.getEmail());
+    public Customers addUser(Customers customers) {
+        log.trace("Adding new user with email " + customers.getEmail() + "and role " + customers.getRole());
+        customers.setPassword(encodePassword(customers.getPassword()));
+        if (userRepository.existsByEmail(customers.getEmail())) {
+            throw new EmailAlreadyTakenException(customers.getEmail());
         }
-        return userRepository.save(user);
+        return userRepository.save(customers);
     }
 
-    public void updatePassword(User user, String newPassword) {
-        user.setPassword(encodePassword(newPassword));
-        userRepository.save(user);
+    public void updatePassword(Customers customers, String newPassword) {
+        customers.setPassword(encodePassword(newPassword));
+        userRepository.save(customers);
     }
 
     public boolean passwordMatches(String encodedPassword, String password) {
         return encoder.matches(password, encodedPassword);
     }
 
-    public User changeUserRole(long userId, Roles role) {
+    public Customers changeUserRole(long userId, Roles role) {
         log.trace("Changing user with id " + userId + " role to " + role);
-        User user = getUser(userId);
-        user.setRole(role);
-        return userRepository.save(user);
+        Customers customers = getUser(userId);
+        customers.setRole(role);
+        return userRepository.save(customers);
     }
 
     public void activeAccount(long userId) {
         log.trace("Activiating account for user with id " + userId);
-        User user = getUser(userId);
-        user.setEnabled(true);
-        userRepository.save(user);
+        Customers customers = getUser(userId);
+        customers.setEnabled(true);
+        userRepository.save(customers);
     }
 
     public void sendUpdateEmailMail(long userId) {
         log.trace("Sending update email to user with id " + userId);
-        User user = getUser(userId);
-        EmailToken emailToken = emailTokenService.createNewToken(user);
-        mailService.sendEmailUpdateMail(user.getEmail(), emailToken.getToken());
+        Customers customers = getUser(userId);
+        EmailToken emailToken = emailTokenService.createNewToken(customers);
+        mailService.sendEmailUpdateMail(customers.getEmail(), emailToken.getToken());
     }
 
     public void updateEmail(long userId, RequestUpdateEmail request) {
@@ -96,26 +96,26 @@ public class UserService {
             throw new InvalidEmailTokenException();
         }
 
-        User user = getUser(userId);
-        user.setEmail(request.getEmail());
-        userRepository.save(user);
+        Customers customers = getUser(userId);
+        customers.setEmail(request.getEmail());
+        userRepository.save(customers);
         emailTokenService.deleteToken(request.getToken());
     }
 
     public UserDto disableUser(long userId) {
         log.trace("Disabling user with id " + userId);
-        User user = getUser(userId);
-        user.setEnabled(false);
-        user = userRepository.save(user);
-        return mapUserToDto(user);
+        Customers customers = getUser(userId);
+        customers.setEnabled(false);
+        customers = userRepository.save(customers);
+        return mapUserToDto(customers);
     }
 
     private String encodePassword(String password) {
         return encoder.encode(password);
     }
 
-    private UserDto mapUserToDto(User user) {
-        return mapper.map(user, UserDto.class);
+    private UserDto mapUserToDto(Customers customers) {
+        return mapper.map(customers, UserDto.class);
     }
 
 }

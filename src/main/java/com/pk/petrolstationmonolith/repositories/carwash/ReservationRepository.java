@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.repositories.carwash;
 
-import com.pk.petrolstationmonolith.entities.carwash.Reservation;
+import com.pk.petrolstationmonolith.entities.carwash.Bookings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Bookings, Long> {
 
-    List<Reservation> findAllByDateTimeBetween(LocalDateTime from, LocalDateTime to);
+    List<Bookings> findAllByDateTimeBetween(LocalDateTime from, LocalDateTime to);
 
-    Optional<Reservation> findByDateTime(LocalDateTime dateTime);
+    Optional<Bookings> findByDateTime(LocalDateTime dateTime);
 
-    List<Reservation> findAllByUserId(Long userId);
+    List<Bookings> findAllByUserId(Long userId);
 
 }

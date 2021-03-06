@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.entities.transactions;
 
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.ServiceType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,34 +8,39 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "transaction")
 @Data
 @NoArgsConstructor
-public class Transaction {
+@Entity
+@Table(name = "Transactions")
+public class Transactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "ServiceType")
     private ServiceType serviceType;
 
+    @Column(name = "DateTime")
     private LocalDateTime dateTime;
 
-    private int number;
+    @Column(name = "amount")
+    private Integer number;
 
-    private double cost;
+    @Column(name = "Cost")
+    private Double cost;
 
     @ManyToOne
-    private User user;
+    private Customers customers;
 
-    public Transaction(ServiceType serviceType, LocalDateTime dateTime, int number, double cost, User user) {
+    public Transactions(ServiceType serviceType, LocalDateTime dateTime, Integer number, Double cost, Customers customers) {
         this.serviceType = serviceType;
         this.dateTime = dateTime;
         this.number = number;
         this.cost = cost;
-        this.user = user;
+        this.customers = customers;
     }
 
 }

@@ -5,40 +5,45 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "employee")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+@Entity
+@Table(name = "Employees")
+public class Employees {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
+    @Column(name = "PhoneNumber")
     private String phoneNumber;
 
+    @Column(name = "DateOfBirth")
     private LocalDate dateOfBirth;
 
-    private int salary;
+    @Column(name = "Salary")
+    private Integer salary;
 
+    @Column(name = "AccountNumber")
     private String accountNumber;
 
+    @Column(name = "StartDateOfWork")
     private LocalDate startDateOfWork;
 
     @OneToOne
-    private User user;
+    private Customers customers;
 
-    public Employee(String phoneNumber, LocalDate dateOfBirth, int salary, String accountNumber,
-                    LocalDate startDateOfWork, User user) {
+    public Employees(String phoneNumber, LocalDate dateOfBirth, Integer salary, String accountNumber,
+                     LocalDate startDateOfWork, Customers customers) {
         this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
         this.salary = salary;
         this.accountNumber = accountNumber;
         this.startDateOfWork = startDateOfWork;
-        this.user = user;
+        this.customers = customers;
     }
 }

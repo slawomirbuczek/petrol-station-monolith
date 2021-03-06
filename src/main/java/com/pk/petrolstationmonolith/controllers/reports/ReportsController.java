@@ -1,12 +1,10 @@
 package com.pk.petrolstationmonolith.controllers.reports;
 
-import com.pk.petrolstationmonolith.models.monitoring.Parameters;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
 import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +24,8 @@ public class ReportsController {
     private final TransactionService transactionService;
 
     @GetMapping("/monitoring")
-    public ResponseEntity<Parameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,
-                                                                 @RequestParam Optional<Integer> optionalMonth) {
+    public ResponseEntity<ResponseParameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,
+                                                                         @RequestParam Optional<Integer> optionalMonth) {
         return ResponseEntity.ok(monitoringService.getMonitoringMonthlyReport(optionalYear, optionalMonth));
     }
 

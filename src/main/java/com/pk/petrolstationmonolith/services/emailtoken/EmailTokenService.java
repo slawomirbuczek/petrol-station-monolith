@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.emailtoken;
 
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.repositories.account.EmailTokenRepository;
 import lombok.AllArgsConstructor;
@@ -25,19 +25,19 @@ public class EmailTokenService {
                 .orElseThrow(InvalidEmailTokenException::new);
     }
 
-    public EmailToken createNewToken(User user) {
+    public EmailToken createNewToken(Customers customers) {
         UUID token;
         do {
             token = UUID.randomUUID();
         } while (emailTokenRepository.existsByToken(token));
-        EmailToken emailToken = new EmailToken(token, user);
+        EmailToken emailToken = new EmailToken(token, customers);
         log.trace("Created new emailToken " + emailToken.toString());
         return emailTokenRepository.save(emailToken);
     }
 
     public boolean tokenNotValid(String token, long userId) {
         log.trace("Validating token " + token + " with user " + userId);
-        return getByToken(token).getUser().getId() != userId;
+        return getByToken(token).getCustomers().getId() != userId;
     }
 
     public void deleteToken(String token) {

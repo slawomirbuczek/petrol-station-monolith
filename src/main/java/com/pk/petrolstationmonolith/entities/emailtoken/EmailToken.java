@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.entities.emailtoken;
 
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,32 +10,28 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-@Table(name = "email_token")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "EmailToken")
 public class EmailToken {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "Token")
     private UUID token;
 
+    @Column(name = "CreationDateTime")
     private LocalDateTime creationDateTime;
 
     @ManyToOne
-    private User user;
+    private Customers customers;
 
-
-    public EmailToken(User user) {
-        this.user = user;
-        creationDateTime = LocalDateTime.now();
-    }
-
-    public EmailToken(UUID token, User user) {
+    public EmailToken(UUID token, Customers customers) {
         this.token = token;
-        this.user = user;
+        this.customers = customers;
         creationDateTime = LocalDateTime.now();
     }
 

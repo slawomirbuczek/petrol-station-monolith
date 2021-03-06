@@ -36,51 +36,51 @@ public class RegistrationService {
         log.trace("Registering new individual");
         String password = generatePassword();
 
-        User user = mapper.map(credentials, User.class);
-        user.setRole(Roles.USER_INDIVIDUAL);
-        user.setPassword(password);
-        user = userService.addUser(user);
+        Customers customers = mapper.map(credentials, Customers.class);
+        customers.setRole(Roles.USER_INDIVIDUAL);
+        customers.setPassword(password);
+        customers = userService.addUser(customers);
 
-        Address address = mapper.map(credentials, Address.class);
-        address.setUser(user);
-        addressService.addAddress(address);
+        Addresses addresses = mapper.map(credentials, Addresses.class);
+        addresses.setCustomers(customers);
+        addressService.addAddress(addresses);
 
-        Individual individual = mapper.map(credentials, Individual.class);
-        individual.setUser(user);
-        individualService.addIndividual(individual);
+        Individuals individuals = mapper.map(credentials, Individuals.class);
+        individuals.setCustomers(customers);
+        individualService.addIndividual(individuals);
 
-        sendEmailConfimrationMail(user);
-        return new UserCredentials(user.getUsername(), password);
+        sendEmailConfimrationMail(customers);
+        return new UserCredentials(customers.getUsername(), password);
     }
 
     public UserCredentials registerCompany(CompanyRegistrationCredentials credentials) {
         log.trace("Registering new company");
         String password = generatePassword();
 
-        User user = mapper.map(credentials, User.class);
-        user.setRole(Roles.USER_COMPANY);
-        user.setPassword(password);
-        user = userService.addUser(user);
+        Customers customers = mapper.map(credentials, Customers.class);
+        customers.setRole(Roles.USER_COMPANY);
+        customers.setPassword(password);
+        customers = userService.addUser(customers);
 
-        Address address = mapper.map(credentials, Address.class);
-        address.setUser(user);
-        addressService.addAddress(address);
+        Addresses addresses = mapper.map(credentials, Addresses.class);
+        addresses.setCustomers(customers);
+        addressService.addAddress(addresses);
 
-        Company company = mapper.map(credentials, Company.class);
-        company.setUser(user);
-        companyService.addCompany(company);
+        Companies companies = mapper.map(credentials, Companies.class);
+        companies.setCustomers(customers);
+        companyService.addCompany(companies);
 
-        sendEmailConfimrationMail(user);
-        return new UserCredentials(user.getUsername(), password);
+        sendEmailConfimrationMail(customers);
+        return new UserCredentials(customers.getUsername(), password);
     }
 
     public EmployeeDto registerEmployee(EmployeeRegistrationCredentials credentials) {
         log.trace("Registering new employee");
-        User user = userService.changeUserRole(credentials.getUserId(), credentials.getRole());
+        Customers customers = userService.changeUserRole(credentials.getUserId(), credentials.getRole());
 
-        Employee employee = mapper.map(credentials, Employee.class);
-        employee.setUser(user);
-        employeeService.addEmployee(employee);
+        Employees employees = mapper.map(credentials, Employees.class);
+        employees.setCustomers(customers);
+        employeeService.addEmployee(employees);
 
         return employeeService.getEmployeeDto(credentials.getUserId());
     }
@@ -88,13 +88,13 @@ public class RegistrationService {
     public void confirmEmail(String token) {
         log.trace("Confirming email with token " + token);
         EmailToken emailToken = emailTokenService.getByToken(token);
-        userService.activeAccount(emailToken.getUser().getId());
+        userService.activeAccount(emailToken.getCustomers().getId());
         emailTokenService.deleteToken(token);
     }
 
-    private void sendEmailConfimrationMail(User user) {
-        EmailToken emailToken = emailTokenService.createNewToken(user);
-        mailService.sendEmailConfirmationMail(user.getEmail(), emailToken.getToken());
+    private void sendEmailConfimrationMail(Customers customers) {
+        EmailToken emailToken = emailTokenService.createNewToken(customers);
+        mailService.sendEmailConfirmationMail(customers.getEmail(), emailToken.getToken());
     }
 
     private String generatePassword() {

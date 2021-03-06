@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.account.RequestUpdateEmail;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-class UserControllerTests {
+class CustomersControllerTests {
 
     @Autowired
     private MockMvc mvc;
@@ -46,11 +46,11 @@ class UserControllerTests {
     private JwtProperties jwtProperties;
 
     private static UserDto userDto;
-    private static User user;
+    private static Customers customers;
 
     @BeforeAll
     private static void setUp() {
-        user = new User(1L, "password", "mail@mail.com", Roles.USER_INDIVIDUAL);
+        customers = new Customers(1L, "password", "mail@mail.com", Roles.USER_INDIVIDUAL);
         userDto = new UserDto(1L, "mail@mail.com", Roles.USER_INDIVIDUAL);
     }
 

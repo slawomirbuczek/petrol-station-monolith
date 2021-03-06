@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
-import com.pk.petrolstationmonolith.entities.account.Employee;
+import com.pk.petrolstationmonolith.entities.account.Employees;
 import com.pk.petrolstationmonolith.exceptions.account.employee.EmployeeNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.EmployeeRepository;
 import lombok.AllArgsConstructor;
@@ -22,41 +22,41 @@ public class EmployeeService {
         return mapEmployeeToDto(getEmployee(userId));
     }
 
-    public void addEmployee(Employee employee) {
-        log.trace("Adding new employee for user with id " + employee.getUser().getId());
-        employeeRepository.save(employee);
+    public void addEmployee(Employees employees) {
+        log.trace("Adding new employee for user with id " + employees.getCustomers().getId());
+        employeeRepository.save(employees);
     }
 
     public EmployeeDto updateEmployee(long userId, EmployeeDto employeeDto) {
         log.trace("Updating employee for user with id " + userId);
-        Employee oldEmployee = getEmployee(userId);
+        Employees oldEmployees = getEmployee(userId);
 
-        Employee employee = mapDtoToEmployee(employeeDto);
-        employee.setId(oldEmployee.getId());
-        employee.setUser(oldEmployee.getUser());
-        employee = employeeRepository.save(employee);
+        Employees employees = mapDtoToEmployee(employeeDto);
+        employees.setId(oldEmployees.getId());
+        employees.setCustomers(oldEmployees.getCustomers());
+        employees = employeeRepository.save(employees);
 
-        return mapEmployeeToDto(employee);
+        return mapEmployeeToDto(employees);
     }
 
     public EmployeeDto deleteEmployee(long userId) {
         log.trace("Deleting address for user with id " + userId);
-        Employee employee = getEmployee(userId);
-        employeeRepository.delete(employee);
-        return mapEmployeeToDto(employee);
+        Employees employees = getEmployee(userId);
+        employeeRepository.delete(employees);
+        return mapEmployeeToDto(employees);
     }
 
-    private Employee getEmployee(long userId) {
+    private Employees getEmployee(long userId) {
         return employeeRepository.findByUserId(userId)
                 .orElseThrow(() -> new EmployeeNotFoundException(userId));
     }
 
-    private EmployeeDto mapEmployeeToDto(Employee employee) {
-        return mapper.map(employee, EmployeeDto.class);
+    private EmployeeDto mapEmployeeToDto(Employees employees) {
+        return mapper.map(employees, EmployeeDto.class);
     }
 
-    private Employee mapDtoToEmployee(EmployeeDto employeeDto) {
-        return mapper.map(employeeDto, Employee.class);
+    private Employees mapDtoToEmployee(EmployeeDto employeeDto) {
+        return mapper.map(employeeDto, Employees.class);
     }
 
 }

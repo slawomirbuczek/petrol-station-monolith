@@ -1,26 +1,28 @@
 package com.pk.petrolstationmonolith.entities.loyaltyprogram;
 
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "loyalty_program")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "LoyaltyProgram")
 public class LoyaltyProgram {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
-    private long points;
+    @Column(name = "Points")
+    private Long points;
 
     @OneToOne
-    private User user;
+    private Customers customers;
 
 }

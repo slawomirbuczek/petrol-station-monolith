@@ -9,19 +9,21 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Entity
-@Table(name = "price_list")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "PetrolStationService")
 public class PetrolStationService {
 
     @Id
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Service type cannot be null")
+    @Column(name = "ServiceType")
     private ServiceType serviceType;
 
     @Positive(message = "Price must be postivie number")
-    private float price;
+    @Column(name = "Price")
+    private Float price;
 
 }

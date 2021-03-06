@@ -29,7 +29,7 @@ public class LoyaltyProgramService {
             throw new UserHasAlreadyJoinedTheLoyaltyProgramException(userId);
         }
         LoyaltyProgram loyaltyProgram = new LoyaltyProgram();
-        loyaltyProgram.setUser(userService.getUser(userId));
+        loyaltyProgram.setCustomers(userService.getUser(userId));
         log.trace("User with id " + userId + " joined loyalty program");
         return new Points(loyaltyProgramRepository.save(loyaltyProgram).getPoints());
     }

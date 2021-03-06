@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
-import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
+import com.pk.petrolstationmonolith.entities.monitoring.Monitoring;
 import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.enums.AlarmType;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
@@ -26,45 +26,45 @@ public class MonitoringAlarms {
 
     public void checkMonitoringAlarmState() {
         log.trace("Checking monitoring alarm state");
-        Parameter parameter = parameterRepository.findTopByOrderByDateTimeDesc();
+        Monitoring monitoring = parameterRepository.findTopByOrderByDateTimeDesc();
 
-        if (parameter.getE95Level() <= monitoringProperties.getLowLevelE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.LOW_LEVEL, parameter.getE95Level(), parameter.getDateTime());
+        if (monitoring.getE95Level() <= monitoringProperties.getLowLevelE95()) {
+            sendAlarmEmail(ServiceType.E95, AlarmType.LOW_LEVEL, monitoring.getE95Level(), monitoring.getDateTime());
         }
-        if (parameter.getE98Level() <= monitoringProperties.getLowLevelE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.LOW_LEVEL, parameter.getE98Level(), parameter.getDateTime());
+        if (monitoring.getE98Level() <= monitoringProperties.getLowLevelE98()) {
+            sendAlarmEmail(ServiceType.E98, AlarmType.LOW_LEVEL, monitoring.getE98Level(), monitoring.getDateTime());
         }
-        if (parameter.getOnLevel() <= monitoringProperties.getLowLevelOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.LOW_LEVEL, parameter.getOnLevel(), parameter.getDateTime());
+        if (monitoring.getOnLevel() <= monitoringProperties.getLowLevelOn()) {
+            sendAlarmEmail(ServiceType.ON, AlarmType.LOW_LEVEL, monitoring.getOnLevel(), monitoring.getDateTime());
         }
-        if (parameter.getLpgLevel() <= monitoringProperties.getLowLevelLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.LOW_LEVEL, parameter.getLpgLevel(), parameter.getDateTime());
-        }
-
-        if (parameter.getE95Pressure() >= monitoringProperties.getHightPressureE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.HIGHT_PRESSURE, parameter.getE95Pressure(), parameter.getDateTime());
-        }
-        if (parameter.getE98Pressure() >= monitoringProperties.getHightPressureE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.HIGHT_PRESSURE, parameter.getE98Pressure(), parameter.getDateTime());
-        }
-        if (parameter.getOnPressure() >= monitoringProperties.getHightPressureOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.HIGHT_PRESSURE, parameter.getOnPressure(), parameter.getDateTime());
-        }
-        if (parameter.getLpgPressure() >= monitoringProperties.getHightPressureLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGHT_PRESSURE, parameter.getLpgPressure(), parameter.getDateTime());
+        if (monitoring.getLpgLevel() <= monitoringProperties.getLowLevelLpg()) {
+            sendAlarmEmail(ServiceType.LPG, AlarmType.LOW_LEVEL, monitoring.getLpgLevel(), monitoring.getDateTime());
         }
 
-        if (parameter.getE95Temperature() >= monitoringProperties.getHighTemperatureE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.HIGH_TEMPERATURE, parameter.getE95Temperature(), parameter.getDateTime());
+        if (monitoring.getE95Pressure() >= monitoringProperties.getHightPressureE95()) {
+            sendAlarmEmail(ServiceType.E95, AlarmType.HIGHT_PRESSURE, monitoring.getE95Pressure(), monitoring.getDateTime());
         }
-        if (parameter.getE98Temperature() >= monitoringProperties.getHighTemperatureE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.HIGH_TEMPERATURE, parameter.getE98Temperature(), parameter.getDateTime());
+        if (monitoring.getE98Pressure() >= monitoringProperties.getHightPressureE98()) {
+            sendAlarmEmail(ServiceType.E98, AlarmType.HIGHT_PRESSURE, monitoring.getE98Pressure(), monitoring.getDateTime());
         }
-        if (parameter.getOnTemperature() >= monitoringProperties.getHighTemperatureOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.HIGH_TEMPERATURE, parameter.getOnTemperature(), parameter.getDateTime());
+        if (monitoring.getOnPressure() >= monitoringProperties.getHightPressureOn()) {
+            sendAlarmEmail(ServiceType.ON, AlarmType.HIGHT_PRESSURE, monitoring.getOnPressure(), monitoring.getDateTime());
         }
-        if (parameter.getLpgTemperature() >= monitoringProperties.getHighTemperatureLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGH_TEMPERATURE, parameter.getLpgTemperature(), parameter.getDateTime());
+        if (monitoring.getLpgPressure() >= monitoringProperties.getHightPressureLpg()) {
+            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGHT_PRESSURE, monitoring.getLpgPressure(), monitoring.getDateTime());
+        }
+
+        if (monitoring.getE95Temperature() >= monitoringProperties.getHighTemperatureE95()) {
+            sendAlarmEmail(ServiceType.E95, AlarmType.HIGH_TEMPERATURE, monitoring.getE95Temperature(), monitoring.getDateTime());
+        }
+        if (monitoring.getE98Temperature() >= monitoringProperties.getHighTemperatureE98()) {
+            sendAlarmEmail(ServiceType.E98, AlarmType.HIGH_TEMPERATURE, monitoring.getE98Temperature(), monitoring.getDateTime());
+        }
+        if (monitoring.getOnTemperature() >= monitoringProperties.getHighTemperatureOn()) {
+            sendAlarmEmail(ServiceType.ON, AlarmType.HIGH_TEMPERATURE, monitoring.getOnTemperature(), monitoring.getDateTime());
+        }
+        if (monitoring.getLpgTemperature() >= monitoringProperties.getHighTemperatureLpg()) {
+            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGH_TEMPERATURE, monitoring.getLpgTemperature(), monitoring.getDateTime());
         }
 
     }

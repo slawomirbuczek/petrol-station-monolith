@@ -14,32 +14,37 @@ import java.util.Collection;
 import static java.util.Collections.singletonList;
 
 @Entity
-@Table(name = "app_user")
+@Table(name = "Customers")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User implements UserDetails {
+public class Customers implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
+    @Column(name = "Password")
     private String password;
 
+    @Column(name = "Email")
     private String email;
 
+    @Column(name = "Role")
     @Enumerated(EnumType.STRING)
     private Roles role;
 
-    private boolean enabled;
+    @Column(name = "Enabled")
+    private Boolean enabled;
 
-    public User(String password, String email, Roles role) {
+    public Customers(String password, String email, Roles role) {
         this.password = password;
         this.email = email;
         this.role = role;
         this.enabled = false;
     }
 
-    public User(Long id, String password, String email, Roles role) {
+    public Customers(Long id, String password, String email, Roles role) {
         this.id = id;
         this.password = password;
         this.email = email;

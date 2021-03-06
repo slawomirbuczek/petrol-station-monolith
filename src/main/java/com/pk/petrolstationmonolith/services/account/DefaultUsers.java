@@ -1,9 +1,9 @@
 package com.pk.petrolstationmonolith.services.account;
 
-import com.pk.petrolstationmonolith.entities.account.Address;
-import com.pk.petrolstationmonolith.entities.account.Employee;
-import com.pk.petrolstationmonolith.entities.account.Individual;
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Addresses;
+import com.pk.petrolstationmonolith.entities.account.Employees;
+import com.pk.petrolstationmonolith.entities.account.Individuals;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -95,17 +95,17 @@ public class DefaultUsers {
                              String firstName, String lastName, String pesel, String nip, String phoneNumber,
                              LocalDate dateOfBirth, int salary, String accountNumber, LocalDate startDateOfWork) {
 
-        User user = new User(id, password, email, role);
-        user = userService.addUser(user);
+        Customers customer = new Customers(id, password, email, role);
+        customer = userService.addUser(customer);
 
-        Address address = new Address("Polska", city, zip, street, buildingNumber, apartmentNumber, user);
+        Addresses address = new Addresses("Polska", city, zip, street, buildingNumber, apartmentNumber, customer);
         addressService.addAddress(address);
 
-        Individual individual = new Individual(firstName, lastName, pesel, nip, user);
-        individualService.addIndividual(individual);
+        Individuals individuals = new Individuals(firstName, lastName, pesel, nip, customer);
+        individualService.addIndividual(individuals);
 
-        Employee employee = new Employee(phoneNumber, dateOfBirth, salary, accountNumber, startDateOfWork, user);
-        employeeService.addEmployee(employee);
+        Employees employees = new Employees(phoneNumber, dateOfBirth, salary, accountNumber, startDateOfWork, customer);
+        employeeService.addEmployee(employees);
     }
 
 }

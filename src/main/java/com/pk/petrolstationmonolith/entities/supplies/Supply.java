@@ -8,24 +8,29 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "supply")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "Supply")
 public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "FuelType")
     private FuelType fuelType;
 
+    @Column(name = "Date")
     private LocalDate date;
 
-    private int amount;
+    @Column(name = "Amount")
+    private Integer amount;
 
-    private float price;
+    @Column(name = "Price")
+    private Float price;
 
 }

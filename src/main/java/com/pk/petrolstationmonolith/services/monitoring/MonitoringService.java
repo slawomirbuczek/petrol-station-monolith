@@ -1,10 +1,10 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
-import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
+import com.pk.petrolstationmonolith.entities.monitoring.Monitoring;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
-import com.pk.petrolstationmonolith.models.monitoring.Parameters;
 import com.pk.petrolstationmonolith.models.monitoring.RequestChangeInterval;
 import com.pk.petrolstationmonolith.models.monitoring.RequestParametersBetweenDates;
+import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
 import lombok.AllArgsConstructor;
@@ -26,34 +26,34 @@ public class MonitoringService {
     private final MonitoringProperties monitoringProperties;
     private final ModelMapper modelMapper;
 
-    public void addParameter(Parameter parameter) {
+    public void addParameter(Monitoring monitoring) {
         log.trace("Adding monitoring parameters");
-        parameterRepository.save(parameter);
+        parameterRepository.save(monitoring);
     }
 
-    public Parameter getCurrentParameters() {
+    public Monitoring getCurrentParameters() {
         log.trace("Getting current parameters");
         return parameterRepository.findTopByOrderByDateTimeDesc();
     }
 
-    public Parameters getParametersBetweenDates(RequestParametersBetweenDates request) {
+    public ResponseParameters getParametersBetweenDates(RequestParametersBetweenDates request) {
         log.trace("Getting parameters from " + request.getFrom() + " to " + request.getTo());
-        List<Parameter> parameters = parameterRepository
+        List<Monitoring> parameters = parameterRepository
                 .findAllByDateTimeBetween(request.getFrom().atStartOfDay(), request.getTo().plusDays(1).atStartOfDay());
-        return new Parameters(parameters);
+        return new ResponseParameters(parameters);
     }
 
-    public Parameters getMonitoringMonthlyReport(Optional<Integer> optionalYear, Optional<Integer> optionalMonth) {
+    public ResponseParameters getMonitoringMonthlyReport(Optional<Integer> optionalYear, Optional<Integer> optionalMonth) {
         int year = optionalYear.orElseGet(() -> LocalDate.now().getYear());
         int month = optionalMonth.orElseGet(() -> LocalDate.now().getMonthValue());
         log.trace("Getting monitoring monthly report for year " + year + " and month " + month);
         LocalDate dateFrom = LocalDate.of(year, month, 1);
         LocalDate dateTo = LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth());
 
-        List<Parameter> parameters = parameterRepository
+        List<Monitoring> parameters = parameterRepository
                 .findAllByDateTimeBetween(dateFrom.atStartOfDay(), dateTo.plusDays(1).atStartOfDay());
 
-        return new Parameters(parameters);
+        return new ResponseParameters(parameters);
     }
 
     public ResponseMessage changeMonitoringInterval(RequestChangeInterval request) {

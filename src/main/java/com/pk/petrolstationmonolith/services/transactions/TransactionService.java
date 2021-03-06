@@ -1,11 +1,10 @@
 package com.pk.petrolstationmonolith.services.transactions;
 
 import com.pk.petrolstationmonolith.dtos.transactions.TransactionDto;
-import com.pk.petrolstationmonolith.entities.transactions.Transaction;
+import com.pk.petrolstationmonolith.entities.transactions.Transactions;
 import com.pk.petrolstationmonolith.enums.ServiceType;
 import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
 import com.pk.petrolstationmonolith.models.transactions.RequestAddTransaction;
-import com.pk.petrolstationmonolith.models.transactions.Transactions;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
 import com.pk.petrolstationmonolith.repositories.transactions.TransactionRepository;
 import com.pk.petrolstationmonolith.services.account.UserService;
@@ -37,32 +36,32 @@ public class TransactionService {
         return mapTransactionToDto(getTransaction(transactionId));
     }
 
-    public Transaction getTransaction(long transactionId) {
+    public Transactions getTransaction(long transactionId) {
         log.trace("Getting transaction with id " + transactionId);
         return transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new InvalidTransactionIdException(transactionId));
     }
 
-    public Transactions getTransactions(long userId) {
+    public com.pk.petrolstationmonolith.models.transactions.Transactions getTransactions(long userId) {
         log.trace("Getting transactions for user with id " + userId);
-        return new Transactions(transactionRepository.findAllByUserId(userId).stream()
+        return new com.pk.petrolstationmonolith.models.transactions.Transactions(transactionRepository.findAllByUserId(userId).stream()
                 .map(this::mapTransactionToDto).collect(Collectors.toList()));
     }
 
     public TransactionDto addTransaction(RequestAddTransaction request, Long userId) {
-        Transaction transaction = mapper.map(request, Transaction.class);
+        Transactions transactions = mapper.map(request, Transactions.class);
         log.trace("Adding new transaction" + (Objects.nonNull(userId) ? " for user with id " + userId : ""));
         if (Objects.nonNull(userId)) {
-            transaction.setUser(userService.getUser(userId));
+            transactions.setCustomers(userService.getUser(userId));
             loyaltyProgramService.addProgramPointsAfterTransaction(userId, request.getServiceType(), request.getNumber());
         }
 
-        return mapTransactionToDto(transactionRepository.save(transaction));
+        return mapTransactionToDto(transactionRepository.save(transactions));
     }
 
     public boolean transactionAssociatedWithUser(long transactionId, long userId) {
-        Transaction transaction = getTransaction(transactionId);
-        return Objects.nonNull(transaction.getUser()) && transaction.getUser().getId() == userId;
+        Transactions transactions = getTransaction(transactionId);
+        return Objects.nonNull(transactions.getCustomers()) && transactions.getCustomers().getId() == userId;
     }
 
     public TransactionsReport getTransactionsMonthlyReport(Optional<Integer> optionalYear, Optional<Integer> optionalMonth) {
@@ -96,8 +95,8 @@ public class TransactionService {
         return transactionRepository.sumNumberByServiceTypeAndDateTimeBetween(serviceType, from, to).orElse(0L);
     }
 
-    private TransactionDto mapTransactionToDto(Transaction transaction) {
-        return mapper.map(transaction, TransactionDto.class);
+    private TransactionDto mapTransactionToDto(Transactions transactions) {
+        return mapper.map(transactions, TransactionDto.class);
     }
 
 }

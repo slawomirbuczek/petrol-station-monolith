@@ -6,23 +6,28 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+@Entity
+@Table(name = "Companies")
+public class Companies {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
+    @Column(name = "Name")
     private String name;
 
+    @Column(name = "Regon")
     private String regon;
 
+    @Column(name = "Nip")
     private String nip;
 
     @OneToOne
-    private User user;
+    private Customers customers;
 
 }

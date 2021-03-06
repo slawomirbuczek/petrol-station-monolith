@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.carwash;
 
 import com.pk.petrolstationmonolith.dtos.account.IndividualDto;
-import com.pk.petrolstationmonolith.entities.carwash.Reservation;
+import com.pk.petrolstationmonolith.entities.carwash.Bookings;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
@@ -39,11 +39,11 @@ public class ReservationService {
     private final CompanyService companyService;
 
     public ReservationDetails getReservationDetails(LocalDateTime dateTime) {
-        Reservation reservation = getReservation(dateTime);
-        long userId = reservation.getUser().getId();
+        Bookings bookings = getReservation(dateTime);
+        long userId = bookings.getCustomers().getId();
         String name;
         log.trace("Getting car wash reservation details with date " + dateTime.toString());
-        if (reservation.getUser().getRole() == Roles.USER_COMPANY) {
+        if (bookings.getCustomers().getRole() == Roles.USER_COMPANY) {
             name = companyService.getCompanyDto(userId).getName();
         } else {
             IndividualDto individualDto = individualService.getIndividualDto(userId);
@@ -65,72 +65,72 @@ public class ReservationService {
             throw new WrongReservationDateException();
         }
 
-        List<Reservation> reservations = reservationRepository
+        List<Bookings> bookings = reservationRepository
                 .findAllByDateTimeBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
 
-        if (reservations.isEmpty()) {
+        if (bookings.isEmpty()) {
             return createEmptyReservationsForDate(date);
         }
 
-        return mapListOfReservationsToReservations(reservations);
+        return mapListOfReservationsToReservations(bookings);
 
     }
 
     public ResponseReservation reserve(RequestDateTime request, long userId) {
-        Reservation reservation = getReservation(request.getDateTime());
-        log.trace("Reserving car wash with date " + reservation.getDateTime() + " for user with id " + userId);
-        if (Objects.nonNull(reservation.getUser())) {
+        Bookings bookings = getReservation(request.getDateTime());
+        log.trace("Reserving car wash with date " + bookings.getDateTime() + " for user with id " + userId);
+        if (Objects.nonNull(bookings.getCustomers())) {
             throw new ReservationAlreadyTakenException(request.getDateTime());
         }
 
-        reservation.setUser(userService.getUser(userId));
-        return mapReservationToResponse(reservationRepository.save(reservation));
+        bookings.setCustomers(userService.getUser(userId));
+        return mapReservationToResponse(reservationRepository.save(bookings));
     }
 
     public ResponseReservation cancelReservation(RequestDateTime request, long userId) {
-        Reservation reservation = getReservation(request.getDateTime());
-        log.trace("Canceling car wash reservation with date " + reservation.getDateTime() + " for user with id " + userId);
-        if (Objects.isNull(reservation.getUser()) || !Objects.equals(reservation.getUser().getId(), userId)) {
+        Bookings bookings = getReservation(request.getDateTime());
+        log.trace("Canceling car wash reservation with date " + bookings.getDateTime() + " for user with id " + userId);
+        if (Objects.isNull(bookings.getCustomers()) || !Objects.equals(bookings.getCustomers().getId(), userId)) {
             throw new ReservationNotReservedByUserException(userId);
         }
 
-        reservation.setUser(null);
-        return mapReservationToResponse(reservationRepository.save(reservation));
+        bookings.setCustomers(null);
+        return mapReservationToResponse(reservationRepository.save(bookings));
     }
 
-    private Reservation getReservation(LocalDateTime dateTime) {
+    private Bookings getReservation(LocalDateTime dateTime) {
         return reservationRepository.findByDateTime(dateTime)
                 .orElseThrow(() -> new ReservationNotFoundException(dateTime));
     }
 
     private Reservations createEmptyReservationsForDate(LocalDate date) {
-        List<Reservation> reservations = new ArrayList<>();
+        List<Bookings> bookings = new ArrayList<>();
 
         for (int i = 0; i < 34; i++) {
-            reservations.add(reservationRepository.save(createNewReservation(
+            bookings.add(reservationRepository.save(createNewReservation(
                     LocalDateTime.of(date, LocalTime.of(6, 0).plusMinutes(i * 30))
             )));
         }
 
-        return mapListOfReservationsToReservations(reservations);
+        return mapListOfReservationsToReservations(bookings);
     }
 
-    private Reservation createNewReservation(LocalDateTime dateTime) {
-        Reservation reservation = new Reservation();
-        reservation.setDateTime(dateTime);
-        return reservation;
+    private Bookings createNewReservation(LocalDateTime dateTime) {
+        Bookings bookings = new Bookings();
+        bookings.setDateTime(dateTime);
+        return bookings;
     }
 
-    private ResponseReservation mapReservationToResponse(Reservation reservation) {
+    private ResponseReservation mapReservationToResponse(Bookings bookings) {
         ResponseReservation responseReservation = new ResponseReservation();
-        responseReservation.setDateTime(reservation.getDateTime());
-        responseReservation.setAvailable(Objects.isNull(reservation.getUser()));
+        responseReservation.setDateTime(bookings.getDateTime());
+        responseReservation.setAvailable(Objects.isNull(bookings.getCustomers()));
         return responseReservation;
     }
 
-    private Reservations mapListOfReservationsToReservations(List<Reservation> reservations) {
+    private Reservations mapListOfReservationsToReservations(List<Bookings> bookings) {
         return new Reservations(
-                reservations.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
+                bookings.stream().map(this::mapReservationToResponse).collect(Collectors.toList())
         );
     }
 }

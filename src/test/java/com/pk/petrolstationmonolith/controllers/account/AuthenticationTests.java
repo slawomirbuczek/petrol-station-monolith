@@ -2,7 +2,7 @@ package com.pk.petrolstationmonolith.controllers.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.models.account.UserCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
@@ -64,9 +64,9 @@ class AuthenticationTests {
 
     @Test
     void shouldReturnStatusOkWhenCredentialsAreCorrect() throws Exception {
-        User user = new User(1L, passwordEncoder.encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
+        Customers customers = new Customers(1L, passwordEncoder.encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
 
-        given(userDetailsService.loadUserByUsername("1")).willReturn(user);
+        given(userDetailsService.loadUserByUsername("1")).willReturn(customers);
 
         mvc.perform(
                 post("/account/login")

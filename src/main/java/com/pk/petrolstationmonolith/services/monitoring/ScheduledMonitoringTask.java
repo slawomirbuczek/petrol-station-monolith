@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
-import com.pk.petrolstationmonolith.entities.monitoring.Parameter;
+import com.pk.petrolstationmonolith.entities.monitoring.Monitoring;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,21 +38,21 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
     private void scheduledTask() {
         log.trace("Executing scheduled monitoring task with interval " + properties.getInterval());
-        Parameter parameter = new Parameter();
-        parameter.setDateTime(LocalDateTime.now());
-        parameter.setE95Temperature(getRandomTemperature());
-        parameter.setE95Pressure(getRandomPressure());
-        parameter.setE95Level(getRandomLevel());
-        parameter.setE98Temperature(getRandomTemperature());
-        parameter.setE98Pressure(getRandomPressure());
-        parameter.setE98Level(getRandomLevel());
-        parameter.setOnTemperature(getRandomTemperature());
-        parameter.setOnPressure(getRandomPressure());
-        parameter.setOnLevel(getRandomLevel());
-        parameter.setLpgTemperature(getRandomTemperature());
-        parameter.setLpgPressure(getRandomPressure());
-        parameter.setLpgLevel(getRandomLevel());
-        monitoringService.addParameter(parameter);
+        Monitoring monitoring = new Monitoring();
+        monitoring.setDateTime(LocalDateTime.now());
+        monitoring.setE95Temperature(getRandomTemperature());
+        monitoring.setE95Pressure(getRandomPressure());
+        monitoring.setE95Level(getRandomLevel());
+        monitoring.setE98Temperature(getRandomTemperature());
+        monitoring.setE98Pressure(getRandomPressure());
+        monitoring.setE98Level(getRandomLevel());
+        monitoring.setOnTemperature(getRandomTemperature());
+        monitoring.setOnPressure(getRandomPressure());
+        monitoring.setOnLevel(getRandomLevel());
+        monitoring.setLpgTemperature(getRandomTemperature());
+        monitoring.setLpgPressure(getRandomPressure());
+        monitoring.setLpgLevel(getRandomLevel());
+        monitoringService.addParameter(monitoring);
     }
 
     private int getRandomTemperature() {

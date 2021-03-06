@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.account;
 
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
@@ -25,36 +25,36 @@ public class PasswordService {
 
     public ResponseMessage updatePassword(RequestUpdatePassword request, long userId) {
         log.trace("Updating password for user with id " + userId);
-        User user = userService.getUser(userId);
+        Customers customers = userService.getUser(userId);
 
-        if (!userService.passwordMatches(user.getPassword(), request.getOldPassword())) {
+        if (!userService.passwordMatches(customers.getPassword(), request.getOldPassword())) {
             throw new InvalidPasswordException();
         }
 
-        userService.updatePassword(user, request.getNewPassword());
+        userService.updatePassword(customers, request.getNewPassword());
         return new ResponseMessage("Password successfully updated.");
     }
 
     public ResponseMessage sendPasswordResetMail(RequestResetPassword request) {
         log.trace("Sending password reset mail for user with email " + request.getEmail());
-        User user = userService.getUserByEmail(request.getEmail());
+        Customers customers = userService.getUserByEmail(request.getEmail());
 
-        EmailToken emailToken = emailTokenService.createNewToken(user);
+        EmailToken emailToken = emailTokenService.createNewToken(customers);
 
-        mailService.sendPasswordResetMail(user.getEmail(), emailToken.getToken());
+        mailService.sendPasswordResetMail(customers.getEmail(), emailToken.getToken());
 
         return new ResponseMessage("Reset password email has been sent.");
     }
 
     public ResponseMessage setNewPassword(RequestNewPassword request) {
         log.trace("Setting new password for user with email " + request.getEmail());
-        User user = userService.getUserByEmail(request.getEmail());
+        Customers customers = userService.getUserByEmail(request.getEmail());
 
-        if (emailTokenService.tokenNotValid(request.getToken(), user.getId())) {
+        if (emailTokenService.tokenNotValid(request.getToken(), customers.getId())) {
             throw new InvalidEmailTokenException();
         }
 
-        userService.updatePassword(user, request.getNewPassword());
+        userService.updatePassword(customers, request.getNewPassword());
         emailTokenService.deleteToken(request.getToken());
 
         return new ResponseMessage("New password has been set.");

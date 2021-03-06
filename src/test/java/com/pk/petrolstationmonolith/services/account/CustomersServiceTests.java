@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.account;
 
 import com.pk.petrolstationmonolith.dtos.account.UserDto;
-import com.pk.petrolstationmonolith.entities.account.User;
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
 import com.pk.petrolstationmonolith.repositories.account.UserRepository;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTests {
+class CustomersServiceTests {
 
     @Mock
     private UserRepository userRepository;
@@ -27,21 +27,21 @@ class UserServiceTests {
     @InjectMocks
     private UserService userService;
 
-    private static User user;
+    private static Customers customers;
 
     @BeforeAll
     static void setUp() {
-        user = new User(1L, "password", "email@email.com", Roles.USER_INDIVIDUAL);
+        customers = new Customers(1L, "password", "email@email.com", Roles.USER_INDIVIDUAL);
     }
 
     @Test
     void shouldReturnUserWhenUserExists() {
-        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(userRepository.findById(1L)).willReturn(Optional.of(CustomersServiceTests.customers));
 
-        User user = userService.getUser(1L);
+        Customers customers = userService.getUser(1L);
 
-        assertThat(user.getId()).isEqualTo(1L);
-        assertThat(user.getPassword()).isEqualTo("password");
+        assertThat(customers.getId()).isEqualTo(1L);
+        assertThat(customers.getPassword()).isEqualTo("password");
     }
 
     @Test
@@ -55,7 +55,7 @@ class UserServiceTests {
 
     @Test
     void shouldReturnUserDtoWhenUserExists() {
-        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(userRepository.findById(1L)).willReturn(Optional.of(customers));
 
         UserDto userDto = userService.getUserDto(1L);
 
@@ -74,13 +74,13 @@ class UserServiceTests {
 
     @Test
     void shouldReturnUserWhenUserWithEmailExists() {
-        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.of(user));
+        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.of(CustomersServiceTests.customers));
 
-        User user = userService.getUserByEmail("email@email.com");
+        Customers customers = userService.getUserByEmail("email@email.com");
 
-        assertThat(user.getId()).isEqualTo(1L);
-        assertThat(user.getPassword()).isEqualTo("password");
-        assertThat(user.getEmail()).isEqualTo("email@email.com");
+        assertThat(customers.getId()).isEqualTo(1L);
+        assertThat(customers.getPassword()).isEqualTo("password");
+        assertThat(customers.getEmail()).isEqualTo("email@email.com");
     }
 
     @Test

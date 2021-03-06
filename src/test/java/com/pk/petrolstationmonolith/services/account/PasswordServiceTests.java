@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.services.account;
 
+import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.entities.emailtoken.EmailToken;
-import com.pk.petrolstationmonolith.entities.account.User;
 import com.pk.petrolstationmonolith.enums.Roles;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidEmailTokenException;
 import com.pk.petrolstationmonolith.exceptions.account.InvalidPasswordException;
@@ -51,20 +51,20 @@ class PasswordServiceTests {
     @InjectMocks
     private PasswordService passwordService;
 
-    private static User user;
+    private static Customers customers;
 
     private static Principal principal;
 
     @BeforeAll
     static void setUp() {
         encoder = new BCryptPasswordEncoder();
-        user = new User(1L, new BCryptPasswordEncoder().encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
+        customers = new Customers(1L, new BCryptPasswordEncoder().encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
         principal = () -> "1";
     }
 
     @Test
     void shouldUpdatePasswordWhenUserOldPasswordIsCorrect() {
-        given(userService.getUser("1")).willReturn(user);
+        given(userService.getUser("1")).willReturn(customers);
 
         RequestUpdatePassword request = new RequestUpdatePassword("password", "newPassword");
 
@@ -76,7 +76,7 @@ class PasswordServiceTests {
 
     @Test
     void shouldThrowInvalidPasswordExceptionWhenUserOldPasswordIsIncorrect() {
-        given(userService.getUser("1")).willReturn(user);
+        given(userService.getUser("1")).willReturn(customers);
 
         RequestUpdatePassword request = new RequestUpdatePassword("WRONG", "newPassword");
 
@@ -88,7 +88,7 @@ class PasswordServiceTests {
 
     @Test
     void shouldReturnResponseMessageWhenUserWithEmailExists() {
-        given(userService.getUserByEmail("email@email.com")).willReturn(user);
+        given(userService.getUserByEmail("email@email.com")).willReturn(customers);
 
         RequestResetPassword request = new RequestResetPassword("email@email.com");
 
@@ -100,9 +100,9 @@ class PasswordServiceTests {
     @Test
     void shouldReturnResponseMessageWhenCredentialsAreCorrect() {
         UUID uuid = UUID.randomUUID();
-        EmailToken emailToken = new EmailToken(uuid, user);
+        EmailToken emailToken = new EmailToken(uuid, customers);
 
-        given(userService.getUserByEmail("email@email.com")).willReturn(user);
+        given(userService.getUserByEmail("email@email.com")).willReturn(customers);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));
 
         RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
@@ -115,9 +115,9 @@ class PasswordServiceTests {
     @Test
     void shouldThrowInvalidEmailTokenExceptionWhenTokenIsInvalid() {
         UUID uuid = UUID.randomUUID();
-        EmailToken emailToken = new EmailToken(uuid, user);
+        EmailToken emailToken = new EmailToken(uuid, customers);
 
-        given(userService.getUserByEmail("email@email.com")).willReturn(user);
+        given(userService.getUserByEmail("email@email.com")).willReturn(customers);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.empty());
 
         RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
@@ -130,10 +130,10 @@ class PasswordServiceTests {
     @Test
     void shouldThrowInvalidEmailTokenExceptionWhenEmailTokenUserIsDifferent() {
         UUID uuid = UUID.randomUUID();
-        User emailTokenUser = new User(2L, user.getPassword(), user.getEmail(), user.getRole());
-        EmailToken emailToken = new EmailToken(uuid, emailTokenUser);
+        Customers emailTokenCustomers = new Customers(2L, customers.getPassword(), customers.getEmail(), customers.getRole());
+        EmailToken emailToken = new EmailToken(uuid, emailTokenCustomers);
 
-        given(userService.getUserByEmail("email@email.com")).willReturn(user);
+        given(userService.getUserByEmail("email@email.com")).willReturn(customers);
         given(emailTokenRepository.findByToken(uuid)).willReturn(Optional.of(emailToken));
 
         RequestNewPassword request = new RequestNewPassword("newPassowrd", "email@email.com", uuid.toString());
