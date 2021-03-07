@@ -19,25 +19,25 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PasswordService {
 
-    private final UserService userService;
+    private final CustomerService customerService;
     private final EmailTokenService emailTokenService;
     private final MailService mailService;
 
-    public ResponseMessage updatePassword(RequestUpdatePassword request, long userId) {
-        log.trace("Updating password for user with id " + userId);
-        Customers customers = userService.getUser(userId);
+    public ResponseMessage updatePassword(RequestUpdatePassword request, long customerId) {
+        log.trace("Updating password for customer with id " + customerId);
+        Customers customers = customerService.getCustomer(customerId);
 
-        if (!userService.passwordMatches(customers.getPassword(), request.getOldPassword())) {
+        if (!customerService.passwordMatches(customers.getPassword(), request.getOldPassword())) {
             throw new InvalidPasswordException();
         }
 
-        userService.updatePassword(customers, request.getNewPassword());
+        customerService.updatePassword(customers, request.getNewPassword());
         return new ResponseMessage("Password successfully updated.");
     }
 
     public ResponseMessage sendPasswordResetMail(RequestResetPassword request) {
-        log.trace("Sending password reset mail for user with email " + request.getEmail());
-        Customers customers = userService.getUserByEmail(request.getEmail());
+        log.trace("Sending password reset mail for customer with email " + request.getEmail());
+        Customers customers = customerService.getCustomerByEmail(request.getEmail());
 
         EmailToken emailToken = emailTokenService.createNewToken(customers);
 
@@ -47,14 +47,14 @@ public class PasswordService {
     }
 
     public ResponseMessage setNewPassword(RequestNewPassword request) {
-        log.trace("Setting new password for user with email " + request.getEmail());
-        Customers customers = userService.getUserByEmail(request.getEmail());
+        log.trace("Setting new password for customer with email " + request.getEmail());
+        Customers customers = customerService.getCustomerByEmail(request.getEmail());
 
         if (emailTokenService.tokenNotValid(request.getToken(), customers.getId())) {
             throw new InvalidEmailTokenException();
         }
 
-        userService.updatePassword(customers, request.getNewPassword());
+        customerService.updatePassword(customers, request.getNewPassword());
         emailTokenService.deleteToken(request.getToken());
 
         return new ResponseMessage("New password has been set.");

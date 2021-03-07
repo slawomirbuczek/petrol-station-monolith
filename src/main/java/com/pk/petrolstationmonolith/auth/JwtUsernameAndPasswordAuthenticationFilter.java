@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pk.petrolstationmonolith.models.account.UserCredentials;
+import com.pk.petrolstationmonolith.models.account.CustomerCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +43,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             throws AuthenticationException {
 
         try {
-            UserCredentials creds = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
+            CustomerCredentials creds = new ObjectMapper().readValue(request.getInputStream(), CustomerCredentials.class);
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     creds.getUsername(), creds.getPassword(), Collections.emptyList());

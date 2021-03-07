@@ -1,7 +1,7 @@
 package com.pk.petrolstationmonolith.controllers.account;
 
 import com.pk.petrolstationmonolith.dtos.account.EmployeeDto;
-import com.pk.petrolstationmonolith.models.account.UserCredentials;
+import com.pk.petrolstationmonolith.models.account.CustomerCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.CompanyRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.EmployeeRegistrationCredentials;
 import com.pk.petrolstationmonolith.models.account.registration.IndividualRegistrationCredentials;
@@ -22,12 +22,12 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/individuals")
-    public ResponseEntity<UserCredentials> registerIndividual(@Valid @RequestBody IndividualRegistrationCredentials credentials) {
+    public ResponseEntity<CustomerCredentials> registerIndividual(@Valid @RequestBody IndividualRegistrationCredentials credentials) {
         return ResponseEntity.ok(registrationService.registerIndividual(credentials));
     }
 
     @PostMapping("/companies")
-    public ResponseEntity<UserCredentials> registerCompany(@Valid @RequestBody CompanyRegistrationCredentials credentials) {
+    public ResponseEntity<CustomerCredentials> registerCompany(@Valid @RequestBody CompanyRegistrationCredentials credentials) {
         return ResponseEntity.ok(registrationService.registerCompany(credentials));
     }
 

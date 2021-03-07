@@ -13,8 +13,8 @@ import java.sql.Date;
 @AllArgsConstructor
 public class EmployeeRegistrationCredentials {
 
-    @Positive(message = "User id must be a positive number")
-    private long userId;
+    @Positive(message = "Customer id must be a positive number")
+    private long customerId;
 
     @NotNull(message = "Role cannob be null")
     private Roles role;

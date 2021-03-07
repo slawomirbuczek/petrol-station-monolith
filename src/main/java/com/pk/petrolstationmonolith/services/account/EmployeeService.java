@@ -17,19 +17,19 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ModelMapper mapper;
 
-    public EmployeeDto getEmployeeDto(long userId) {
-        log.trace("Getting employee dto for user with id " + userId);
-        return mapEmployeeToDto(getEmployee(userId));
+    public EmployeeDto getEmployeeDto(long customerId) {
+        log.trace("Getting employee dto for customer with id " + customerId);
+        return mapEmployeeToDto(getEmployee(customerId));
     }
 
     public void addEmployee(Employees employees) {
-        log.trace("Adding new employee for user with id " + employees.getCustomers().getId());
+        log.trace("Adding new employee for customer with id " + employees.getCustomers().getId());
         employeeRepository.save(employees);
     }
 
-    public EmployeeDto updateEmployee(long userId, EmployeeDto employeeDto) {
-        log.trace("Updating employee for user with id " + userId);
-        Employees oldEmployees = getEmployee(userId);
+    public EmployeeDto updateEmployee(long customerId, EmployeeDto employeeDto) {
+        log.trace("Updating employee for customer with id " + customerId);
+        Employees oldEmployees = getEmployee(customerId);
 
         Employees employees = mapDtoToEmployee(employeeDto);
         employees.setId(oldEmployees.getId());
@@ -39,16 +39,16 @@ public class EmployeeService {
         return mapEmployeeToDto(employees);
     }
 
-    public EmployeeDto deleteEmployee(long userId) {
-        log.trace("Deleting address for user with id " + userId);
-        Employees employees = getEmployee(userId);
+    public EmployeeDto deleteEmployee(long customerId) {
+        log.trace("Deleting address for customer with id " + customerId);
+        Employees employees = getEmployee(customerId);
         employeeRepository.delete(employees);
         return mapEmployeeToDto(employees);
     }
 
-    private Employees getEmployee(long userId) {
-        return employeeRepository.findByUserId(userId)
-                .orElseThrow(() -> new EmployeeNotFoundException(userId));
+    private Employees getEmployee(long customerId) {
+        return employeeRepository.findByCustomersId(customerId)
+                .orElseThrow(() -> new EmployeeNotFoundException(customerId));
     }
 
     private EmployeeDto mapEmployeeToDto(Employees employees) {

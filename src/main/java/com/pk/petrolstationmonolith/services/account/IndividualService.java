@@ -17,19 +17,19 @@ public class IndividualService {
     private final IndividualRepository individualRepository;
     private final ModelMapper mapper;
 
-    public IndividualDto getIndividualDto(long userId) {
-        log.trace("Getting individual dto for user with id " + userId);
-        return mapIndividualToDto(getIndividual(userId));
+    public IndividualDto getIndividualDto(long customerId) {
+        log.trace("Getting individual dto for customer with id " + customerId);
+        return mapIndividualToDto(getIndividual(customerId));
     }
 
     public void addIndividual(Individuals individuals) {
-        log.trace("Adding new individual for user with id " + individuals.getCustomers().getId());
+        log.trace("Adding new individual for customer with id " + individuals.getCustomers().getId());
         individualRepository.save(individuals);
     }
 
-    public IndividualDto updateIndividual(long userId, IndividualDto individualDto) {
-        log.trace("Updating individual for user with id " + userId);
-        Individuals oldIndividuals = getIndividual(userId);
+    public IndividualDto updateIndividual(long customerId, IndividualDto individualDto) {
+        log.trace("Updating individual for customer with id " + customerId);
+        Individuals oldIndividuals = getIndividual(customerId);
 
         Individuals individuals = mapDtoToIndividual(individualDto);
         individuals.setId(oldIndividuals.getId());
@@ -39,16 +39,16 @@ public class IndividualService {
         return mapIndividualToDto(individuals);
     }
 
-    public IndividualDto deleteIndividual(long userId) {
-        log.trace("Deleting individual for user with id " + userId);
-        Individuals individuals = getIndividual(userId);
+    public IndividualDto deleteIndividual(long customerId) {
+        log.trace("Deleting individual for customer with id " + customerId);
+        Individuals individuals = getIndividual(customerId);
         individualRepository.delete(individuals);
         return mapIndividualToDto(individuals);
     }
 
-    private Individuals getIndividual(long userId) {
-        return individualRepository.findByUserId(userId)
-                .orElseThrow(() -> new IndividualNotFoundException(userId));
+    private Individuals getIndividual(long customerId) {
+        return individualRepository.findByCustomersId(customerId)
+                .orElseThrow(() -> new IndividualNotFoundException(customerId));
     }
 
     private IndividualDto mapIndividualToDto(Individuals individuals) {

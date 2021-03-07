@@ -22,10 +22,10 @@ public class AddressController {
         return ResponseEntity.ok(addressService.getAddressDto(Long.parseLong(principal.getName())));
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<AddressDto> getAddressDtoByUserId(@PathVariable long userId) {
-        return ResponseEntity.ok(addressService.getAddressDto(userId));
+    public ResponseEntity<AddressDto> getAddressDtoByUserId(@PathVariable long customerId) {
+        return ResponseEntity.ok(addressService.getAddressDto(customerId));
     }
 
     @PutMapping
@@ -33,11 +33,11 @@ public class AddressController {
         return ResponseEntity.ok(addressService.updateAddress(Long.parseLong(principal.getName()), addressDto));
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<AddressDto> updateAddressByUserId(@PathVariable long userId,
+    public ResponseEntity<AddressDto> updateAddressByUserId(@PathVariable long customerId,
                                                             @Valid @RequestBody AddressDto addressDto) {
-        return ResponseEntity.ok(addressService.updateAddress(userId, addressDto));
+        return ResponseEntity.ok(addressService.updateAddress(customerId, addressDto));
     }
 
 }

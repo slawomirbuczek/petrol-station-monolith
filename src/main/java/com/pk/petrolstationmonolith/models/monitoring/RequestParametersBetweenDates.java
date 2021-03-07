@@ -1,5 +1,6 @@
 package com.pk.petrolstationmonolith.models.monitoring;
 
+import com.pk.petrolstationmonolith.enums.FuelType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestParametersBetweenDates {
+
+    @NotNull(message = "Fuel type cannot be null")
+    private FuelType fuelType;
 
     @NotNull(message = "Date cannot be null")
     private LocalDate from;

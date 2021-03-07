@@ -27,11 +27,11 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.addTransaction(request, null));
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{customerId}")
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
-    public ResponseEntity<TransactionDto> addTransactionWithUser(@PathVariable long userId,
+    public ResponseEntity<TransactionDto> addTransactionWithCustomer(@PathVariable long customerId,
                                                                  @Valid @RequestBody RequestAddTransaction request) {
-        return ResponseEntity.ok(transactionService.addTransaction(request, userId));
+        return ResponseEntity.ok(transactionService.addTransaction(request, customerId));
     }
 
     @GetMapping

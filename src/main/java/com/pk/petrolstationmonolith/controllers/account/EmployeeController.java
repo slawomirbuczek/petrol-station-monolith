@@ -23,10 +23,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeDto(Long.parseLong(principal.getName())));
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<EmployeeDto> getEmployeeDtoByUserId(@PathVariable long userId) {
-        return ResponseEntity.ok(employeeService.getEmployeeDto(userId));
+    public ResponseEntity<EmployeeDto> getEmployeeDtoByUserId(@PathVariable long customerId) {
+        return ResponseEntity.ok(employeeService.getEmployeeDto(customerId));
     }
 
     @PutMapping
@@ -36,11 +36,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateEmployee(Long.parseLong(principal.getName()), employeeDto));
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<EmployeeDto> updateEmployeeByUserId(@PathVariable long userId,
+    public ResponseEntity<EmployeeDto> updateEmployeeByUserId(@PathVariable long customerId,
                                                             @Valid @RequestBody EmployeeDto employeeDto) {
-        return ResponseEntity.ok(employeeService.updateEmployee(userId, employeeDto));
+        return ResponseEntity.ok(employeeService.updateEmployee(customerId, employeeDto));
     }
 
 }

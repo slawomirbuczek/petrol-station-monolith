@@ -1,6 +1,7 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
-import com.pk.petrolstationmonolith.entities.monitoring.Monitoring;
+import com.pk.petrolstationmonolith.dtos.monitoring.ParametersDto;
+import com.pk.petrolstationmonolith.enums.FuelType;
 import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -38,34 +40,31 @@ public class ScheduledMonitoringTask implements SchedulingConfigurer {
 
     private void scheduledTask() {
         log.trace("Executing scheduled monitoring task with interval " + properties.getInterval());
-        Monitoring monitoring = new Monitoring();
-        monitoring.setDateTime(LocalDateTime.now());
-        monitoring.setE95Temperature(getRandomTemperature());
-        monitoring.setE95Pressure(getRandomPressure());
-        monitoring.setE95Level(getRandomLevel());
-        monitoring.setE98Temperature(getRandomTemperature());
-        monitoring.setE98Pressure(getRandomPressure());
-        monitoring.setE98Level(getRandomLevel());
-        monitoring.setOnTemperature(getRandomTemperature());
-        monitoring.setOnPressure(getRandomPressure());
-        monitoring.setOnLevel(getRandomLevel());
-        monitoring.setLpgTemperature(getRandomTemperature());
-        monitoring.setLpgPressure(getRandomPressure());
-        monitoring.setLpgLevel(getRandomLevel());
-        monitoringService.addParameter(monitoring);
+        Arrays.stream(FuelType.values()).forEach(
+                fuelType -> monitoringService.addParameter(getRandomParameterDto(fuelType))
+        );
     }
 
-    private int getRandomTemperature() {
-        return new Random().nextInt(19) + 10;
+    private ParametersDto getRandomParameterDto(FuelType fuelType) {
+        return new ParametersDto(
+                fuelType, LocalDateTime.now(), 1, getRandomPressure(), getRandomTemperature(), getRandomLevel()
+        );
     }
 
-    private int getRandomPressure() {
-        return new Random().nextInt(99) + 200;
+    private float getRandomTemperature() {
+        return getRandomFloat(10, 19);
     }
 
-    private int getRandomLevel() {
-        return new Random().nextInt(69) + 31;
+    private float getRandomPressure() {
+        return getRandomFloat(200, 299);
     }
 
+    private float getRandomLevel() {
+        return getRandomFloat(31, 100);
+    }
+
+    private float getRandomFloat(int min, int max) {
+        return new Random().nextFloat() * (max - min) + min;
+    }
 
 }

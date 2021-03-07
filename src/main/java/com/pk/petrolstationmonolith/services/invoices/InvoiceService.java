@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.services.invoices;
 
-import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
+import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithCustomerException;
 import com.pk.petrolstationmonolith.models.invoices.CompanyInvoice;
 import com.pk.petrolstationmonolith.models.invoices.IndividualInvoice;
 import com.pk.petrolstationmonolith.services.account.AddressService;
@@ -21,29 +21,29 @@ public class InvoiceService {
     private final IndividualService individualService;
     private final AddressService addressService;
 
-    public CompanyInvoice getCompanyInvoice(long transactionId, long userId) {
-        checkIfTransactionIsAssociatedWithUser(transactionId, userId);
-        log.trace("Getting company invoice with user id " + userId + " and transaction id " +  transactionId);
+    public CompanyInvoice getCompanyInvoice(long transactionId, long customerId) {
+        checkIfTransactionIsAssociatedWithUser(transactionId, customerId);
+        log.trace("Getting company invoice with customer id " + customerId + " and transaction id " +  transactionId);
         return new CompanyInvoice(
-                companyService.getCompanyDto(userId),
-                addressService.getAddressDto(userId),
+                companyService.getCompanyDto(customerId),
+                addressService.getAddressDto(customerId),
                 transactionService.getTransactionDto(transactionId)
         );
     }
 
-    public IndividualInvoice getIndividualInvoice(long transactionId, long userId) {
-        checkIfTransactionIsAssociatedWithUser(transactionId, userId);
-        log.trace("Getting individual invoice with user id " + userId + " and transaction id " +  transactionId);
+    public IndividualInvoice getIndividualInvoice(long transactionId, long customerId) {
+        checkIfTransactionIsAssociatedWithUser(transactionId, customerId);
+        log.trace("Getting individual invoice with customer id " + customerId + " and transaction id " +  transactionId);
         return new IndividualInvoice(
-                individualService.getIndividualDto(userId),
-                addressService.getAddressDto(userId),
+                individualService.getIndividualDto(customerId),
+                addressService.getAddressDto(customerId),
                 transactionService.getTransactionDto(transactionId)
         );
     }
 
-    private void checkIfTransactionIsAssociatedWithUser(long transactionId, long userId) {
-        if (transactionService.transactionAssociatedWithUser(transactionId, userId)) {
-            throw new TransactionNotAssociatedWithUserException(transactionId, userId);
+    private void checkIfTransactionIsAssociatedWithUser(long transactionId, long customerId) {
+        if (transactionService.transactionAssociatedWithCustomer(transactionId, customerId)) {
+            throw new TransactionNotAssociatedWithCustomerException(transactionId, customerId);
         }
     }
 

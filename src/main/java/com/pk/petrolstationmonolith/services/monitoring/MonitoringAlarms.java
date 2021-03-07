@@ -1,79 +1,66 @@
 package com.pk.petrolstationmonolith.services.monitoring;
 
-import com.pk.petrolstationmonolith.entities.monitoring.Monitoring;
-import com.pk.petrolstationmonolith.enums.ServiceType;
+import com.pk.petrolstationmonolith.entities.monitoring.Parameters;
 import com.pk.petrolstationmonolith.enums.AlarmType;
-import com.pk.petrolstationmonolith.properties.monitoring.MonitoringProperties;
-import com.pk.petrolstationmonolith.repositories.monitoring.ParameterRepository;
+import com.pk.petrolstationmonolith.enums.ServiceType;
+import com.pk.petrolstationmonolith.properties.monitoring.ParameterProperites;
+import com.pk.petrolstationmonolith.services.account.CustomerService;
 import com.pk.petrolstationmonolith.services.mail.MailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class MonitoringAlarms {
 
-    private final ParameterRepository parameterRepository;
-    private final MonitoringProperties monitoringProperties;
+    private final ParameterProperites e95Properties;
+    private final ParameterProperites e98Properties;
+    private final ParameterProperites onProperties;
+    private final ParameterProperites lpgProperties;
     private final MailService mailService;
-    private final Logger logger = LoggerFactory.getLogger(MonitoringAlarms.class);
+    private final CustomerService customerService;
 
-    public void checkMonitoringAlarmState() {
+    public void checkMonitoringAlarmState(Parameters parameter) {
         log.trace("Checking monitoring alarm state");
-        Monitoring monitoring = parameterRepository.findTopByOrderByDateTimeDesc();
 
-        if (monitoring.getE95Level() <= monitoringProperties.getLowLevelE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.LOW_LEVEL, monitoring.getE95Level(), monitoring.getDateTime());
-        }
-        if (monitoring.getE98Level() <= monitoringProperties.getLowLevelE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.LOW_LEVEL, monitoring.getE98Level(), monitoring.getDateTime());
-        }
-        if (monitoring.getOnLevel() <= monitoringProperties.getLowLevelOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.LOW_LEVEL, monitoring.getOnLevel(), monitoring.getDateTime());
-        }
-        if (monitoring.getLpgLevel() <= monitoringProperties.getLowLevelLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.LOW_LEVEL, monitoring.getLpgLevel(), monitoring.getDateTime());
-        }
-
-        if (monitoring.getE95Pressure() >= monitoringProperties.getHightPressureE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.HIGHT_PRESSURE, monitoring.getE95Pressure(), monitoring.getDateTime());
-        }
-        if (monitoring.getE98Pressure() >= monitoringProperties.getHightPressureE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.HIGHT_PRESSURE, monitoring.getE98Pressure(), monitoring.getDateTime());
-        }
-        if (monitoring.getOnPressure() >= monitoringProperties.getHightPressureOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.HIGHT_PRESSURE, monitoring.getOnPressure(), monitoring.getDateTime());
-        }
-        if (monitoring.getLpgPressure() >= monitoringProperties.getHightPressureLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGHT_PRESSURE, monitoring.getLpgPressure(), monitoring.getDateTime());
-        }
-
-        if (monitoring.getE95Temperature() >= monitoringProperties.getHighTemperatureE95()) {
-            sendAlarmEmail(ServiceType.E95, AlarmType.HIGH_TEMPERATURE, monitoring.getE95Temperature(), monitoring.getDateTime());
-        }
-        if (monitoring.getE98Temperature() >= monitoringProperties.getHighTemperatureE98()) {
-            sendAlarmEmail(ServiceType.E98, AlarmType.HIGH_TEMPERATURE, monitoring.getE98Temperature(), monitoring.getDateTime());
-        }
-        if (monitoring.getOnTemperature() >= monitoringProperties.getHighTemperatureOn()) {
-            sendAlarmEmail(ServiceType.ON, AlarmType.HIGH_TEMPERATURE, monitoring.getOnTemperature(), monitoring.getDateTime());
-        }
-        if (monitoring.getLpgTemperature() >= monitoringProperties.getHighTemperatureLpg()) {
-            sendAlarmEmail(ServiceType.LPG, AlarmType.HIGH_TEMPERATURE, monitoring.getLpgTemperature(), monitoring.getDateTime());
+        switch (parameter.getFuelType()) {
+            case E95:
+                checkPropertyAlarmState(parameter, e95Properties, ServiceType.E95);
+                break;
+            case E98:
+                checkPropertyAlarmState(parameter, e98Properties, ServiceType.E98);
+                break;
+            case ON:
+                checkPropertyAlarmState(parameter, onProperties, ServiceType.ON);
+                break;
+            case LPG:
+                checkPropertyAlarmState(parameter, lpgProperties, ServiceType.LPG);
+                break;
         }
 
     }
 
-    public void sendAlarmEmail(ServiceType serviceType, AlarmType alarmType, int value, LocalDateTime dateTime) {
-        logger.trace("Sending Alarm Email, serviceType: " + serviceType + " alarmType: " +
-                alarmType + " value: " + value + " dateTime: " + dateTime);
-        String mail = "eal08544@zwoho.com"; //paste ur temp email here
-        mailService.sendMonitoringAlarmMail(mail, serviceType, alarmType, 1, value, dateTime);
+    private void checkPropertyAlarmState(Parameters parameter, ParameterProperites properites, ServiceType serviceType) {
+        if (parameter.getLevel() < properites.getMinLevel()) {
+            sendAlarmEmail(parameter, AlarmType.LOW_LEVEL, parameter.getLevel(), serviceType);
+        }
+        if (parameter.getTemperature() > properites.getMaxTemperature()) {
+            sendAlarmEmail(parameter, AlarmType.HIGH_TEMPERATURE, parameter.getTemperature(), serviceType);
+        }
+        if (parameter.getPressure() > properites.getHighPressure()) {
+            sendAlarmEmail(parameter, AlarmType.HIGHT_PRESSURE, parameter.getPressure(), serviceType);
+        }
+    }
+
+    private void sendAlarmEmail(Parameters parameter, AlarmType alarmType, Float value, ServiceType serviceType) {
+        log.trace("Sending Alarm Email, serviceType: " + serviceType + " alarmType: " +
+                alarmType + " value: " + value + " dateTime: " + parameter.getDateTime());
+
+        String email = customerService.getOwnerEmail();
+        mailService.sendMonitoringAlarmMail(email, serviceType, alarmType, parameter.getTankNumber(),
+                value, parameter.getDateTime());
     }
 
 }

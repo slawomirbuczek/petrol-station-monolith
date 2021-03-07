@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.auth;
 
-import com.pk.petrolstationmonolith.repositories.account.UserRepository;
+import com.pk.petrolstationmonolith.repositories.account.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return userRepository.findByEmail(username)
+        return customerRepository.findByEmail(username)
                 .orElseGet(
                         () -> {
                             long id;
@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                             } catch (NumberFormatException e) {
                                 throw new UsernameNotFoundException("User with username: " + username + " not found.");
                             }
-                            return userRepository.findById(id)
+                            return customerRepository.findById(id)
                                     .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found."));
 
                         }

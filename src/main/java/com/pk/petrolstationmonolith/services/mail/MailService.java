@@ -38,97 +38,53 @@ public class MailService {
         Map<String, String> model = new HashMap<>();
         model.put("token", token.toString());
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-            Template template = emailConfig.getTemplate("password_reset.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-            mimeMessageHelper.setTo(email);
-            mimeMessageHelper.setText(html, true);
-            mimeMessageHelper.setSubject("Reset Your Petrol Station Account Password");
-
-            mailSender.send(message);
-            log.trace("Password reset mail has been sent");
-        } catch (IOException | MessagingException | TemplateException e) {
-            log.error("Error during sending password reset mail. Message: " + e.getMessage());
-        }
-
+        sendEmail(model, email, "password_reset.ftl", "Reset Your Petrol Station Account Password");
     }
 
     public void sendEmailConfirmationMail(String email, UUID token) {
         Map<String, String> model = new HashMap<>();
         model.put("link", "http://localhost:8080/account/registration/" + token);
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-            Template template = emailConfig.getTemplate("email_confirmation.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-            mimeMessageHelper.setTo(email);
-            mimeMessageHelper.setText(html, true);
-            mimeMessageHelper.setSubject("Active Your Petrol Station Account");
-
-            mailSender.send(message);
-            log.trace("Email confirmation mail has been sent");
-        } catch (IOException | MessagingException | TemplateException e) {
-            log.error("Error during sending email confirmation mail. Message: " + e.getMessage());
-        }
-
+        sendEmail(model, email, "email_confirmation.ftl", "Active Your Petrol Station Account");
     }
 
     public void sendEmailUpdateMail(String email, UUID token) {
         Map<String, String> model = new HashMap<>();
         model.put("token", token.toString());
 
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-            Template template = emailConfig.getTemplate("email_update.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-            mimeMessageHelper.setTo(email);
-            mimeMessageHelper.setText(html, true);
-            mimeMessageHelper.setSubject("Update Your Petrol Station Account Email");
-
-            mailSender.send(message);
-            log.trace("Email update mail has been sent");
-        } catch (IOException | MessagingException | TemplateException e) {
-            log.error("Error during sending email update mail. Message: " + e.getMessage());
-        }
-
+        sendEmail(model, email, "email_update.ftl", "Update Your Petrol Station Account Email");
     }
 
     public void sendMonitoringAlarmMail(String email, ServiceType serviceType, AlarmType alarmType, int tankNumber,
-                                        int value, LocalDateTime dateTime) {
+                                        float value, LocalDateTime dateTime) {
+
         Map<String, String> model = new HashMap<>();
         model.put("serviceType", serviceType.name());
         model.put("alarmType", alarmType.name());
         model.put("tankNumber", String.valueOf(tankNumber));
-        model.put("value", value == -1 ? "" : String.valueOf(value));
+        model.put("value", value < 0 ? "" : String.valueOf(value));
         model.put("dataTime", dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
+        sendEmail(model, email, "monitoring_alarm.ftl", "Monitoring alarm");
+    }
+
+    private void sendEmail(Map<String, String> model, String email, String templateFile, String subject) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
-            Template template = emailConfig.getTemplate("monitoring_alarm.ftl");
+            Template template = emailConfig.getTemplate(templateFile);
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
             mimeMessageHelper.setTo(email);
             mimeMessageHelper.setText(html, true);
-            mimeMessageHelper.setSubject("Monitoring alarm");
+            mimeMessageHelper.setSubject(subject);
 
             mailSender.send(message);
-            log.trace("Monitoring alarm mail has been sent");
+            log.trace("Mail has been sent");
         } catch (IOException | MessagingException | TemplateException e) {
-            log.error("Error during sending monitoring alarm mail. Message: " + e.getMessage());
+            log.error("Error during sending mail. Message: " + e.getMessage());
         }
-
     }
 
 }

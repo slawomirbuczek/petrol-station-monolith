@@ -1,10 +1,10 @@
 package com.pk.petrolstationmonolith.services.account;
 
-import com.pk.petrolstationmonolith.dtos.account.UserDto;
+import com.pk.petrolstationmonolith.dtos.account.CustomerDto;
 import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
-import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
-import com.pk.petrolstationmonolith.repositories.account.UserRepository;
+import com.pk.petrolstationmonolith.exceptions.account.customer.CustomerNotFoundException;
+import com.pk.petrolstationmonolith.repositories.account.CustomerRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,61 +22,61 @@ import static org.mockito.BDDMockito.given;
 class CustomersServiceTests {
 
     @Mock
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @InjectMocks
-    private UserService userService;
+    private CustomerService customerService;
 
     private static Customers customers;
 
     @BeforeAll
     static void setUp() {
-        customers = new Customers(1L, "password", "email@email.com", Roles.USER_INDIVIDUAL);
+        customers = new Customers(1L, "password", "email@email.com", Roles.CUSTOMER_INDIVIDUAL);
     }
 
     @Test
-    void shouldReturnUserWhenUserExists() {
-        given(userRepository.findById(1L)).willReturn(Optional.of(CustomersServiceTests.customers));
+    void shouldReturnCustomerWhenCustomerExists() {
+        given(customerRepository.findById(1L)).willReturn(Optional.of(CustomersServiceTests.customers));
 
-        Customers customers = userService.getUser(1L);
+        Customers customers = customerService.getCustomer(1L);
 
         assertThat(customers.getId()).isEqualTo(1L);
         assertThat(customers.getPassword()).isEqualTo("password");
     }
 
     @Test
-    void shouldThrowUserNotFoundExceptionWhenUserDoesNotExist() {
-        given(userRepository.findById(2L)).willReturn(Optional.empty());
+    void shouldThrowCustomerNotFoundExceptionWhenCustomerDoesNotExist() {
+        given(customerRepository.findById(2L)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.getUser(2L))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("User with id: 2 not found");
+        assertThatThrownBy(() -> customerService.getCustomer(2L))
+                .isInstanceOf(CustomerNotFoundException.class)
+                .hasMessage("Customer with id: 2 not found");
     }
 
     @Test
-    void shouldReturnUserDtoWhenUserExists() {
-        given(userRepository.findById(1L)).willReturn(Optional.of(customers));
+    void shouldReturnCustomerDtoWhenCustomerExists() {
+        given(customerRepository.findById(1L)).willReturn(Optional.of(customers));
 
-        UserDto userDto = userService.getUserDto(1L);
+        CustomerDto customerDto = customerService.getCustomerDto(1L);
 
-        assertThat(userDto.getId()).isEqualTo(1L);
-        assertThat(userDto.getEmail()).isEqualTo("email@email.com");
+        assertThat(customerDto.getId()).isEqualTo(1L);
+        assertThat(customerDto.getEmail()).isEqualTo("email@email.com");
     }
 
     @Test
-    void shouldThrowUserNotFoundExceptionWhenDtoUserDoesNotExist() {
-        given(userRepository.findById(1L)).willReturn(Optional.empty());
+    void shouldThrowCustomerNotFoundExceptionWhenDtoCustomerDoesNotExist() {
+        given(customerRepository.findById(1L)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.getUserDto(1L))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("User with id: 1 not found");
+        assertThatThrownBy(() -> customerService.getCustomerDto(1L))
+                .isInstanceOf(CustomerNotFoundException.class)
+                .hasMessage("Customer with id: 1 not found");
     }
 
     @Test
-    void shouldReturnUserWhenUserWithEmailExists() {
-        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.of(CustomersServiceTests.customers));
+    void shouldReturnCustomerWhenCustomerWithEmailExists() {
+        given(customerRepository.findByEmail("email@email.com")).willReturn(Optional.of(CustomersServiceTests.customers));
 
-        Customers customers = userService.getUserByEmail("email@email.com");
+        Customers customers = customerService.getCustomerByEmail("email@email.com");
 
         assertThat(customers.getId()).isEqualTo(1L);
         assertThat(customers.getPassword()).isEqualTo("password");
@@ -84,12 +84,12 @@ class CustomersServiceTests {
     }
 
     @Test
-    void shouldThrowUseNotFoundExceptionWhenUserWithEmailDoesNotExist() {
-        given(userRepository.findByEmail("email@email.com")).willReturn(Optional.empty());
+    void shouldThrowUseNotFoundExceptionWhenCustomerWithEmailDoesNotExist() {
+        given(customerRepository.findByEmail("email@email.com")).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.getUserByEmail("email@email.com"))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("User with id: email@email.com not found");
+        assertThatThrownBy(() -> customerService.getCustomerByEmail("email@email.com"))
+                .isInstanceOf(CustomerNotFoundException.class)
+                .hasMessage("Customer with id: email@email.com not found");
     }
 
 }

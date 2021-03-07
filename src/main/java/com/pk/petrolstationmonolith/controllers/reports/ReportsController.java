@@ -1,6 +1,6 @@
 package com.pk.petrolstationmonolith.controllers.reports;
 
-import com.pk.petrolstationmonolith.models.monitoring.ResponseParameters;
+import com.pk.petrolstationmonolith.models.monitoring.ListOfParameters;
 import com.pk.petrolstationmonolith.models.transactions.TransactionsReport;
 import com.pk.petrolstationmonolith.services.monitoring.MonitoringService;
 import com.pk.petrolstationmonolith.services.transactions.TransactionService;
@@ -24,8 +24,8 @@ public class ReportsController {
     private final TransactionService transactionService;
 
     @GetMapping("/monitoring")
-    public ResponseEntity<ResponseParameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,
-                                                                         @RequestParam Optional<Integer> optionalMonth) {
+    public ResponseEntity<ListOfParameters> getMonitoringMonthlyReport(@RequestParam Optional<Integer> optionalYear,
+                                                                       @RequestParam Optional<Integer> optionalMonth) {
         return ResponseEntity.ok(monitoringService.getMonitoringMonthlyReport(optionalYear, optionalMonth));
     }
 

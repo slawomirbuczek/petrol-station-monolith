@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transactions, Long> {
 
-    List<Transactions> findAllByUserId(Long userId);
+    List<Transactions> findAllByCustomersId(Long customerId);
 
     @Query("SELECT SUM(number) FROM Transactions WHERE serviceType = ?1 AND dateTime >= ?2 AND dateTime <= ?3")
     Optional<Long> sumNumberByServiceTypeAndDateTimeBetween(ServiceType serviceType, LocalDateTime from, LocalDateTime to);

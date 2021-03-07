@@ -32,19 +32,19 @@ public class LoyaltyProgramController {
         return ResponseEntity.ok(loyaltyProgramService.getPoints(Long.parseLong(principal.getName())));
     }
 
-    @GetMapping("/points/users/{userId}")
+    @GetMapping("/points/customers/{customerId}")
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
-    public ResponseEntity<Points> getPointsByUser(@PathVariable long userId) {
-        return ResponseEntity.ok(loyaltyProgramService.getPoints(userId));
+    public ResponseEntity<Points> getPointsByCustomer(@PathVariable long customerId) {
+        return ResponseEntity.ok(loyaltyProgramService.getPoints(customerId));
     }
 
-    @PutMapping("/users/{userId}/services/{serviceType}")
+    @PutMapping("/customers/{customerId}/services/{serviceType}")
     @PreAuthorize("hasAnyRole('CASHIER','ADMIN','OWNER')")
     public ResponseEntity<Points> addPoints(
-            @PathVariable long userId,
+            @PathVariable long customerId,
             @PathVariable ServiceType serviceType,
             @Valid @RequestBody Points points) {
-        return ResponseEntity.ok(loyaltyProgramService.addProgramPoints(userId, serviceType, points));
+        return ResponseEntity.ok(loyaltyProgramService.addProgramPoints(customerId, serviceType, points));
     }
 
     @PostMapping("/services/{serviceType}")

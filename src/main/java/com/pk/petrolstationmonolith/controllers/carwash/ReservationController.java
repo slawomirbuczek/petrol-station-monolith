@@ -6,7 +6,6 @@ import com.pk.petrolstationmonolith.models.carwash.Reservations;
 import com.pk.petrolstationmonolith.models.carwash.ResponseReservation;
 import com.pk.petrolstationmonolith.services.carwash.ReservationService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,8 +37,8 @@ public class ReservationController {
     }
 
     @GetMapping("/history")
-    public ResponseEntity<Reservations> getUserReservations(Principal principal) {
-        return ResponseEntity.ok(reservationService.getUserReservations(Long.parseLong(principal.getName())));
+    public ResponseEntity<Reservations> getCustomerReservations(Principal principal) {
+        return ResponseEntity.ok(reservationService.getCustomerReservations(Long.parseLong(principal.getName())));
     }
 
     @PostMapping

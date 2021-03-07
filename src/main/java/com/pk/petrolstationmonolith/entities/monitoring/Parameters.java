@@ -27,6 +27,9 @@ public class Parameters {
     @Column(name = "DateTime")
     private LocalDateTime dateTime;
 
+    @Column(name = "TankNumber")
+    private Integer tankNumber;
+
     @Column(name = "Pressure")
     private Float pressure;
 

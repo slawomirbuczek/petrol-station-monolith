@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pk.petrolstationmonolith.auth.UserDetailsServiceImpl;
 import com.pk.petrolstationmonolith.entities.account.Customers;
 import com.pk.petrolstationmonolith.enums.Roles;
-import com.pk.petrolstationmonolith.models.account.UserCredentials;
+import com.pk.petrolstationmonolith.models.account.CustomerCredentials;
 import com.pk.petrolstationmonolith.properties.auth.JwtProperties;
-import com.pk.petrolstationmonolith.services.account.UserService;
+import com.pk.petrolstationmonolith.services.account.CustomerService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(controllers = CustomerController.class)
 class AuthenticationTests {
 
     @Autowired
@@ -36,7 +36,7 @@ class AuthenticationTests {
     private PasswordEncoder passwordEncoder;
 
     @MockBean
-    private UserService userService;
+    private CustomerService customerService;
 
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
@@ -44,11 +44,11 @@ class AuthenticationTests {
     @SpyBean
     private JwtProperties jwtProperties;
 
-    private static UserCredentials credentials;
+    private static CustomerCredentials credentials;
 
     @BeforeAll
     static void setUp() {
-        credentials = new UserCredentials("1", "password");
+        credentials = new CustomerCredentials("1", "password");
     }
 
     @Test
@@ -64,7 +64,7 @@ class AuthenticationTests {
 
     @Test
     void shouldReturnStatusOkWhenCredentialsAreCorrect() throws Exception {
-        Customers customers = new Customers(1L, passwordEncoder.encode("password"), "email@email.com", Roles.USER_INDIVIDUAL);
+        Customers customers = new Customers(1L, passwordEncoder.encode("password"), "email@email.com", Roles.CUSTOMER_INDIVIDUAL);
 
         given(userDetailsService.loadUserByUsername("1")).willReturn(customers);
 

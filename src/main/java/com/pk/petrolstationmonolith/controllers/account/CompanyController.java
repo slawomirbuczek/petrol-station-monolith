@@ -18,29 +18,29 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER_COMPANY')")
+    @PreAuthorize("hasRole('CUSTOMER_COMPANY')")
     public ResponseEntity<CompanyDto> getCompany(Principal principal) {
         return ResponseEntity.ok(companyService.getCompanyDto(Long.parseLong(principal.getName())));
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<CompanyDto> getCompanyDtoByUserId(@PathVariable long userId) {
-        return ResponseEntity.ok(companyService.getCompanyDto(userId));
+    public ResponseEntity<CompanyDto> getCompanyDtoByUserId(@PathVariable long customerId) {
+        return ResponseEntity.ok(companyService.getCompanyDto(customerId));
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('USER_COMPANY')")
+    @PreAuthorize("hasRole('CUSTOMER_COMPANY')")
     public ResponseEntity<CompanyDto> updateCompany(Principal principal,
                                                     @Valid @RequestBody CompanyDto companyDto) {
         return ResponseEntity.ok(companyService.updateCompany(Long.parseLong(principal.getName()), companyDto));
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<CompanyDto> updateCompanyByUserId(@PathVariable long userId,
+    public ResponseEntity<CompanyDto> updateCompanyByUserId(@PathVariable long customerId,
                                                             @Valid @RequestBody CompanyDto companyDto) {
-        return ResponseEntity.ok(companyService.updateCompany(userId, companyDto));
+        return ResponseEntity.ok(companyService.updateCompany(customerId, companyDto));
     }
 
 }

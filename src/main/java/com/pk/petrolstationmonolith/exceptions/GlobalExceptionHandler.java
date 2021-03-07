@@ -4,17 +4,17 @@ import com.pk.petrolstationmonolith.exceptions.account.*;
 import com.pk.petrolstationmonolith.exceptions.account.address.AddressNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.account.company.CompanyNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.account.employee.EmployeeNotFoundException;
-import com.pk.petrolstationmonolith.exceptions.account.user.UserNotFoundException;
+import com.pk.petrolstationmonolith.exceptions.account.customer.CustomerNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationAlreadyTakenException;
 import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotFoundException;
-import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByUserException;
+import com.pk.petrolstationmonolith.exceptions.carwash.ReservationNotReservedByCustomerException;
 import com.pk.petrolstationmonolith.exceptions.carwash.WrongReservationDateException;
 import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.NotEnoughLoyaltyProgramPointsException;
-import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasAlreadyJoinedTheLoyaltyProgramException;
-import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.UserHasNotJoinedTheLoyaltyProgramException;
+import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.CustomerHasAlreadyJoinedTheLoyaltyProgramException;
+import com.pk.petrolstationmonolith.exceptions.loyaltyprogram.CustomerHasNotJoinedTheLoyaltyProgramException;
 import com.pk.petrolstationmonolith.exceptions.supplies.SupplyNotFoundException;
 import com.pk.petrolstationmonolith.exceptions.transactions.InvalidTransactionIdException;
-import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithUserException;
+import com.pk.petrolstationmonolith.exceptions.transactions.TransactionNotAssociatedWithCustomerException;
 import com.pk.petrolstationmonolith.models.ResponseMessage;
 import com.pk.petrolstationmonolith.models.validation.ValidationExceptionMessages;
 import org.springframework.http.HttpStatus;
@@ -68,8 +68,8 @@ public class GlobalExceptionHandler {
         return new ResponseMessage("Wrong data format");
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseMessage handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseMessage handleCustomerNotFoundException(CustomerNotFoundException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 
@@ -118,8 +118,8 @@ public class GlobalExceptionHandler {
         return new ResponseMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(ReservationNotReservedByUserException.class)
-    public ResponseMessage handleReservationNotReservedByUserException(ReservationNotReservedByUserException ex) {
+    @ExceptionHandler(ReservationNotReservedByCustomerException.class)
+    public ResponseMessage handleReservationNotReservedByCustomerException(ReservationNotReservedByCustomerException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 
@@ -128,13 +128,13 @@ public class GlobalExceptionHandler {
         return new ResponseMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(UserHasNotJoinedTheLoyaltyProgramException.class)
-    public ResponseMessage handleUserDoesNotParticipateInTheLoyaltyProgramException(UserHasNotJoinedTheLoyaltyProgramException ex) {
+    @ExceptionHandler(CustomerHasNotJoinedTheLoyaltyProgramException.class)
+    public ResponseMessage handleCustomerDoesNotParticipateInTheLoyaltyProgramException(CustomerHasNotJoinedTheLoyaltyProgramException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(UserHasAlreadyJoinedTheLoyaltyProgramException.class)
-    public ResponseMessage handleUserHasAlreadyJoinedTheLoyaltyProgramException(UserHasAlreadyJoinedTheLoyaltyProgramException ex) {
+    @ExceptionHandler(CustomerHasAlreadyJoinedTheLoyaltyProgramException.class)
+    public ResponseMessage handleCustomerHasAlreadyJoinedTheLoyaltyProgramException(CustomerHasAlreadyJoinedTheLoyaltyProgramException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 
@@ -148,8 +148,8 @@ public class GlobalExceptionHandler {
         return new ResponseMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(TransactionNotAssociatedWithUserException.class)
-    public ResponseMessage handleTransactionNotAssociatedWithUserException(TransactionNotAssociatedWithUserException ex) {
+    @ExceptionHandler(TransactionNotAssociatedWithCustomerException.class)
+    public ResponseMessage handleTransactionNotAssociatedWithCustomerException(TransactionNotAssociatedWithCustomerException ex) {
         return new ResponseMessage(ex.getMessage());
     }
 

@@ -18,29 +18,29 @@ public class IndividualController {
     private final IndividualService individualService;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER_INDIVIDUAL')")
+    @PreAuthorize("hasRole('CUSTOMER_INDIVIDUAL')")
     public ResponseEntity<IndividualDto> getIndividual(Principal principal) {
         return ResponseEntity.ok(individualService.getIndividualDto(Long.parseLong(principal.getName())));
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<IndividualDto> getIndividualDtoByUserId(@PathVariable long userId) {
-        return ResponseEntity.ok(individualService.getIndividualDto(userId));
+    public ResponseEntity<IndividualDto> getIndividualDtoByCustomerId(@PathVariable long customerId) {
+        return ResponseEntity.ok(individualService.getIndividualDto(customerId));
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('USER_INDIVIDUAL')")
+    @PreAuthorize("hasRole('CUSTOMER_INDIVIDUAL')")
     public ResponseEntity<IndividualDto> updateIndividual(Principal principal,
                                                     @Valid @RequestBody IndividualDto individualDto) {
         return ResponseEntity.ok(individualService.updateIndividual(Long.parseLong(principal.getName()), individualDto));
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/customers/{customerId}")
     @PreAuthorize("hasAnyRole('ADMIN','OWNER')")
-    public ResponseEntity<IndividualDto> updateIndividualByUserId(@PathVariable long userId,
+    public ResponseEntity<IndividualDto> updateIndividualByCustomerId(@PathVariable long customerId,
                                                             @Valid @RequestBody IndividualDto individualDto) {
-        return ResponseEntity.ok(individualService.updateIndividual(userId, individualDto));
+        return ResponseEntity.ok(individualService.updateIndividual(customerId, individualDto));
     }
 
 }

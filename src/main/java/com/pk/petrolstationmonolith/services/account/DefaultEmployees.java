@@ -15,16 +15,16 @@ import java.time.LocalDate;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class DefaultUsers {
+public class DefaultEmployees {
 
-    private final UserService userService;
+    private final CustomerService customerService;
     private final AddressService addressService;
     private final IndividualService individualService;
     private final EmployeeService employeeService;
 
     @PostConstruct
-    private void addDefaultUsers() {
-        log.trace("Adding default users");
+    private void addDefaultCustomers() {
+        log.trace("Adding default customers");
 
         addEmployee(1L, "kowalski", "pk.petrolstation@gmail.com", Roles.OWNER,
                 "Kraków", "30-063", "3 Maja Al.", "15", "207A",
@@ -96,7 +96,7 @@ public class DefaultUsers {
                              LocalDate dateOfBirth, int salary, String accountNumber, LocalDate startDateOfWork) {
 
         Customers customer = new Customers(id, password, email, role);
-        customer = userService.addUser(customer);
+        customer = customerService.addCustomer(customer);
 
         Addresses address = new Addresses("Polska", city, zip, street, buildingNumber, apartmentNumber, customer);
         addressService.addAddress(address);

@@ -35,9 +35,9 @@ public class EmailTokenService {
         return emailTokenRepository.save(emailToken);
     }
 
-    public boolean tokenNotValid(String token, long userId) {
-        log.trace("Validating token " + token + " with user " + userId);
-        return getByToken(token).getCustomers().getId() != userId;
+    public boolean tokenNotValid(String token, long customerId) {
+        log.trace("Validating token " + token + " with customer " + customerId);
+        return getByToken(token).getCustomers().getId() != customerId;
     }
 
     public void deleteToken(String token) {

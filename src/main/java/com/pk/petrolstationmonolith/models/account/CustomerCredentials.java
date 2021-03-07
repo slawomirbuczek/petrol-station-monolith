@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCredentials {
+public class CustomerCredentials {
 
     @NotBlank
     private String username;
