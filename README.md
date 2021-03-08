@@ -6,7 +6,7 @@ Ultimately the project will be deployed on Heroku.
 Petrol station is equipped with 4 self-service dispensers and one LPG station.  
 Each fuel pump can refuel: E95, E98, ON. The automatic car wash has two stands.  
 After refueling, the driver goes to the cash register and pays for fuel.  
-The station is equipped with a video monitoring system and a monitoring monitoring system.  
+The station is equipped with a video monitoring system and a monitoring system.  
 
 ## Current functionalities: 
 ### Registration:
@@ -43,7 +43,7 @@ The station is equipped with a video monitoring system and a monitoring monitori
 * The price list can be changed by the owner.
 ### Transactions:
 * Unregistered customer can obtain a receipt.
-* Each transactions is recorded in the datebase.
+* All transactions are recorded in the datebase.
 * Registered customers can view their transactions.
 ### Invoices:
 * Registered customer can receive an invoice on request.
@@ -61,7 +61,7 @@ The station is equipped with a video monitoring system and a monitoring monitori
   * permissible pressure or temperature value in the tank is exceeded;
   * activation of the safety valve in a given tank;
   * sensor failure;
-* Currently the system generaters random monitoring values.
+* Currently, the system generaters random monitoring values.
 ### Reports:
 * The owner and authorized employees are able to obtain a monthly sales and monitoring report.
 * The monthly sales report cantais data:
@@ -73,3 +73,18 @@ The station is equipped with a video monitoring system and a monitoring monitori
 * The owner can manage data about orgianization of fuel supplies.
 ### Simulations:
 * The owner can simulate critical situations to test the operation of the system.
+
+# Technology stack and its application in the project:
+* Spring Boot starters
+* jjwt  
+  * authentication with symmetric JWT
+* H2
+  * used locally for developing and testing
+* PostgreSQL
+  * Heroku Postgres, used in production
+* Swagger
+  * testing endpoints
+* Lombok
+  * remove boilerplate code
+* Freemarker
+  * email templates
